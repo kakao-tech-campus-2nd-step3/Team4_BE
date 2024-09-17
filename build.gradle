@@ -33,6 +33,12 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	// aws
+	implementation 'software.amazon.awssdk:s3:2.20.0'
+    implementation 'software.amazon.awssdk:auth:2.20.0'
+    implementation 'software.amazon.awssdk:regions:2.20.0'
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'
 }
 
 tasks.named('test') {
