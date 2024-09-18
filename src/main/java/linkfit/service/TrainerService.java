@@ -1,6 +1,7 @@
 package linkfit.service;
 
 import java.util.List;
+import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.entity.Trainer;
@@ -33,8 +34,8 @@ public class TrainerService {
     }
 
     //Trainer Career 등록
-    public void addCareer(Trainer trainer, CareerResponse res) {
-        careerService.addCareer(trainer, res);
+    public void addCareer(Trainer trainer, CareerRequest req) {
+        careerService.addCareer(trainer, req);
     }
 
     //Trainer Career 조회

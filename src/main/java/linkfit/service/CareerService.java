@@ -1,5 +1,6 @@
 package linkfit.service;
 
+import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.entity.Career;
 import linkfit.entity.Trainer;
@@ -23,8 +24,8 @@ public class CareerService {
         return careers.stream().map(CareerResponse::new).toList();
     }
 
-    public void addCareer(Trainer trainer, CareerResponse res) {
-        Career career = new Career(trainer, res.getCareer());
+    public void addCareer(Trainer trainer, CareerRequest req) {
+        Career career = new Career(trainer, req.getCareer());
     }
 
     public void deleteCareer(Long careerId) {
