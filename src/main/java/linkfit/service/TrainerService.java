@@ -42,5 +42,9 @@ public class TrainerService {
         return careerService.getAllTrainerCareers(trainerId);
     }
 
+    public Trainer findByEmail(String email){
+        return trainerRepository.findByEmail(email);
+    }
+
 
 }
