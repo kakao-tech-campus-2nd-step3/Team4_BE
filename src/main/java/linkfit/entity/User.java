@@ -2,46 +2,31 @@ package linkfit.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Users")
-public class User {
+public class User extends PersonEntity{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
 	@Column(nullable = false)
-	private String email;
+    private String local;
 	
-	@Column(nullable = false)
-	private String password;
+	private String goal;
 	
-	@Column(nullable = false)
-	private String local;
+	public String getLocal() {
+		return local;
+	}
 	
-	@Column(nullable = false)
-	private String name;
-	
-	private String profileImageUrl;
-	
-	private String Goal;
-	
-	public void setProfileImageUrl(String profileImageUrl) {
-		this.profileImageUrl = profileImageUrl;
+	public String getGoal() {
+		return goal;
 	}
 	
 	public User() {
-    }
+		super();
+	}
 	
 	public User(String email, String password, String name, String local) {
-		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.local = local;
-	}
+        super(email, password, name);
+        this.local = local;
+    }
 }

@@ -1,12 +1,13 @@
 package linkfit.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import linkfit.entity.User;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long>{
+@Primary
+@Repository("userRepository")
+public interface UserRepository extends PersonRepository<User> {
 
-	boolean existsByEmail(String email);
+	
 }

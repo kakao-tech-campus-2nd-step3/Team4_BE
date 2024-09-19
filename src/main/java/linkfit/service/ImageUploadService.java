@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
-import linkfit.entity.User;
+import linkfit.entity.PersonEntity;
 import linkfit.exception.ImageUploadException;
 
 @Service
@@ -28,12 +28,11 @@ public class ImageUploadService {
         this.amazonS3 = amazonS3;
     }
     
-    public void profileImageSave(User user, MultipartFile profileImage) {
-    	user.setProfileImageUrl(
-                "https://likelion12-team-project-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.png");
+    public <T extends PersonEntity> void profileImageSave(T entity, MultipartFile profileImage) {
+        entity.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = uploadFile(profileImage);
-            user.setProfileImageUrl(imageUrl);
+            entity.setProfileImageUrl(imageUrl);
         }
     }
     

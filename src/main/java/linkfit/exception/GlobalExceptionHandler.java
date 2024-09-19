@@ -22,4 +22,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+	
+	@ExceptionHandler(NotFoundEmailException.class)
+    public ResponseEntity<String> handleNotFoundEmailException(NotFoundEmailException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
