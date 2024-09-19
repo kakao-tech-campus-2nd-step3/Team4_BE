@@ -2,6 +2,7 @@ package linkfit.service;
 
 import static linkfit.exception.GlobalExceptionHandler.NOT_EXIST_ID;
 
+import linkfit.dto.UserRequest;
 import linkfit.dto.UserResponse;
 import linkfit.entity.User;
 import linkfit.exception.InvalidIdException;
@@ -25,5 +26,14 @@ public class UserService {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
         return new UserResponse(user);
+    }
+
+    public void updateProfile(String authorization, UserRequest userRequest) {
+        // jwt토큰 파싱하여 id정보 추출하는 로직 구현
+        Long userId = 0L;
+        User origin = userRepository.findById(userId)
+            .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
+        User newUser = new User(origin, userRequest);
+        userRepository.save(newUser);
     }
 }
