@@ -26,6 +26,7 @@ public class CareerService {
 
     public void addCareer(Trainer trainer, CareerRequest req) {
         Career career = new Career(trainer, req.getCareer());
+        careerRepository.save(career);
     }
 
     public void deleteCareer(Long careerId) {
