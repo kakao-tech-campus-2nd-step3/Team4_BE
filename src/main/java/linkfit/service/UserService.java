@@ -11,6 +11,8 @@ import linkfit.exception.InvalidIdException;
 import linkfit.repository.UserBodyInfoRepository;
 import linkfit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,5 +54,11 @@ public class UserService {
             .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
         UserBodyInfo userBodyInfo = new UserBodyInfo(user, userBodyInfoRequest);
         userBodyInfoRepository.save(userBodyInfo);
+    }
+
+    public Page<UserBodyInfo> getAllBodyInfo(String authorization, Pageable pageable) {
+        // jwt토큰 파싱하여 id정보 추출하는 로직 구현
+        Long userId = 0L;
+        return userBodyInfoRepository.findAllByUserId(userId, pageable);
     }
 }
