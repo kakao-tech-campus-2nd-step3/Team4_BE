@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import linkfit.entity.Trainer;
 
-@Repository("trainerRepository")
+@Repository
 public interface TrainerRepository extends PersonRepository<Trainer> {
 
 	

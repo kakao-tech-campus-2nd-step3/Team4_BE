@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import linkfit.entity.User;
 
 @Primary
-@Repository("userRepository")
+@Repository
 public interface UserRepository extends PersonRepository<User> {
 
 	
