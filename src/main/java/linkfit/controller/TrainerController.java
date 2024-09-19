@@ -32,14 +32,14 @@ public class TrainerController {
     @GetMapping("/career")
     public ResponseEntity<List<CareerResponse>> getMyCareer(@LoginTrainer Trainer trainer) {
         List<CareerResponse> list = trainerService.getCareers(trainer.getId());
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        return ResponseEntity.ok().body(list);
     }
 
     @PostMapping("/career")
     public ResponseEntity<Void> addMyCareer(@LoginTrainer Trainer trainer,
         @RequestBody CareerRequest req) {
         trainerService.addCareer(trainer, req);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{careerId}")
@@ -51,13 +51,13 @@ public class TrainerController {
     @GetMapping("/career/{trainerId}")
     public ResponseEntity<List<CareerResponse>> getTrainerCareer(@PathVariable Long trainerId) {
         List<CareerResponse> list = trainerService.getCareers(trainerId);
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/profile/{trainerId}")
     public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable Long trainerId) {
         TrainerProfileResponse res = trainerService.getProfile(trainerId);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return ResponseEntity.ok().body(res);
     }
 
 
