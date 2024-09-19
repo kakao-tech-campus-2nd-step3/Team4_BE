@@ -4,6 +4,7 @@ import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.entity.Career;
 import linkfit.entity.Trainer;
+import linkfit.exception.NotFoundCareerException;
 import linkfit.repository.CareerRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class CareerService {
 
     public void deleteCareer(Long careerId) {
         Career career = careerRepository.findById(careerId)
-            .orElseThrow(() -> new IllegalStateException("존재하지 않는 경력"));
+            .orElseThrow(() -> new NotFoundCareerException("Career not found"));
 
         careerRepository.deleteById(careerId);
     }

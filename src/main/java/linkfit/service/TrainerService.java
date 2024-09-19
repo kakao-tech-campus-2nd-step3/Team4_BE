@@ -5,6 +5,7 @@ import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.entity.Trainer;
+import linkfit.exception.NotFoundTrainerException;
 import linkfit.repository.TrainerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ public class TrainerService {
     //Trainer Profile 조회
     public TrainerProfileResponse getProfile(Long trainerId) {
         Trainer trainer = trainerRepository.findById(trainerId)
-            .orElseThrow(() -> new IllegalStateException("존재하지 않는 트레이너."));
+            .orElseThrow(() -> new NotFoundTrainerException("Trainer not found"));
         return new TrainerProfileResponse(trainer);
     }
 
