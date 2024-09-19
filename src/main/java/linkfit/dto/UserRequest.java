@@ -4,18 +4,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class UserRequest {
 
-    private MultipartFile profileImageUrl;
+    private MultipartFile profileImage;
     private String local;
     private String goal;
 
     UserRequest(MultipartFile profileImageUrl, String local, String goal) {
-        this.profileImageUrl = profileImageUrl;
+        this.profileImage = profileImage;
         this.local = local;
         this.goal = goal;
     }
 
-    public MultipartFile getProfileImageUrl() {
-        return profileImageUrl;
+    public MultipartFile getProfileImage() {
+        return profileImage;
     }
 
     public String getLocal() {

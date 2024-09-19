@@ -58,7 +58,7 @@ public class User {
         this.name = user.getName();
         this.local = userRequest.getLocal();
         // 프로필 이미지 멀티파트파일의 url 부분은 추후 구현예정으로 임시로 스트링변환 처리
-        this.profileImageUrl = userRequest.getProfileImageUrl().toString();
+        this.profileImageUrl = userRequest.getProfileImage().toString();
         this.goal = userRequest.getGoal();
     }
 
