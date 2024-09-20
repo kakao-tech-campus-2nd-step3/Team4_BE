@@ -34,6 +34,6 @@ public class AuthService<T extends PersonEntity> {
     public String login(LoginRequest request) {
         T entity = personService.findByEmail(request.getEmail());
         entity.validatePassword(request.getPassword());
-        return jwtUtil.generateToken(entity.getId().toString(), entity.getEmail());
+        return jwtUtil.generateToken(entity.getId(), entity.getEmail());
     }
 }

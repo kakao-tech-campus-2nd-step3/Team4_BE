@@ -37,8 +37,16 @@ public class PersonEntity {
         return password;
     }
     
+    public String getName() {
+    	return name;
+    }
+    
     public String getProfileImageUrl() {
         return profileImageUrl;
+    }
+    
+    public void setName(String name) {
+    	this.name = name;
     }
     
     public void setProfileImageUrl(String profileImageUrl) {
