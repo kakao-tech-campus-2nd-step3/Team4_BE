@@ -11,14 +11,8 @@ public class User extends PersonEntity{
 	@Column(nullable = false)
     private String local;
 	
-	private String goal;
-	
 	public String getLocal() {
 		return local;
-	}
-	
-	public String getGoal() {
-		return goal;
 	}
 	
 	public User() {
