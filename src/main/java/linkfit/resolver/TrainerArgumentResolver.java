@@ -19,6 +19,8 @@ public class TrainerArgumentResolver implements HandlerMethodArgumentResolver {
 
 
     private final String secret = "Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=";
+    private final String BEARER_PREFIX = "Bearer ";
+    private final String AUTHORIZATION_HEADER = "token not valid";
 
 
     public TrainerArgumentResolver(TrainerService trainerService) {
@@ -49,8 +51,8 @@ public class TrainerArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     private String retrieveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;

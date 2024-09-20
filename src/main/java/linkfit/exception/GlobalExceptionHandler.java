@@ -9,6 +9,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static final String NOT_EXIST_ID = "존재하지 않는 ID에 대한 접근입니다.";
+
     //잘못된 파라미터 handling
     @ExceptionHandler
     public ResponseEntity<String> handleMethodArgumentTypeMismatchException(
@@ -17,7 +19,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundTrainerException.class)
-    public ResponseEntity<String> handleTrainerNotFoundException(NotFoundTrainerException e) {
+    public ResponseEntity<String> handleInvalidIdException(NotFoundTrainerException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
