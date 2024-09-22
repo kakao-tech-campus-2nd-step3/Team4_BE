@@ -9,6 +9,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static final String NOT_FOUND_INFORMATION = "Not Found";
+
 	@ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -49,6 +51,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<String> handleInvalidTokenException(InvalidTokenException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
 
