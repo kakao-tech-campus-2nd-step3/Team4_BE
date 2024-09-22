@@ -1,11 +1,15 @@
 package linkfit.controller;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import linkfit.dto.SportsRequest;
+import linkfit.dto.SportsResponse;
 import linkfit.service.SportsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +32,10 @@ public class SportsController {
         sportsService.registerSport(sportsRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body("Registerd Sports: " + sportsRequest.getName());
+    }
+
+    @GetMapping
+    public List<SportsResponse> getAllSports(Pageable pageable) {
+        return sportsService.getAllSports(pageable);
     }
 }

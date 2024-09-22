@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import linkfit.dto.SportsResponse;
 
 @Entity
 public class Sports {
@@ -27,5 +28,9 @@ public class Sports {
 
     public String getName() {
         return name;
+    }
+
+    public SportsResponse toDto() {
+        return new SportsResponse(id, name);
     }
 }
