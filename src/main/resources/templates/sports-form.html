@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>신규 스포츠 등록</title>
+</head>
+<body>
+<h1>신규 스포츠 등록</h1>
+<form th:action="@{/admin/sports}" th:object="${sports}" method="post">
+  <table>
+    <tr>
+      <td>
+        스포츠 명:
+      </td>
+      <td>
+        <label>
+          <input type="text" name="name" value="" required/>
+        </label>
+      </td>
+      <td>
+        <button type="submit">등록</button>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
