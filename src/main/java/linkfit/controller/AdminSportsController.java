@@ -1,11 +1,13 @@
 package linkfit.controller;
 
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import linkfit.dto.SportsRequest;
+import linkfit.dto.SportsResponse;
 import linkfit.service.SportsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,13 @@ public class AdminSportsController {
     @Autowired
     public AdminSportsController(SportsService sportsService) {
         this.sportsService = sportsService;
+    }
+
+    @GetMapping
+    public String findAllSports(Model model) {
+        List<SportsResponse> sportsList = sportsService.getAllSports(Pageable.unpaged());
+        model.addAttribute("sportsList", sportsList);
+        return "sports";
     }
 
     @GetMapping("/register")

@@ -8,4 +8,12 @@ public class SportsResponse {
     public SportsResponse(Long id, String name) {
         this.id = id;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
