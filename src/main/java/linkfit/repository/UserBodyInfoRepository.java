@@ -8,5 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface UserBodyInfoRepository extends JpaRepository<UserBodyInfo, Long> {
+
     Page<UserBodyInfo> findAllByUserId(Long userId, Pageable pageable);
 }

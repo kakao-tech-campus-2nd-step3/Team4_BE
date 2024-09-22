@@ -10,7 +10,7 @@ import linkfit.exception.PasswordMismatchException;
 @MappedSuperclass
 public class PersonEntity {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -19,10 +19,10 @@ public class PersonEntity {
 
     @Column(nullable = false)
     private String password;
-    
+
     @Column(nullable = false)
     private String name;
-    
+
     private String profileImageUrl;
 
     public Long getId() {
@@ -36,29 +36,30 @@ public class PersonEntity {
     public String getPassword() {
         return password;
     }
-    
+
     public String getName() {
-    	return name;
+        return name;
     }
-    
+
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
-    
+
     public void setName(String name) {
-    	this.name = name;
+        this.name = name;
     }
-    
+
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
-    
-    public PersonEntity() {}
-    
+
+    public PersonEntity() {
+    }
+
     public PersonEntity(String email, String passowrd, String name) {
-    	this.email = email;
-    	this.password = passowrd;
-    	this.name = name;
+        this.email = email;
+        this.password = passowrd;
+        this.name = name;
     }
 
     public void validatePassword(String inputPassword) {

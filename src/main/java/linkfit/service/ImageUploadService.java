@@ -16,18 +16,18 @@ import linkfit.exception.ImageUploadException;
 @Service
 public class ImageUploadService {
 
-	private final AmazonS3 amazonS3;
+    private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     @Value("${cloud.aws.region.static}")
     private String region;
-    
+
     public ImageUploadService(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
     }
-    
+
     public <T extends PersonEntity> void profileImageSave(T entity, MultipartFile profileImage) {
         entity.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
         if (profileImage != null && !profileImage.isEmpty()) {
@@ -35,7 +35,7 @@ public class ImageUploadService {
             entity.setProfileImageUrl(imageUrl);
         }
     }
-    
+
     private String uploadFile(MultipartFile file) {
         try {
             String key = UUID.randomUUID() + "_" + file.getOriginalFilename();

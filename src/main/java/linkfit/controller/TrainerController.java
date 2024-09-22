@@ -28,7 +28,7 @@ public class TrainerController {
 
     @GetMapping("/career")
     public ResponseEntity<List<CareerResponse>> getMyCareer(
-    	@RequestHeader("Authorization") String authorization) {
+        @RequestHeader("Authorization") String authorization) {
         List<CareerResponse> list = trainerService.getCareers(authorization);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
@@ -42,19 +42,21 @@ public class TrainerController {
 
     @DeleteMapping("/{careerId}")
     public ResponseEntity<Void> deleteCareer(@RequestHeader("Authorization") String authorization,
-    		@PathVariable("careerId") Long careerId) {
+        @PathVariable("careerId") Long careerId) {
         trainerService.deleteCareer(authorization, careerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/career/{trainerId}")
-    public ResponseEntity<List<CareerResponse>> getTrainerCareer(@PathVariable("trainerId") Long trainerId) {
+    public ResponseEntity<List<CareerResponse>> getTrainerCareer(
+        @PathVariable("trainerId") Long trainerId) {
         List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/profile/{trainerId}")
-    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable("trainerId") Long trainerId) {
+    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(
+        @PathVariable("trainerId") Long trainerId) {
         TrainerProfileResponse res = trainerService.getProfile(trainerId);
         return ResponseEntity.ok().body(res);
     }

@@ -17,7 +17,7 @@ public class AuthService<T extends PersonEntity> {
     private final JwtUtil jwtUtil;
 
     public AuthService(@Qualifier("personService") PersonService<T> personService,
-                       ImageUploadService imageUploadService, JwtUtil jwtUtil) {
+        ImageUploadService imageUploadService, JwtUtil jwtUtil) {
         this.personService = personService;
         this.imageUploadService = imageUploadService;
         this.jwtUtil = jwtUtil;

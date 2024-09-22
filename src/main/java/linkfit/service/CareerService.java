@@ -35,10 +35,10 @@ public class CareerService {
 
         careerRepository.deleteById(careerId);
     }
-    
+
     public Long findTrainerIdByCarreerId(Long careerId) {
-    	Career career = careerRepository.findById(careerId)
-    			.orElseThrow(() -> new NotFoundCareerException("This is a career that doesn’t exist."));
-    	return career.getTrainer().getId();
+        Career career = careerRepository.findById(careerId)
+            .orElseThrow(() -> new NotFoundCareerException("This is a career that doesn’t exist."));
+        return career.getTrainer().getId();
     }
 }

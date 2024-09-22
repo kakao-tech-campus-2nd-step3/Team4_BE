@@ -9,5 +9,5 @@ import linkfit.entity.Trainer;
 @Repository
 public interface TrainerRepository extends PersonRepository<Trainer> {
 
-	Optional<Trainer> findByEmail(String email);
+    Optional<Trainer> findByEmail(String email);
 }

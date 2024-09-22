@@ -28,6 +28,6 @@ public class PersonService<T extends PersonEntity> {
 
     public T findByEmail(String email) {
         return personRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundEmailException("This email not found."));
+            .orElseThrow(() -> new NotFoundEmailException("This email not found."));
     }
 }

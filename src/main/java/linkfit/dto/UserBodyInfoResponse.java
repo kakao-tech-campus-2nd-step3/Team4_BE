@@ -8,7 +8,8 @@ public class UserBodyInfoResponse {
     private String inbodyImageUrl;
     private LocalDateTime createDate;
 
-    public UserBodyInfoResponse() {}
+    public UserBodyInfoResponse() {
+    }
 
     public UserBodyInfoResponse(String inbodyImageUrl, LocalDateTime createDate) {
 

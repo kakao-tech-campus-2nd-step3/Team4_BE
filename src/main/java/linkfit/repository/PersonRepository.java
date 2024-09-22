@@ -10,7 +10,7 @@ import linkfit.entity.PersonEntity;
 @NoRepositoryBean
 public interface PersonRepository<T extends PersonEntity> extends JpaRepository<T, Long> {
 
-	boolean existsByEmail(String email);
-	
-	Optional<T> findByEmail(String email);
+    boolean existsByEmail(String email);
+
+    Optional<T> findByEmail(String email);
 }

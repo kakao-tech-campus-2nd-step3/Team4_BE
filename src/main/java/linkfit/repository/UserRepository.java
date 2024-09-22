@@ -11,5 +11,5 @@ import linkfit.entity.User;
 @Repository
 public interface UserRepository extends PersonRepository<User> {
 
-	Optional<User> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 }
