@@ -45,7 +45,6 @@ public class AdminSportsController {
         BindingResult bindingResult,
         Model model) {
         if(bindingResult.hasErrors()) {
-            System.out.println("오류 발생: "+sportsRequest.getName());
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "sports-form";
         }

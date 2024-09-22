@@ -7,6 +7,7 @@ public class SportsResponse {
 
     public SportsResponse(Long id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public Long getId() {
