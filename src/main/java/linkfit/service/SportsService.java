@@ -59,4 +59,15 @@ public class SportsService {
             throw new DuplicateException(DUPLICATE_NAME);
         }
     }
+
+    public void deleteSports(Long id) {
+        isExist(id);
+        sportsRepository.deleteById(id);
+    }
+
+    private void isExist(Long id) {
+        if(!sportsRepository.existsById(id)) {
+            throw new InvalidIdException(NOT_EXIST_ID);
+        }
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,4 +78,9 @@ public class AdminSportsController {
         return "redirect:/admin/sports";
     }
 
+    @DeleteMapping("/{sportsId}")
+    public String deleteSports(@PathVariable Long sportsId) {
+        sportsService.deleteSports(sportsId);
+        return "redirect:/admin/sports";
+    }
 }
