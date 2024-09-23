@@ -1,13 +1,9 @@
 package linkfit.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "TRAINER_TB")
+@Table(name = "TRAINER_TB", indexes = @Index(name = "idx_trainer_email", columnList = "email"))
 public class Trainer extends Person {
 
     @ManyToOne
