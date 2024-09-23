@@ -27,7 +27,7 @@ public class AuthService<T extends PersonEntity> {
         T entity = request.toEntity();
         personService.existsByEmail(request.getEmail());
         request.verifyPassword();
-        imageUploadService.profileImageSave(entity, profileImage);
+        imageUploadService.saveProfileImage(entity, profileImage);
         personService.save(entity);
     }
 

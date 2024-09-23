@@ -28,7 +28,7 @@ public class ImageUploadService {
         this.amazonS3 = amazonS3;
     }
 
-    public <T extends PersonEntity> void profileImageSave(T entity, MultipartFile profileImage) {
+    public <T extends PersonEntity> void saveProfileImage(T entity, MultipartFile profileImage) {
         entity.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = uploadFile(profileImage);

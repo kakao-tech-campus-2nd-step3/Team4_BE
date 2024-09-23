@@ -30,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/user/register")
-    public ResponseEntity<Void> userRegister(
+    public ResponseEntity<Void> registerUser(
         @RequestPart("user") UserRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userAuthService.register(request, profileImage);
@@ -38,13 +38,13 @@ public class AuthController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<String> userLogin(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest request) {
         String token = userAuthService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 
     @PostMapping("/trainer/register")
-    public ResponseEntity<Void> trainerRegister(
+    public ResponseEntity<Void> registerTrainer(
         @RequestPart("trainer") TrainerRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         trainerAuthService.register(request, profileImage);
@@ -52,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/trainer/login")
-    public ResponseEntity<String> trainerLogin(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> loginTrainer(@RequestBody LoginRequest request) {
         String token = trainerAuthService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }

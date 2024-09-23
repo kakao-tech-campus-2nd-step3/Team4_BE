@@ -36,7 +36,7 @@ public class TrainerService extends PersonService<Trainer> {
     //Trainer Career 삭제
     public void deleteCareer(String authorization, Long careerId) {
         Trainer trainer = getTrainer(authorization);
-        if (trainer.getId() == careerService.findTrainerIdByCarreerId(careerId)) {
+        if (trainer.getId() == careerService.findTrainerIdByCareerId(careerId)) {
             careerService.deleteCareer(careerId);
         }
     }

@@ -46,7 +46,7 @@ public class UserService extends PersonService<User> {
 
     public void registerBodyInfo(String authorization, MultipartFile profileImage) {
         User user = getUser(authorization);
-        imageUploadService.profileImageSave(user, profileImage);
+        imageUploadService.saveProfileImage(user, profileImage);
     }
 
     public Page<UserBodyInfo> getAllBodyInfo(String authorization, Pageable pageable) {
