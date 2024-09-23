@@ -18,7 +18,6 @@ public class Sports {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique=true)
     private String name;
 
     // 논리 삭제를 위한 필드
