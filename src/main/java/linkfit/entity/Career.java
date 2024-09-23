@@ -1,8 +1,13 @@
 package linkfit.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 @Entity
+@SQLDelete(sql = "UPDATE career SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 public class Career {
 
     @Id
@@ -15,6 +20,8 @@ public class Career {
 
     @Column(nullable = false)
     private String career;
+
+    private boolean deleted = Boolean.FALSE;
 
     public Long getId() {
         return id;
