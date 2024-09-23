@@ -21,7 +21,7 @@ public class User extends PersonEntity {
         this.local = local;
     }
 
-    public User() {
+    protected User() {
         super();
     }
 

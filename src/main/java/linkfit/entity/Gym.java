@@ -16,7 +16,7 @@ public class Gym {
     @Column(nullable = false)
     private String gymName;
 
-    public Gym() {
+    protected Gym() {
     }
 
     public String getGymLocation() {

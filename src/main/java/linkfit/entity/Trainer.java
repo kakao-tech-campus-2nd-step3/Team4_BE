@@ -25,7 +25,7 @@ public class Trainer extends PersonEntity {
         return gym.getGymName();
     }
 
-    public Trainer() {
+    protected Trainer() {
         super();
     }
 

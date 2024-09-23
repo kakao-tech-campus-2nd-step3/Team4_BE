@@ -53,7 +53,7 @@ public class PersonEntity {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public PersonEntity() {
+    protected PersonEntity() {
     }
 
     public PersonEntity(String email, String passowrd, String name) {

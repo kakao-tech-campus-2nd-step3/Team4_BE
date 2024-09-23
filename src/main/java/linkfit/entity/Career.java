@@ -28,7 +28,7 @@ public class Career {
         return career;
     }
 
-    public Career() {
+    protected Career() {
     }
 
     public Career(Trainer trainer, String career) {
