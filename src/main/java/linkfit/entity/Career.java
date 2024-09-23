@@ -1,6 +1,7 @@
 package linkfit.entity;
 
 import jakarta.persistence.*;
+import linkfit.dto.CareerResponse;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.Where;
@@ -41,5 +42,9 @@ public class Career {
     public Career(Trainer trainer, String career) {
         this.trainer = trainer;
         this.career = career;
+    }
+
+    public CareerResponse toDto() {
+        return new CareerResponse(getId(), getTrainer().getId(), getCareer());
     }
 }

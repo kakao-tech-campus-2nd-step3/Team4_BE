@@ -6,11 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import linkfit.dto.LoginRequest;
 import linkfit.dto.RegisterRequest;
-import linkfit.entity.PersonEntity;
+import linkfit.entity.Person;
 import linkfit.util.JwtUtil;
 
 @Service
-public class AuthService<T extends PersonEntity> {
+public class AuthService<T extends Person> {
 
     private final PersonService<T> personService;
     private final ImageUploadService imageUploadService;

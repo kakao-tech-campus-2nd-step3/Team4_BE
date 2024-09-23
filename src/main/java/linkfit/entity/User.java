@@ -8,7 +8,7 @@ import linkfit.dto.UserProfileRequest;
 
 @Entity
 @Table(name = "Users")
-public class User extends PersonEntity {
+public class User extends Person {
 
     @Column(nullable = false)
     private String local;
@@ -32,8 +32,8 @@ public class User extends PersonEntity {
 
     public User Update(UserProfileRequest request) {
         User newUser = new User();
-        newUser.setName(request.getName());
-        newUser.setLocal(request.getLocal());
+        newUser.setName(request.name());
+        newUser.setLocal(request.local());
         return newUser;
     }
 

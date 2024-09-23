@@ -62,7 +62,7 @@ public class UserController {
 
     private List<UserBodyInfoResponse> pageToList(Page<UserBodyInfo> bodyInfos) {
         return bodyInfos.stream()
-            .map(UserBodyInfoResponse::new)
+            .map(UserBodyInfo::toDto)
             .toList();
     }
 }

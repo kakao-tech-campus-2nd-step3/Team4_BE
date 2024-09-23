@@ -8,7 +8,7 @@ import jakarta.persistence.MappedSuperclass;
 import linkfit.exception.PasswordMismatchException;
 
 @MappedSuperclass
-public class PersonEntity {
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,10 +53,10 @@ public class PersonEntity {
         this.profileImageUrl = profileImageUrl;
     }
 
-    protected PersonEntity() {
+    protected Person() {
     }
 
-    public PersonEntity(String email, String passowrd, String name) {
+    public Person(String email, String passowrd, String name) {
         this.email = email;
         this.password = passowrd;
         this.name = name;
