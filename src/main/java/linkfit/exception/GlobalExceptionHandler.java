@@ -9,6 +9,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static final String NOT_EXIST_ID = "Not Exist Id";
     public static final String DUPLICATE_NAME = "The same name already exists";
 
 	@ExceptionHandler(ImageUploadException.class)
