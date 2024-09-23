@@ -6,6 +6,7 @@ import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.Where;
 
 @Entity
+@Table(name = "CAREER_TB")
 @SQLDelete(sql = "UPDATE career SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted = false")
 public class Career {

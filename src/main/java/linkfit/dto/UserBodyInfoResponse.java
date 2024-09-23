@@ -1,7 +1,7 @@
 package linkfit.dto;
 
 import java.time.LocalDateTime;
-import linkfit.entity.UserBodyInfo;
+import linkfit.entity.BodyInfo;
 
 public class UserBodyInfoResponse {
 
@@ -17,8 +17,8 @@ public class UserBodyInfoResponse {
         this.createDate = createDate;
     }
 
-    public UserBodyInfoResponse(UserBodyInfo userBodyInfo) {
-        this.inbodyImageUrl = userBodyInfo.getInbodyImageUrl();
-        this.createDate = userBodyInfo.getCreateDate();
+    public UserBodyInfoResponse(BodyInfo bodyInfo) {
+        this.inbodyImageUrl = bodyInfo.getInbodyImageUrl();
+        this.createDate = bodyInfo.getCreateDate();
     }
 }

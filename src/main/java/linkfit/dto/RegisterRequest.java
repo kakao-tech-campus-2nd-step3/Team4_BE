@@ -2,10 +2,10 @@ package linkfit.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import linkfit.entity.PersonEntity;
+import linkfit.entity.Person;
 import linkfit.exception.PasswordMismatchException;
 
-public class RegisterRequest<T extends PersonEntity> {
+public class RegisterRequest<T extends Person> {
 
     private String email;
     private String password;

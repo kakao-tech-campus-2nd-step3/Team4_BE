@@ -7,8 +7,8 @@ import linkfit.dto.UserProfileResponse;
 import linkfit.dto.UserProfileRequest;
 
 @Entity
-@Table(name = "Users")
-public class User extends PersonEntity {
+@Table(name = "USER_TB")
+public class User extends Person {
 
     @Column(nullable = false)
     private String local;

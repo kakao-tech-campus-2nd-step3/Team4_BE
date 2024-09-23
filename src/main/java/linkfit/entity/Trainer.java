@@ -7,8 +7,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Trainers")
-public class Trainer extends PersonEntity {
+@Table(name = "TRAINER_TB")
+public class Trainer extends Person {
 
     @ManyToOne
     @JoinColumn(name = "GYM_ID")
