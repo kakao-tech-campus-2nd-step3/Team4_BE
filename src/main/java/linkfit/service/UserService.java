@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.entity.User;
-import linkfit.entity.UserBodyInfo;
+import linkfit.entity.BodyInfo;
 import linkfit.exception.InvalidIdException;
 import linkfit.repository.UserBodyInfoRepository;
 import linkfit.repository.UserRepository;
@@ -49,7 +49,7 @@ public class UserService extends PersonService<User> {
         imageUploadService.saveProfileImage(user, profileImage);
     }
 
-    public Page<UserBodyInfo> getAllBodyInfo(String authorization, Pageable pageable) {
+    public Page<BodyInfo> getAllBodyInfo(String authorization, Pageable pageable) {
         User user = getUser(authorization);
         return userBodyInfoRepository.findAllByUserId(user.getId(), pageable);
     }

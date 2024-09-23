@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 import linkfit.dto.UserBodyInfoResponse;
 
 @Entity
-@Table(name = "UserBodyInfo")
-public class UserBodyInfo {
+@Table(name = "BODY_INFO_TB")
+public class BodyInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +27,10 @@ public class UserBodyInfo {
 
     private LocalDateTime createDate;
 
-    protected UserBodyInfo() {
+    protected BodyInfo() {
     }
 
-    public UserBodyInfo(User user, String inbodyImageUrl) {
+    public BodyInfo(User user, String inbodyImageUrl) {
         this.user = user;
         this.inbodyImageUrl = inbodyImageUrl;
         this.createDate = LocalDateTime.now();
