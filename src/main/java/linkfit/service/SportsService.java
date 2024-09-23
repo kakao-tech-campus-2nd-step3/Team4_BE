@@ -25,10 +25,14 @@ public class SportsService {
     }
 
     public void registerSport(SportsRequest sportsRequest) {
+        isExistSports(sportsRequest);
+        sportsRepository.save(sportsRequest.toEntity());
+    }
+
+    private void isExistSports(SportsRequest sportsRequest) {
         if(sportsRepository.existsByName(sportsRequest.getName())) {
             throw new DuplicateException(DUPLICATE_NAME);
         }
-        sportsRepository.save(sportsRequest.toEntity());
     }
 
     public List<SportsResponse> getAllSports(Pageable pageable) {
