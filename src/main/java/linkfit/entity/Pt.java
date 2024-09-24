@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
+import linkfit.dto.PtSuggestionResponse;
 
 @Entity
 public class Pt {
@@ -74,5 +75,9 @@ public class Pt {
 
     public int getStatus() {
         return status;
+    }
+
+    public PtSuggestionResponse toDto() {
+        return new PtSuggestionResponse(id, user, totalCount, price, status);
     }
 }

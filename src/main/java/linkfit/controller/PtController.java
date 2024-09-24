@@ -2,7 +2,8 @@ package linkfit.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import linkfit.dto.SuggestionRequest;
+import linkfit.dto.PtSuggestionRequest;
+import linkfit.dto.PtSuggestionResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
@@ -35,6 +36,13 @@ public class PtController {
         return ptService.getAllPt(authorization, pageable);
     }
 
+    @GetMapping("/trainer/suggest")
+    public List<PtSuggestionResponse> getAllPtSuggestion(
+        @RequestHeader("Authorization") String authorization,
+        Pageable pageable) {
+        return ptService.getAllPtSuggestion(authorization, pageable);
+    }
+
     @GetMapping("/user")
     public ResponseEntity<UserPtResponse> getMyPt(@RequestHeader("Authorization") String authorization) {
         return ResponseEntity.status(HttpStatus.OK)
@@ -44,8 +52,8 @@ public class PtController {
     @PostMapping
     public ResponseEntity<Void> suggestPt(
         @RequestHeader("Authorization") String authorization,
-        @Valid @RequestBody SuggestionRequest suggestionRequest) {
-        ptService.suggestPt(authorization, suggestionRequest);
+        @Valid @RequestBody PtSuggestionRequest ptSuggestionRequest) {
+        ptService.suggestPt(authorization, ptSuggestionRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
             .build();
     }
