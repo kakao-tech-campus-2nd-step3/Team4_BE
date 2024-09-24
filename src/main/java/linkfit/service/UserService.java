@@ -10,6 +10,7 @@ import linkfit.dto.UserProfileResponse;
 import linkfit.entity.User;
 import linkfit.entity.UserBodyInfo;
 import linkfit.exception.InvalidIdException;
+import linkfit.exception.NotFoundException;
 import linkfit.repository.UserBodyInfoRepository;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
@@ -59,5 +60,10 @@ public class UserService extends PersonService<User> {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new InvalidIdException("User profile does not exist."));   
         return user;
+    }
+    
+    public UserBodyInfo getUserBodyInfo(Long userId) {
+    	return userBodyInfoRepository.findByUserId(userId)
+    			.orElseThrow(() -> new NotFoundException("UserBodyInfo not found."));
     }
 }

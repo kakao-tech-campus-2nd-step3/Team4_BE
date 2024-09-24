@@ -1,7 +1,5 @@
 package linkfit.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import linkfit.entity.PersonEntity;
 import linkfit.exception.PasswordMismatchException;
 
@@ -11,7 +9,6 @@ public class RegisterRequest<T extends PersonEntity> {
 	private String password;
 	private String passwordConfirm;
 	private String name;
-	private MultipartFile profileImage;
 
 	public String getEmail() {
 		return email;
@@ -27,10 +24,6 @@ public class RegisterRequest<T extends PersonEntity> {
 
 	public String getName() {
 		return name;
-	}
-
-	public MultipartFile getProfileImage() {
-		return profileImage;
 	}
 
 	public void verifyPassword() {

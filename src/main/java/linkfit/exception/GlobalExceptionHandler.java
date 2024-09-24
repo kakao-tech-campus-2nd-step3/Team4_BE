@@ -10,45 +10,48 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ImageUploadException.class)
-    public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-	
-	@ExceptionHandler(ExistsEmailException.class)
-    public ResponseEntity<String> handleEmailNotFoundException(ExistsEmailException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-	
-	@ExceptionHandler(PasswordMismatchException.class)
-    public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-	
-	@ExceptionHandler(NotFoundEmailException.class)
-    public ResponseEntity<String> handleNotFoundEmailException(NotFoundEmailException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
-    //잘못된 파라미터 handling
-    @ExceptionHandler
-    public ResponseEntity<String> handleMethodArgumentTypeMismatchException(
-        MethodArgumentTypeMismatchException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+	@ExceptionHandler(ExistsEmailException.class)
+	public ResponseEntity<String> handleEmailNotFoundException(ExistsEmailException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
 
-    @ExceptionHandler(NotFoundTrainerException.class)
-    public ResponseEntity<String> handleInvalidIdException(NotFoundTrainerException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
+	@ExceptionHandler(PasswordMismatchException.class)
+	public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
 
-    @ExceptionHandler(NotFoundCareerException.class)
-    public ResponseEntity<String> handleCareerNotFoundException(NotFoundCareerException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
+	@ExceptionHandler(NotFoundEmailException.class)
+	public ResponseEntity<String> handleNotFoundEmailException(NotFoundEmailException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
 
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<String> handleInvalidTokenException(InvalidTokenException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-    }
+	// 잘못된 파라미터 handling
+	@ExceptionHandler
+	public ResponseEntity<String> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(NotFoundTrainerException.class)
+	public ResponseEntity<String> handleInvalidIdException(NotFoundTrainerException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(NotFoundCareerException.class)
+	public ResponseEntity<String> handleCareerNotFoundException(NotFoundCareerException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(InvalidTokenException.class)
+	public ResponseEntity<String> handleInvalidTokenException(InvalidTokenException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
 }
-

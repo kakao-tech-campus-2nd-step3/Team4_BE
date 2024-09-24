@@ -5,9 +5,7 @@ import linkfit.entity.Career;
 public class CareerResponse {
 
     private Long id;
-
     private Long trainerId;
-
     private String career;
 
     public CareerResponse(Career career) {
