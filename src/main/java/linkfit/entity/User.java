@@ -11,33 +11,33 @@ import linkfit.dto.UserProfileRequest;
 public class User extends PersonEntity{
 
 	@Column(nullable = false)
-    private String local;
+    private String location;
 	
-	public String getLocal() {
-		return local;
+	public String getLocation() {
+		return location;
 	}
 	
-	public void setLocal(String local) {
-		this.local = local;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	
 	public User() {
 		super();
 	}
 	
-	public User(String email, String password, String name, String local) {
+	public User(String email, String password, String name, String location) {
         super(email, password, name);
-        this.local = local;
+        this.location = location;
 	}
 	
 	public User Update(UserProfileRequest request) {
 		User newUser = new User();
 		newUser.setName(request.getName());
-		newUser.setLocal(request.getLocal());
+		newUser.setLocation(request.getLocal());
 		return newUser;
 	}
 	
 	public UserProfileResponse toDto() {
-		return new UserProfileResponse(getName(), getLocal(), getProfileImageUrl());
+		return new UserProfileResponse(getName(), getLocation(), getProfileImageUrl());
 	}
 }

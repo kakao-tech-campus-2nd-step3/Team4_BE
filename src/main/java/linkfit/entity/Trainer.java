@@ -21,8 +21,8 @@ public class Trainer extends PersonEntity{
 		return gender;
 	}
 	
-	public String getGymName() {
-		return gym.getGymName();
+	public Gym getGym() {
+		return gym;
 	}
 	
 	public Trainer() {

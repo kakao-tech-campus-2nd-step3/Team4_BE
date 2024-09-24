@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import linkfit.dto.PreferenceResponse;
 
 @Entity
 @Table(name = "Preferences")
@@ -19,8 +20,8 @@ public class Preference {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "sprots_type_id", nullable = false)
-	private SprotsType sprotsType;
+	@JoinColumn(name = "sports_type_id", nullable = false)
+	private SportsType sportsType;
 	
 	@OneToOne
 	@JoinColumn(name = "user_body_info_id", nullable = false)
@@ -35,16 +36,35 @@ public class Preference {
 	@Column(nullable = false)
 	private String goal;
 	
+	public UserBodyInfo getUserBodyInfo() {
+		return userBodyInfo;
+	}
+	
+	public int getRange() {
+		return range;
+	}
+	
+	public void setSportsType(SportsType sportsType) {
+		this.sportsType = sportsType;
+	}
+	
 	public void setUserBodyInfo(UserBodyInfo userBodyInfo) {
 		this.userBodyInfo = userBodyInfo;
 	}
 	
 	public Preference() {}
 	
-	public Preference(String gender, SprotsType sprotsType, int range, String goal) {
+	public Preference(String gender, SportsType sportsType, int range, String goal) {
 		this.gender = gender;
-		this.sprotsType = sprotsType;
+		this.sportsType = sportsType;
 		this.range = range;
 		this.goal = goal;
+	}
+	
+	public PreferenceResponse toDto() {
+		PreferenceResponse preferenceResponse = new PreferenceResponse(
+				userBodyInfo.getUser().getId(), userBodyInfo.getUser().getName(),
+				userBodyInfo.getInbodyImageUrl(), goal, userBodyInfo.getUser().getProfileImageUrl());
+		return preferenceResponse;
 	}
 }

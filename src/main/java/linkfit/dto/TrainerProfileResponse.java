@@ -11,7 +11,7 @@ public class TrainerProfileResponse {
         this.name = trainer.getName();
         this.gender = trainer.getGender();
         this.profileImageUrl = trainer.getProfileImageUrl();
-        this.gymName = trainer.getGymName();
+        this.gymName = trainer.getGym().getGymName();
     }
 
     private String name;
