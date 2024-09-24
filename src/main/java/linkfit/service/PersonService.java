@@ -2,13 +2,13 @@ package linkfit.service;
 
 import org.springframework.stereotype.Service;
 
-import linkfit.entity.PersonEntity;
+import linkfit.entity.Person;
 import linkfit.exception.ExistsEmailException;
 import linkfit.exception.NotFoundEmailException;
 import linkfit.repository.PersonRepository;
 
 @Service
-public class PersonService<T extends PersonEntity> {
+public class PersonService<T extends Person> {
 
     private final PersonRepository<T> personRepository;
 

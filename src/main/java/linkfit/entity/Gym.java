@@ -4,6 +4,7 @@ package linkfit.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "GYM_TB")
 public class Gym {
 
     @Id

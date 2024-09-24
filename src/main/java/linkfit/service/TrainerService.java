@@ -62,6 +62,6 @@ public class TrainerService extends PersonService<Trainer> {
     public TrainerProfileResponse getProfile(Long trainerId) {
         Trainer trainer = trainerRepository.findById(trainerId)
             .orElseThrow(() -> new NotFoundTrainerException("Trainer not found"));
-        return new TrainerProfileResponse(trainer);
+        return trainer.toDto();
     }
 }
