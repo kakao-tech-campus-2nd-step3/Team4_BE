@@ -1,7 +1,7 @@
 package linkfit.dto;
 
 import java.util.List;
-import linkfit.entity.OnGoingPt;
+import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
 
 public class UserPtResponse {
@@ -12,11 +12,11 @@ public class UserPtResponse {
     private int count;
     private List<Schedule> schedules;
 
-    public UserPtResponse(OnGoingPt onGoingPt, List<Schedule> schedules) {
-        this.trainerId = onGoingPt.getTrainer().getId();
-        this.trainerName = onGoingPt.getTrainer().getName();
-        this.gymName = onGoingPt.getTrainer().getGymName();
-        this.count = onGoingPt.getCount();
+    public UserPtResponse(Pt pt, List<Schedule> schedules) {
+        this.trainerId = pt.getTrainer().getId();
+        this.trainerName = pt.getTrainer().getName();
+        this.gymName = pt.getTrainer().getGymName();
+        this.count = pt.getTotalCount();
         this.schedules = schedules;
     }
 

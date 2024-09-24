@@ -7,11 +7,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Entity
-public class OnGoingPt {
+public class Pt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,20 +26,26 @@ public class OnGoingPt {
     @JoinColumn(nullable = false)
     private Trainer trainer;
 
+    @Positive
+    @Column(nullable = false)
+    private int totalCount;
+
     @PositiveOrZero
     @Column(nullable = false)
-    private int count;
+    private int price;
 
-    @Column(nullable = false)
     private LocalDate startDate;
 
-    public OnGoingPt() {}
+    @Column(nullable = false)
+    private int status = 0;
 
-    public OnGoingPt(User user, Trainer trainer, int count, LocalDate startDate) {
+    protected Pt() {}
+
+    public Pt(User user, Trainer trainer, int totalCount, int price) {
         this.user = user;
         this.trainer = trainer;
-        this.count = count;
-        this.startDate = startDate;
+        this.totalCount = totalCount;
+        this.price = price;
     }
 
     public Long getId() {
@@ -53,11 +60,19 @@ public class OnGoingPt {
         return trainer;
     }
 
-    public int getCount() {
-        return count;
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public int getPrice() {
+        return price;
     }
 
     public LocalDate getStartDate() {
         return startDate;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

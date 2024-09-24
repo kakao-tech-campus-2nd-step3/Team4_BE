@@ -15,7 +15,7 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private OnGoingPt onGoingPt;
+    private Pt pt;
 
     @Column(nullable = false)
     private LocalDateTime atDate;
@@ -24,8 +24,8 @@ public class Schedule {
 
     public Schedule() {}
 
-    public Schedule(OnGoingPt onGoingPt, LocalDateTime atDate, boolean status) {
-        this.onGoingPt = onGoingPt;
+    public Schedule(Pt pt, LocalDateTime atDate, boolean status) {
+        this.pt = pt;
         this.atDate = atDate;
         this.status = status;
     }
@@ -34,8 +34,8 @@ public class Schedule {
         return id;
     }
 
-    public OnGoingPt getOnGoingPt() {
-        return onGoingPt;
+    public Pt getPt() {
+        return pt;
     }
 
     public LocalDateTime getAtDate() {
