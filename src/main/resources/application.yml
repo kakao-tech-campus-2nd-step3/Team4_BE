@@ -19,8 +19,8 @@ spring:
       format_sql: true
     show-sql: true
     defer-datasource-initialization: true
-      
-    
+
+
 
 cloud:
   aws:
@@ -28,6 +28,6 @@ cloud:
       access-key: ${AWS_ACCESS_KEY_ID}
       secret-key: ${AWS_SECRET_ACCESS_KEY}
     region:
-      static: ap-northeast-2
+      statics: ap-northeast-2
     s3:
       bucket: nurspace-bucket
