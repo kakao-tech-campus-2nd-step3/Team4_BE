@@ -33,8 +33,8 @@ public class User extends Person {
 
     public User Update(UserProfileRequest request) {
         User newUser = new User();
-        newUser.setName(request.getName());
-        newUser.setLocal(request.getLocal());
+        newUser.setName(request.name());
+        newUser.setLocal(request.local());
         return newUser;
     }
 

@@ -1,6 +1,7 @@
 package linkfit.entity;
 
 import jakarta.persistence.*;
+import linkfit.dto.TrainerProfileResponse;
 
 @Entity
 @Table(name = "TRAINER_TB", indexes = @Index(name = "idx_trainer_email", columnList = "email"))
@@ -28,5 +29,9 @@ public class Trainer extends Person {
     public Trainer(String email, String password, String name, String gender) {
         super(email, password, name);
         this.gender = gender;
+    }
+
+    public TrainerProfileResponse toDto() {
+        return new TrainerProfileResponse(this.getEmail(), this.getPassword(), this.getName(), this.getGender());
     }
 }

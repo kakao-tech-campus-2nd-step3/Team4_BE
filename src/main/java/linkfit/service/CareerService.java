@@ -21,11 +21,13 @@ public class CareerService {
 
     public List<CareerResponse> getAllTrainerCareers(Long trainerId) {
         List<Career> careers = careerRepository.findAllByTrainerId(trainerId);
-        return careers.stream().map(CareerResponse::new).toList();
+        return careers.stream()
+            .map(Career::toDto)
+            .toList();
     }
 
     public void addCareer(Trainer trainer, CareerRequest req) {
-        Career career = new Career(trainer, req.getCareer());
+        Career career = new Career(trainer, req.career());
         careerRepository.save(career);
     }
 
