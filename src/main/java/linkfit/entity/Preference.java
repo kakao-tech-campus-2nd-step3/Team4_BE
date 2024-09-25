@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 import linkfit.dto.PreferenceResponse;
 
 @Entity
-@Table(name = "Preferences")
+@Table(name = "PREFERENCE_TB")
 public class Preference {
 
 	@Id
@@ -52,7 +52,7 @@ public class Preference {
 		this.bodyInfo = bodyInfo;
 	}
 	
-	public Preference() {}
+	protected Preference() {}
 	
 	public Preference(String gender, SportsType sportsType, int range, String goal) {
 		this.gender = gender;

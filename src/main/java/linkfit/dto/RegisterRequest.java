@@ -3,12 +3,19 @@ package linkfit.dto;
 import linkfit.entity.Person;
 import linkfit.exception.PasswordMismatchException;
 
-public class RegisterRequest<T extends Person> {
+public abstract class RegisterRequest<T extends Person> {
 
-	private String email;
-	private String password;
-	private String passwordConfirm;
-	private String name;
+	private final String email;
+	private final String password;
+	private final String passwordConfirm;
+	private final String name;
+
+	public RegisterRequest(String email, String password, String passwordConfirm, String name) {
+		this.email = email;
+		this.password = password;
+		this.passwordConfirm = passwordConfirm;
+		this.name = name;
+	}
 
 	public String getEmail() {
 		return email;
@@ -32,7 +39,5 @@ public class RegisterRequest<T extends Person> {
 		}
 	}
 
-	public T toEntity() {
-		throw new UnsupportedOperationException("This method should be overridden in subclasses.");
-	}
+	public abstract T toEntity();
 }

@@ -36,8 +36,7 @@ public class Career {
         return career;
     }
 
-    protected Career() {
-    }
+    protected Career() {}
 
     public Career(Trainer trainer, String career) {
         this.trainer = trainer;

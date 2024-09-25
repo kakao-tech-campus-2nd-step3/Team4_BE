@@ -5,7 +5,7 @@ import linkfit.dto.TrainerProfileResponse;
 
 @Entity
 @Table(name = "TRAINER_TB", indexes = @Index(name = "idx_trainer_email", columnList = "email"))
-public class Trainer extends Person {
+public class Trainer extends Person<TrainerProfileResponse> {
 
     @ManyToOne
     @JoinColumn(name = "GYM_ID")
@@ -31,6 +31,7 @@ public class Trainer extends Person {
         this.gender = gender;
     }
 
+    @Override
     public TrainerProfileResponse toDto() {
         return new TrainerProfileResponse(this.getEmail(), this.getPassword(), this.getName(), this.getGender());
     }

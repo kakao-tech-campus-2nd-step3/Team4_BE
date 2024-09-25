@@ -20,7 +20,8 @@ spring:
     show-sql: true
     defer-datasource-initialization: true
 
-
+jwt:
+  expiration-time: 1800000
 
 cloud:
   aws:
