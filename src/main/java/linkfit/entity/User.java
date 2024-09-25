@@ -9,7 +9,7 @@ import linkfit.dto.UserProfileRequest;
 
 @Entity
 @Table(name = "USER_TB", indexes = @Index(name = "idx_user_email", columnList = "email"))
-public class User extends Person {
+public class User extends Person<UserProfileResponse> {
 
 	@Column(nullable = false)
     private String location;
@@ -22,7 +22,7 @@ public class User extends Person {
 		this.location = location;
 	}
 	
-	public User() {
+	protected User() {
 		super();
 	}
 	
@@ -32,13 +32,13 @@ public class User extends Person {
 	}
 	
 	public User Update(UserProfileRequest request) {
-		User newUser = new User();
-		newUser.setName(request.name());
-		newUser.setLocation(request.location());
-		return newUser;
+		this.setName(request.name());
+        this.setLocation(request.location());
+        return this;
 	}
 	
-	public UserProfileResponse toDto() {
-		return new UserProfileResponse(getName(), getLocation(), getProfileImageUrl());
-	}
+	@Override
+    public UserProfileResponse toDto() {
+        return new UserProfileResponse(getName(), getLocation(), getProfileImageUrl());
+    }
 }

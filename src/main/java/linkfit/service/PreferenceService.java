@@ -35,7 +35,7 @@ public class PreferenceService {
 		User user = userService.getUser(authorization);
 		BodyInfo userBodyInfo = userService.getUserBodyInfo(user.getId());
 		preference.setUserBodyInfo(userBodyInfo);
-		preference.setSportsType(request.getSportsType());
+		preference.setSportsType(request.sportsType());
 		preferenceRepository.save(preference);
 	}
 	

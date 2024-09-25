@@ -45,11 +45,11 @@ public class DistanceCalculatorService {
     }
 
 	public double calculateHaversineDistance(Coordinate coord1, Coordinate coord2) {
-        double latDiff = Math.toRadians(coord2.getLatitude() - coord1.getLatitude());
-        double lonDiff = Math.toRadians(coord2.getLongitude() - coord1.getLongitude());
+        double latDiff = Math.toRadians(coord2.latitude() - coord1.latitude());
+        double lonDiff = Math.toRadians(coord2.longitude() - coord1.longitude());
 
         double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2)
-                + Math.cos(Math.toRadians(coord1.getLatitude())) * Math.cos(Math.toRadians(coord2.getLatitude()))
+                + Math.cos(Math.toRadians(coord1.latitude())) * Math.cos(Math.toRadians(coord2.latitude()))
                 * Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
