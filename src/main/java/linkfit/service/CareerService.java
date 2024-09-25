@@ -21,11 +21,13 @@ public class CareerService {
 
     public List<CareerResponse> getAllTrainerCareers(Long trainerId) {
         List<Career> careers = careerRepository.findAllByTrainerId(trainerId);
-        return careers.stream().map(CareerResponse::new).toList();
+        return careers.stream()
+            .map(Career::toDto)
+            .toList();
     }
 
     public void addCareer(Trainer trainer, CareerRequest req) {
-        Career career = new Career(trainer, req.getCareer());
+        Career career = new Career(trainer, req.career());
         careerRepository.save(career);
     }
 
@@ -35,10 +37,10 @@ public class CareerService {
 
         careerRepository.deleteById(careerId);
     }
-    
-    public Long findTrainerIdByCarreerId(Long careerId) {
-    	Career career = careerRepository.findById(careerId)
-    			.orElseThrow(() -> new NotFoundCareerException("This is a career that doesn’t exist."));
-    	return career.getTrainer().getId();
+
+    public Long findTrainerIdByCareerId(Long careerId) {
+        Career career = careerRepository.findById(careerId)
+            .orElseThrow(() -> new NotFoundCareerException("This is a career that doesn’t exist."));
+        return career.getTrainer().getId();
     }
 }

@@ -4,6 +4,7 @@ package linkfit.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "GYM_TB")
 public class Gym {
 
     @Id
@@ -16,7 +17,7 @@ public class Gym {
     @Column(nullable = false)
     private String gymName;
 
-    public Gym() {
+    protected Gym() {
     }
 
     public String getGymLocation() {
