@@ -1,6 +1,7 @@
 package linkfit.controller;
 
 import java.util.List;
+
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.TrainerProfileResponse;
@@ -27,36 +28,31 @@ public class TrainerController {
     }
 
     @GetMapping("/career")
-    public ResponseEntity<List<CareerResponse>> getMyCareer(
-        @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<List<CareerResponse>> getMyCareer(@RequestHeader("Authorization") String authorization) {
         List<CareerResponse> list = trainerService.getCareers(authorization);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @PostMapping("/career")
-    public ResponseEntity<Void> addMyCareer(@RequestHeader("Authorization") String authorization,
-        @RequestBody CareerRequest request) {
+    public ResponseEntity<Void> addMyCareer(@RequestHeader("Authorization") String authorization, @RequestBody CareerRequest request) {
         trainerService.addCareer(authorization, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{careerId}")
-    public ResponseEntity<Void> deleteCareer(@RequestHeader("Authorization") String authorization,
-        @PathVariable("careerId") Long careerId) {
+    public ResponseEntity<Void> deleteCareer(@RequestHeader("Authorization") String authorization, @PathVariable("careerId") Long careerId) {
         trainerService.deleteCareer(authorization, careerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/career/{trainerId}")
-    public ResponseEntity<List<CareerResponse>> getTrainerCareer(
-        @PathVariable("trainerId") Long trainerId) {
+    public ResponseEntity<List<CareerResponse>> getTrainerCareer(@PathVariable("trainerId") Long trainerId) {
         List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @GetMapping("/profile/{trainerId}")
-    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(
-        @PathVariable("trainerId") Long trainerId) {
+    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable("trainerId") Long trainerId) {
         TrainerProfileResponse res = trainerService.getProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }

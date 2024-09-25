@@ -24,15 +24,15 @@ public class AuthController {
     private final AuthService<Trainer> trainerAuthService;
 
     public AuthController(AuthService<User> userAuthService,
-        AuthService<Trainer> trainerAuthService) {
+                          AuthService<Trainer> trainerAuthService) {
         this.userAuthService = userAuthService;
         this.trainerAuthService = trainerAuthService;
     }
 
     @PostMapping("/user/register")
     public ResponseEntity<Void> registerUser(
-        @RequestPart("user") UserRegisterRequest request,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+            @RequestPart("user") UserRegisterRequest request,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userAuthService.register(request, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -45,8 +45,8 @@ public class AuthController {
 
     @PostMapping("/trainer/register")
     public ResponseEntity<Void> registerTrainer(
-        @RequestPart("trainer") TrainerRegisterRequest request,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+            @RequestPart("trainer") TrainerRegisterRequest request,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         trainerAuthService.register(request, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
