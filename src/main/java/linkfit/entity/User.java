@@ -11,34 +11,34 @@ import linkfit.dto.UserProfileRequest;
 @Table(name = "USER_TB", indexes = @Index(name = "idx_user_email", columnList = "email"))
 public class User extends Person {
 
-    @Column(nullable = false)
-    private String local;
-
-    public String getLocal() {
-        return local;
-    }
-
-    public void setLocal(String local) {
-        this.local = local;
-    }
-
-    protected User() {
-        super();
-    }
-
-    public User(String email, String password, String name, String local) {
+	@Column(nullable = false)
+    private String location;
+	
+	public String getLocation() {
+		return location;
+	}
+	
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	public User() {
+		super();
+	}
+	
+	public User(String email, String password, String name, String location) {
         super(email, password, name);
-        this.local = local;
-    }
-
-    public User Update(UserProfileRequest request) {
-        User newUser = new User();
-        newUser.setName(request.name());
-        newUser.setLocal(request.local());
-        return newUser;
-    }
-
-    public UserProfileResponse toDto() {
-        return new UserProfileResponse(getName(), getLocal(), getProfileImageUrl());
-    }
+        this.location = location;
+	}
+	
+	public User Update(UserProfileRequest request) {
+		User newUser = new User();
+		newUser.setName(request.name());
+		newUser.setLocation(request.location());
+		return newUser;
+	}
+	
+	public UserProfileResponse toDto() {
+		return new UserProfileResponse(getName(), getLocation(), getProfileImageUrl());
+	}
 }

@@ -17,10 +17,10 @@ public class Trainer extends Person {
     public String getGender() {
         return gender;
     }
-
-    public String getGymName() {
-        return gym.getGymName();
-    }
+    
+    public Gym getGym() {
+		return gym;
+	}
 
     protected Trainer() {
         super();

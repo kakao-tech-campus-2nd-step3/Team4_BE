@@ -10,7 +10,8 @@ import linkfit.dto.UserProfileResponse;
 import linkfit.entity.User;
 import linkfit.entity.BodyInfo;
 import linkfit.exception.InvalidIdException;
-import linkfit.repository.UserBodyInfoRepository;
+import linkfit.exception.NotFoundException;
+import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
 
@@ -18,15 +19,15 @@ import linkfit.util.JwtUtil;
 public class UserService extends PersonService<User> {
 
     private UserRepository userRepository;
-    private final UserBodyInfoRepository userBodyInfoRepository;
+    private final BodyInfoRepository bodyInfoRepository;
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
 
 
-    public UserService(UserRepository userRepository, UserBodyInfoRepository userBodyInfoRepository,
+    public UserService(UserRepository userRepository, BodyInfoRepository bodyInfoRepository,
         JwtUtil jwtUtil, ImageUploadService imageUploadService) {
         super(userRepository);
-        this.userBodyInfoRepository = userBodyInfoRepository;
+        this.bodyInfoRepository = bodyInfoRepository;
         this.jwtUtil = jwtUtil;
         this.imageUploadService = imageUploadService;
     }
@@ -51,7 +52,7 @@ public class UserService extends PersonService<User> {
 
     public Page<BodyInfo> getAllBodyInfo(String authorization, Pageable pageable) {
         User user = getUser(authorization);
-        return userBodyInfoRepository.findAllByUserId(user.getId(), pageable);
+        return bodyInfoRepository.findAllByUserId(user.getId(), pageable);
     }
 
     public User getUser(String authorization) {
@@ -59,5 +60,10 @@ public class UserService extends PersonService<User> {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new InvalidIdException("User profile does not exist."));
         return user;
+    }
+    
+    public BodyInfo getUserBodyInfo(Long userId) {
+    	return bodyInfoRepository.findByUserId(userId)
+    			.orElseThrow(() -> new NotFoundException("UserBodyInfo not found."));
     }
 }

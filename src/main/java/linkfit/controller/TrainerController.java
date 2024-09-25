@@ -51,13 +51,13 @@ public class TrainerController {
     public ResponseEntity<List<CareerResponse>> getTrainerCareer(
         @PathVariable("trainerId") Long trainerId) {
         List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @GetMapping("/profile/{trainerId}")
     public ResponseEntity<TrainerProfileResponse> getTrainerProfile(
         @PathVariable("trainerId") Long trainerId) {
         TrainerProfileResponse res = trainerService.getProfile(trainerId);
-        return ResponseEntity.ok().body(res);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }
