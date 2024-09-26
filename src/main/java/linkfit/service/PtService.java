@@ -8,6 +8,7 @@ import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.PtSuggestionResponse;
 import linkfit.dto.PtSuggestionUpdateRequest;
+import linkfit.dto.PtTrainerResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
@@ -23,7 +24,6 @@ import linkfit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.PathMatcher;
 
 @Service
 public class PtService {
@@ -125,5 +125,15 @@ public class PtService {
     private Pt findSuggestion(Long ptId) {
         return ptRepository.findById(ptId)
             .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
+    }
+
+    public PtTrainerResponse getPtTrainerProfile(String authorization, Long ptId) {
+        // 토큰 파싱하여 유저 정보 받아오기
+        User user = new User();
+        Pt pt = findSuggestion(ptId);
+        if(!pt.getUser().equals(user)) {
+            throw new PermissionException(NO_PERMISSION);
+        }
+        return new PtTrainerResponse(pt.getTrainer());
     }
 }

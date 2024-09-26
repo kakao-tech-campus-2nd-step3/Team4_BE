@@ -5,6 +5,7 @@ import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.PtSuggestionResponse;
 import linkfit.dto.PtSuggestionUpdateRequest;
+import linkfit.dto.PtTrainerResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
@@ -79,5 +80,13 @@ public class PtController {
         ptService.updatePtSuggestion(authorization, ptId, ptSuggestionUpdateRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
+    }
+
+    @GetMapping("/{ptId}/user")
+    public ResponseEntity<PtTrainerResponse> getPtTrainerProfile(
+        @RequestHeader("Authorization") String authorization,
+        @PathVariable Long ptId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ptService.getPtTrainerProfile(authorization, ptId));
     }
 }
