@@ -9,6 +9,7 @@ import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.PtSuggestionResponse;
 import linkfit.dto.PtSuggestionUpdateRequest;
 import linkfit.dto.PtTrainerResponse;
+import linkfit.dto.PtUserResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
@@ -135,5 +136,15 @@ public class PtService {
             throw new PermissionException(NO_PERMISSION);
         }
         return new PtTrainerResponse(pt.getTrainer());
+    }
+
+    public PtUserResponse getPtUserProfile(String authorizatino, Long ptId) {
+        // 토큰 파싱하여 트레이너 정보 받아오기
+        Trainer trainer = new Trainer();
+        Pt pt = findSuggestion(ptId);
+        if(!pt.getTrainer().equals(trainer)) {
+            throw new PermissionException(NO_PERMISSION);
+        }
+        return new PtUserResponse(pt.getUser());
     }
 }
