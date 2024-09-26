@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
 
     public static final String NOT_EXIST_ID = "Not Exist Id";
     public static final String NOT_FOUND_INFORMATION = "Not Found";
-    public static final String NO_PERMISSION = "No Permission";
+    public static final String NO_PERMISSION = "You can only control your own information";
 
 	@ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {

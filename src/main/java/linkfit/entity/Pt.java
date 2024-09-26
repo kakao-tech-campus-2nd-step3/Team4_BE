@@ -49,6 +49,25 @@ public class Pt {
         this.price = price;
     }
 
+    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, int status) {
+        this.id = id;
+        this.user = user;
+        this.trainer = trainer;
+        this.totalCount = totalCount;
+        this.price = price;
+        this.status = status;
+    }
+
+    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, int status, LocalDate localDate) {
+        this.id = id;
+        this.user = user;
+        this.trainer = trainer;
+        this.totalCount = totalCount;
+        this.price = price;
+        this.status = status;
+        this.startDate = localDate;
+    }
+
     public Long getId() {
         return id;
     }
@@ -79,5 +98,14 @@ public class Pt {
 
     public PtSuggestionResponse toDto() {
         return new PtSuggestionResponse(id, user, totalCount, price, status);
+    }
+
+    public void reject() {
+        this.status = 1;
+    }
+
+    public void accept() {
+        this.status = 3;
+        this.startDate = LocalDate.now();
     }
 }

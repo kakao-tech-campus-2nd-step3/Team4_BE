@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.PtSuggestionResponse;
+import linkfit.dto.PtSuggestionUpdateRequest;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +67,16 @@ public class PtController {
         @RequestHeader("Authorization") String authorization,
         @PathVariable Long ptId) {
         ptService.recallPtSuggestion(authorization, ptId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            .build();
+    }
+
+    @PutMapping("/{ptId}")
+    public ResponseEntity<Void> updatePtSuggestion(
+        @RequestHeader("Authorization") String authorization,
+        @PathVariable Long ptId,
+        @Valid @RequestBody PtSuggestionUpdateRequest ptSuggestionUpdateRequest) {
+        ptService.updatePtSuggestion(authorization, ptId, ptSuggestionUpdateRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
     }
