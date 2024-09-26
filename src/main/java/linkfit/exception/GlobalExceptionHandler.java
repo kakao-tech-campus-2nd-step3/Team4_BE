@@ -9,6 +9,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static final String NOT_EXIST_ID = "Not Exist Id";
+
     @ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
