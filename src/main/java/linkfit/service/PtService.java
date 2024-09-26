@@ -2,6 +2,7 @@ package linkfit.service;
 
 import static linkfit.exception.GlobalExceptionHandler.NOT_EXIST_ID;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_INFORMATION;
+import static linkfit.exception.GlobalExceptionHandler.NO_PERMISSION;
 
 import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
@@ -14,12 +15,14 @@ import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.InvalidIdException;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PermissionException;
 import linkfit.repository.PtRepository;
 import linkfit.repository.ScheduleRepository;
 import linkfit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.PathMatcher;
 
 @Service
 public class PtService {
@@ -27,15 +30,17 @@ public class PtService {
     private final PtRepository ptRepository;
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
+    private final PathMatcher mvcPathMatcher;
 
     @Autowired
     public PtService(
         PtRepository ptRepository,
         ScheduleRepository scheduleRepository,
-        UserRepository userRepository) {
+        UserRepository userRepository, PathMatcher mvcPathMatcher) {
         this.ptRepository = ptRepository;
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
+        this.mvcPathMatcher = mvcPathMatcher;
     }
 
     public List<TrainerPtResponse> getAllPt(
@@ -80,5 +85,16 @@ public class PtService {
         return ptRepository.findAllByTrainer(trainer, pageable).stream()
             .map(Pt::toDto)
             .toList();
+    }
+
+    public void recallPtSuggestion(String authorization, Long ptId) {
+        // 토큰 파싱하여 트레이너 정보 받아오기
+        Trainer trainer = new Trainer();
+        Pt suggestion = ptRepository.findById(ptId)
+            .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
+        if(!suggestion.getTrainer().equals(trainer)) {
+            throw new PermissionException(NO_PERMISSION);
+        }
+        ptRepository.deleteById(ptId);
     }
 }

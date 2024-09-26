@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -55,6 +57,15 @@ public class PtController {
         @Valid @RequestBody PtSuggestionRequest ptSuggestionRequest) {
         ptService.suggestPt(authorization, ptSuggestionRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
+            .build();
+    }
+
+    @DeleteMapping("/{ptId}")
+    public ResponseEntity<Void> recallPtSuggestion(
+        @RequestHeader("Authorization") String authorization,
+        @PathVariable Long ptId) {
+        ptService.recallPtSuggestion(authorization, ptId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
     }
 }
