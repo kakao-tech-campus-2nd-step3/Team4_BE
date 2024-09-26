@@ -8,7 +8,7 @@ import linkfit.exception.NotFoundEmailException;
 import linkfit.repository.PersonRepository;
 
 @Service
-public class PersonService<T extends Person> {
+public class PersonService<T extends Person<?>> {
 
     private final PersonRepository<T> personRepository;
 
