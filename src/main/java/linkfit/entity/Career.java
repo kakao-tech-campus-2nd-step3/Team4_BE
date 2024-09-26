@@ -1,8 +1,15 @@
 package linkfit.entity;
 
 import jakarta.persistence.*;
+import linkfit.dto.CareerResponse;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 @Entity
+@Table(name = "CAREER_TB")
+@SQLDelete(sql = "UPDATE career SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 public class Career {
 
     @Id
@@ -16,6 +23,8 @@ public class Career {
     @Column(nullable = false)
     private String career;
 
+    private boolean deleted = Boolean.FALSE;
+
     public Long getId() {
         return id;
     }
@@ -28,11 +37,15 @@ public class Career {
         return career;
     }
 
-    public Career() {
+    protected Career() {
     }
 
     public Career(Trainer trainer, String career) {
         this.trainer = trainer;
         this.career = career;
+    }
+
+    public CareerResponse toDto() {
+        return new CareerResponse(getId(), getTrainer().getId(), getCareer());
     }
 }

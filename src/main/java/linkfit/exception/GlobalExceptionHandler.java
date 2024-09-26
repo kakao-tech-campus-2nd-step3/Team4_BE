@@ -9,25 +9,25 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(ImageUploadException.class)
+    @ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-	
-	@ExceptionHandler(ExistsEmailException.class)
+
+    @ExceptionHandler(ExistsEmailException.class)
     public ResponseEntity<String> handleEmailNotFoundException(ExistsEmailException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-	
-	@ExceptionHandler(PasswordMismatchException.class)
+
+    @ExceptionHandler(PasswordMismatchException.class)
     public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-	
-	@ExceptionHandler(NotFoundEmailException.class)
+
+    @ExceptionHandler(NotFoundEmailException.class)
     public ResponseEntity<String> handleNotFoundEmailException(NotFoundEmailException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-	}
+    }
 
     //잘못된 파라미터 handling
     @ExceptionHandler

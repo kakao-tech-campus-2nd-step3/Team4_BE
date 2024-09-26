@@ -4,7 +4,7 @@ import java.util.List;
 import linkfit.dto.UserBodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
-import linkfit.entity.UserBodyInfo;
+import linkfit.entity.BodyInfo;
 import linkfit.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,9 +60,9 @@ public class UserController {
         return pageToList(userService.getAllBodyInfo(authorization, pageable));
     }
 
-    private List<UserBodyInfoResponse> pageToList(Page<UserBodyInfo> bodyInfos) {
+    private List<UserBodyInfoResponse> pageToList(Page<BodyInfo> bodyInfos) {
         return bodyInfos.stream()
-            .map(UserBodyInfoResponse::new)
+            .map(BodyInfo::toDto)
             .toList();
     }
 }
