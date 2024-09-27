@@ -10,7 +10,6 @@ import linkfit.dto.PtUserResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,29 +29,34 @@ public class PtController {
 
     private final PtService ptService;
 
-    @Autowired
     public PtController(PtService ptService) {
         this.ptService = ptService;
     }
 
     @GetMapping("/trainer")
-    public List<TrainerPtResponse> getAllPt(
+    public ResponseEntity<List<TrainerPtResponse>> getAllPt(
         @RequestHeader("Authorization") String authorization,
         Pageable pageable) {
-        return ptService.getAllPt(authorization, pageable);
+        List<TrainerPtResponse> responseBody = ptService.getAllPt(authorization, pageable);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
     }
 
     @GetMapping("/trainer/suggest")
-    public List<PtSuggestionResponse> getAllPtSuggestion(
+    public ResponseEntity<List<PtSuggestionResponse>> getAllPtSuggestion(
         @RequestHeader("Authorization") String authorization,
         Pageable pageable) {
-        return ptService.getAllPtSuggestion(authorization, pageable);
+        List<PtSuggestionResponse> responseBody = ptService.getAllPtSuggestion(authorization, pageable);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
     }
 
     @GetMapping("/user")
-    public ResponseEntity<UserPtResponse> getMyPt(@RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<UserPtResponse> getMyPt(
+        @RequestHeader("Authorization") String authorization) {
+        UserPtResponse responseBody = ptService.getMyPt(authorization);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ptService.getMyPt(authorization));
+            .body(responseBody);
     }
 
     @PostMapping
@@ -87,15 +91,17 @@ public class PtController {
     public ResponseEntity<PtTrainerResponse> getPtTrainerProfile(
         @RequestHeader("Authorization") String authorization,
         @PathVariable Long ptId) {
+        PtTrainerResponse responseBody = ptService.getPtTrainerProfile(authorization, ptId);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ptService.getPtTrainerProfile(authorization, ptId));
+            .body(responseBody);
     }
 
     @GetMapping("/{ptId}/trainer")
     public ResponseEntity<PtUserResponse> getPtUserProfile(
         @RequestHeader("Authorization") String authorization,
         @PathVariable Long ptId) {
+        PtUserResponse responseBody = ptService.getPtUserProfile(authorization, ptId);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(ptService.getPtUserProfile(authorization, ptId));
+            .body(responseBody);
     }
 }

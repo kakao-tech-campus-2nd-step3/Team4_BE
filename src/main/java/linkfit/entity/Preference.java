@@ -15,56 +15,50 @@ import linkfit.dto.PreferenceResponse;
 @Table(name = "PREFERENCE_TB")
 public class Preference {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@ManyToOne
-	@JoinColumn(name = "sports_type_id", nullable = false)
-	private SportsType sportsType;
-	
-	@OneToOne
-	@JoinColumn(name = "body_info_id", nullable = false)
-	private BodyInfo bodyInfo;
-	
-	@Column(nullable = false)
-	private String gender;
-	
-	@Column(nullable = false)
-	private int range;
-	
-	@Column(nullable = false)
-	private String goal;
-	
-	public BodyInfo getBodyInfo() {
-		return bodyInfo;
-	}
-	
-	public int getRange() {
-		return range;
-	}
-	
-	public void setSportsType(SportsType sportsType) {
-		this.sportsType = sportsType;
-	}
-	
-	public void setUserBodyInfo(BodyInfo bodyInfo) {
-		this.bodyInfo = bodyInfo;
-	}
-	
-	protected Preference() {}
-	
-	public Preference(String gender, SportsType sportsType, int range, String goal) {
-		this.gender = gender;
-		this.sportsType = sportsType;
-		this.range = range;
-		this.goal = goal;
-	}
-	
-	public PreferenceResponse toDto() {
-		PreferenceResponse preferenceResponse = new PreferenceResponse(
-				bodyInfo.getUser().getId(), bodyInfo.getUser().getName(),
-				bodyInfo.getInbodyImageUrl(), goal, bodyInfo.getUser().getProfileImageUrl());
-		return preferenceResponse;
-	}
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Sports sports;
+
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private BodyInfo bodyInfo;
+
+    @Column(nullable = false)
+    private String gender;
+
+    @Column(nullable = false)
+    private int range;
+
+    @Column(nullable = false)
+    private String goal;
+
+    public BodyInfo getBodyInfo() {
+        return bodyInfo;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    protected Preference() {
+    }
+
+    public Preference(String gender, Sports sports, BodyInfo bodyInfo, int range, String goal) {
+        this.gender = gender;
+        this.sports = sports;
+				this.bodyInfo = bodyInfo;
+        this.range = range;
+        this.goal = goal;
+    }
+
+    public PreferenceResponse toDto() {
+        PreferenceResponse preferenceResponse = new PreferenceResponse(
+            bodyInfo.getUser().getId(), bodyInfo.getUser().getName(),
+            bodyInfo.getInbodyImageUrl(), goal, bodyInfo.getUser().getProfileImageUrl());
+        return preferenceResponse;
+    }
 }

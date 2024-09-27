@@ -18,23 +18,24 @@ import linkfit.service.PreferenceService;
 @RequestMapping("/api/preferences")
 public class PreferenceController {
 
-	private final PreferenceService preferenceService;
+    private final PreferenceService preferenceService;
 
-	public PreferenceController(PreferenceService preferenceService) {
-		this.preferenceService = preferenceService;
-	}
+    public PreferenceController(PreferenceService preferenceService) {
+        this.preferenceService = preferenceService;
+    }
 
-	@PostMapping
-	public ResponseEntity<Void> registerPreference(@RequestHeader("Authorization") String authorization,
-			PreferenceRequest request) {
-		preferenceService.registerPreference(authorization, request);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
-	}
+    @PostMapping
+    public ResponseEntity<Void> registerPreference(
+        @RequestHeader("Authorization") String authorization,
+        PreferenceRequest request) {
+        preferenceService.registerPreference(authorization, request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
-	@GetMapping
-	public ResponseEntity<List<PreferenceResponse>> getAllPreference(
-			@RequestHeader("Authorization") String authorization) {
-		List<PreferenceResponse> preferences = preferenceService.getAllPreference(authorization);
-		return ResponseEntity.status(HttpStatus.OK).body(preferences);
-	}
+    @GetMapping
+    public ResponseEntity<List<PreferenceResponse>> getAllPreference(
+        @RequestHeader("Authorization") String authorization) {
+        List<PreferenceResponse> preferences = preferenceService.getAllPreference(authorization);
+        return ResponseEntity.status(HttpStatus.OK).body(preferences);
+    }
 }

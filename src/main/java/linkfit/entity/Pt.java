@@ -7,12 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import linkfit.dto.PtSuggestionResponse;
 
 @Entity
+@Table(name = "PT_TB")
 public class Pt {
 
     @Id
@@ -35,8 +37,9 @@ public class Pt {
     @Column(nullable = false)
     private int price;
 
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
+    // 0: 대기중, 1: 회수된 제안, 2: 거절된 제안, 3: 수락된 제안
     @Column(nullable = false)
     private int status = 0;
 
@@ -47,25 +50,6 @@ public class Pt {
         this.trainer = trainer;
         this.totalCount = totalCount;
         this.price = price;
-    }
-
-    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, int status) {
-        this.id = id;
-        this.user = user;
-        this.trainer = trainer;
-        this.totalCount = totalCount;
-        this.price = price;
-        this.status = status;
-    }
-
-    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, int status, LocalDate localDate) {
-        this.id = id;
-        this.user = user;
-        this.trainer = trainer;
-        this.totalCount = totalCount;
-        this.price = price;
-        this.status = status;
-        this.startDate = localDate;
     }
 
     public Long getId() {
@@ -88,7 +72,7 @@ public class Pt {
         return price;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
@@ -106,6 +90,6 @@ public class Pt {
 
     public void accept() {
         this.status = 3;
-        this.startDate = LocalDate.now();
+        this.startDate = LocalDateTime.now();
     }
 }

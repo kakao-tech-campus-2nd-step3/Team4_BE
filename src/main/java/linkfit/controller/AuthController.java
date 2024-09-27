@@ -24,7 +24,7 @@ public class AuthController {
     private final AuthService<Trainer> trainerAuthService;
 
     public AuthController(AuthService<User> userAuthService,
-                          AuthService<Trainer> trainerAuthService) {
+        AuthService<Trainer> trainerAuthService) {
         this.userAuthService = userAuthService;
         this.trainerAuthService = trainerAuthService;
     }

@@ -1,15 +1,16 @@
 package linkfit.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import linkfit.dto.SportsResponse;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
+@Table(name = "SPORTS_TB")
 @SQLDelete(sql = "UPDATE sports SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted = false")
 public class Sports {
@@ -21,9 +22,9 @@ public class Sports {
     private String name;
 
     // 논리 삭제를 위한 필드
-    private boolean deleted = false;
+    private boolean deleted = Boolean.FALSE;
 
-    public Sports() {}
+    protected Sports() {}
 
     public Sports(String name) {
         this.name = name;

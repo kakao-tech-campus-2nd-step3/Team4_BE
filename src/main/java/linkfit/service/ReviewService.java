@@ -1,11 +1,14 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_REVIEW;
+
 import java.util.List;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
 import linkfit.entity.Review;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
+import linkfit.exception.NotFoundException;
 import linkfit.repository.ReviewRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
@@ -20,8 +23,11 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    public ReviewService(ReviewRepository reviewRepository, TrainerRepository trainerRepository,
-                         UserRepository userRepository, JwtUtil jwtUtil) {
+    public ReviewService(
+        ReviewRepository reviewRepository,
+        TrainerRepository trainerRepository,
+        UserRepository userRepository,
+        JwtUtil jwtUtil) {
         this.reviewRepository = reviewRepository;
         this.trainerRepository = trainerRepository;
         this.userRepository = userRepository;
@@ -30,13 +36,17 @@ public class ReviewService {
 
     public List<ReviewResponse> getAllReviewsByTrainerId(Long trainerId) {
         List<Review> reviews = reviewRepository.findAllByTrainerId(trainerId);
-        return reviews.stream().map(Review::toDto).toList();
+        return reviews.stream()
+            .map(Review::toDto)
+            .toList();
     }
 
     public List<ReviewResponse> getMyReviewsByUser(String authorization) {
         Long userId = jwtUtil.parseToken(authorization);
         List<Review> reviews = reviewRepository.findAllByUserId(userId);
-        return reviews.stream().map(Review::toDto).toList();
+        return reviews.stream()
+            .map(Review::toDto)
+            .toList();
     }
 
     public List<ReviewResponse> getMyReviewsByTrainer(String authorization) {
@@ -48,17 +58,13 @@ public class ReviewService {
         Long userId = jwtUtil.parseToken(authorization);
         User user = userRepository.getReferenceById(userId);
         Trainer trainer = trainerRepository.getReferenceById(trainerId);
-
         Review review = new Review(user, trainer, request.content(), request.score());
         reviewRepository.save(review);
-
     }
 
     public void deleteReview(String authorization, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(); // 공통 NotfoundException 생성시 추가
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_REVIEW));
         reviewRepository.delete(review);
     }
-
-
 }

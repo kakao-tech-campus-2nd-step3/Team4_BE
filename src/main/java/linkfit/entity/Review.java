@@ -1,6 +1,5 @@
 package linkfit.entity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,11 +27,11 @@ public class Review {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "TRAINER_ID", nullable = false)
+    @JoinColumn(nullable = false)
     private Trainer trainer;
 
     @Column(nullable = false)
@@ -46,7 +45,7 @@ public class Review {
 
     private boolean deleted = Boolean.FALSE;
 
-    public Review() {
+    protected Review() {
     }
 
     public Review(User user, Trainer trainer, String content, int score) {
@@ -60,12 +59,12 @@ public class Review {
         return id;
     }
 
-    public Long getUsersId() {
-        return user.getId();
+    public User getUser() {
+        return user;
     }
 
-    public Long getTrainersId() {
-        return trainer.getId();
+    public Trainer getTrainer() {
+        return trainer;
     }
 
     public String getContent() {

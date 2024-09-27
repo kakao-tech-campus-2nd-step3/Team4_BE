@@ -1,4 +1,4 @@
-package linkfit.controller;
+package linkfit.adminController;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -6,7 +6,6 @@ import linkfit.dto.SportsRequest;
 import linkfit.dto.SportsResponse;
 import linkfit.entity.Sports;
 import linkfit.service.SportsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +24,6 @@ public class AdminSportsController {
 
     private final SportsService sportsService;
 
-    @Autowired
     public AdminSportsController(SportsService sportsService) {
         this.sportsService = sportsService;
     }

@@ -1,5 +1,7 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.FAILED_UPLOAD_IMAGE;
+
 import java.io.IOException;
 import java.util.UUID;
 
@@ -19,7 +21,6 @@ import linkfit.exception.ImageUploadException;
 public class ImageUploadService {
 
     private final AmazonS3 amazonS3;
-
     private final AwsProperties awsProperties;
 
     public ImageUploadService(AmazonS3 amazonS3, AwsProperties awsProperties) {
@@ -44,7 +45,7 @@ public class ImageUploadService {
             amazonS3.putObject(awsProperties.s3().bucket(), key, file.getInputStream(), metadata);
             return String.format("https://%s.s3.%s.amazonaws.com/%s", awsProperties.s3().bucket(), awsProperties.region(), key);
         } catch (IOException e) {
-            throw new ImageUploadException("Upload failed.");
+            throw new ImageUploadException(FAILED_UPLOAD_IMAGE);
         }
     }
 }

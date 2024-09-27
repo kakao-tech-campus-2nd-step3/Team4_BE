@@ -1,5 +1,7 @@
 package linkfit.util;
 
+import static linkfit.exception.GlobalExceptionHandler.INVALID_TOKEN;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -46,7 +48,7 @@ public class JwtUtil {
                     .getPayload()
                     .get("id", Long.class);
         } catch(Exception e) {
-            throw new InvalidTokenException("Invalid or expired token");
+            throw new InvalidTokenException(INVALID_TOKEN);
         }
     }
 }

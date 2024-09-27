@@ -1,5 +1,7 @@
 package linkfit.entity;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -63,7 +65,7 @@ public abstract class Person<T> {
 
     public void validatePassword(String inputPassword) {
         if (!inputPassword.equals(this.password)) {
-            throw new PasswordMismatchException("Password does not match.");
+            throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
         }
     }
     

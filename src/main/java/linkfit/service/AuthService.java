@@ -17,15 +17,19 @@ public class AuthService<T extends Person<?>> {
     private final ImageUploadService imageUploadService;
     private final JwtUtil jwtUtil;
 
-    public AuthService(@Qualifier("personService") PersonService<T> personService,
-        ImageUploadService imageUploadService, JwtUtil jwtUtil) {
+    public AuthService(
+        @Qualifier("personService") PersonService<T> personService,
+        ImageUploadService imageUploadService,
+        JwtUtil jwtUtil) {
         this.personService = personService;
         this.imageUploadService = imageUploadService;
         this.jwtUtil = jwtUtil;
     }
 
     @Transactional
-    public void register(RegisterRequest<T> request, MultipartFile profileImage) {
+    public void register(
+        RegisterRequest<T> request,
+        MultipartFile profileImage) {
         T entity = request.toEntity();
         personService.existsByEmail(request.getEmail());
         request.verifyPassword();

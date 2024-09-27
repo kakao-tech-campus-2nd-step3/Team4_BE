@@ -5,9 +5,7 @@ import java.util.List;
 import linkfit.dto.UserBodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
-import linkfit.entity.BodyInfo;
 import linkfit.service.UserService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,15 +53,11 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public List<UserBodyInfoResponse> getAllBodyInfo(
+    public ResponseEntity<List<UserBodyInfoResponse>> getAllBodyInfo(
             @RequestHeader("Authorization") String authorization,
             Pageable pageable) {
-        return pageToList(userService.getAllBodyInfo(authorization, pageable));
-    }
-
-    private List<UserBodyInfoResponse> pageToList(Page<BodyInfo> bodyInfos) {
-        return bodyInfos.stream()
-                .map(BodyInfo::toDto)
-                .toList();
+        List<UserBodyInfoResponse> responseBody = userService.getAllBodyInfo(authorization, pageable);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
     }
 }

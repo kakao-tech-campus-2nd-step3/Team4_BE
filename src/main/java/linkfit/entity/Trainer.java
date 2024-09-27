@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import linkfit.dto.TrainerProfileResponse;
 
 @Entity
-@Table(name = "TRAINER_TB", indexes = @Index(name = "idx_trainer_email", columnList = "email"))
+@Table(name = "TRAINER_TB", indexes = @Index(name = "IDX_TRAINER_EMAIL", columnList = "EMAIL"))
 public class Trainer extends Person<TrainerProfileResponse> {
 
     @ManyToOne
-    @JoinColumn(name = "GYM_ID")
+    @JoinColumn(nullable = false)
     private Gym gym;
 
     @Column(nullable = false)

@@ -1,7 +1,8 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.NOT_EXIST_ID;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_INFORMATION;
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PT;
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_USER;
 import static linkfit.exception.GlobalExceptionHandler.NO_PERMISSION;
 
 import java.util.List;
@@ -16,7 +17,6 @@ import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
-import linkfit.exception.InvalidIdException;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.PtRepository;
@@ -37,12 +37,12 @@ public class PtService {
     private final JwtUtil jwtUtil;
     private final TrainerRepository trainerRepository;
 
-    @Autowired
     public PtService(
         PtRepository ptRepository,
         ScheduleRepository scheduleRepository,
         UserRepository userRepository,
-        JwtUtil jwtUtil, TrainerRepository trainerRepository) {
+        JwtUtil jwtUtil,
+        TrainerRepository trainerRepository) {
         this.ptRepository = ptRepository;
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
@@ -65,7 +65,7 @@ public class PtService {
         String authorization) {
         User user = getUser(authorization);
         Pt pt = ptRepository.findByUser(user)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_INFORMATION));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
         List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
         return new UserPtResponse(pt, schedules);
     }
@@ -75,7 +75,7 @@ public class PtService {
         PtSuggestionRequest ptSuggestionRequest) {
         Trainer trainer = getTrainer(authorization);
         User user = userRepository.findById(ptSuggestionRequest.userId())
-            .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
         Pt suggestion = new Pt(
             user,
             trainer,
@@ -110,8 +110,9 @@ public class PtService {
         User user = getUser(authorization);
         int status = ptSuggestionUpdateRequest.status();
         Pt suggestion = findSuggestion(ptId);
-        if(!suggestion.getUser().equals(user))
+        if(!suggestion.getUser().equals(user)) {
             throw new PermissionException(NO_PERMISSION);
+        }
         ptRepository.save(updateStatus(suggestion, status));
     }
 
@@ -130,7 +131,7 @@ public class PtService {
 
     private Pt findSuggestion(Long ptId) {
         return ptRepository.findById(ptId)
-            .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
     }
 
     public PtTrainerResponse getPtTrainerProfile(String authorization, Long ptId) {
@@ -154,12 +155,12 @@ public class PtService {
     private Trainer getTrainer(String authorization) {
         Long id = jwtUtil.parseToken(authorization);
         return trainerRepository.findById(id)
-            .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
     }
 
     private User getUser(String authorization) {
         Long id = jwtUtil.parseToken(authorization);
         return userRepository.findById(id)
-            .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
     }
 }
