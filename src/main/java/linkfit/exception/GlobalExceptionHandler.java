@@ -12,6 +12,7 @@ public class GlobalExceptionHandler {
     public static final String NOT_EXIST_ID = "Not Exist Id";
     public static final String NOT_FOUND_INFORMATION = "Not Found";
     public static final String NO_PERMISSION = "You can only control your own information";
+    public static final String DUPLICATE_NAME = "The same name already exists";
 
 	@ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
@@ -63,6 +64,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PermissionException.class)
     public ResponseEntity<String> handlePermissionException(PermissionException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(DuplicateException.class)
+    public ResponseEntity<String> handleDuplicateException(DuplicateException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 }
 
