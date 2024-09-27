@@ -32,7 +32,6 @@ public class AuthService<T extends Person<?>> {
         MultipartFile profileImage) {
         T entity = request.toEntity();
         personService.existsByEmail(request.getEmail());
-        request.verifyPassword();
         imageUploadService.saveProfileImage(entity, profileImage);
         personService.save(entity);
     }
