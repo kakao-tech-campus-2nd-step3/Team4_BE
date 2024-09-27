@@ -9,23 +9,32 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static final String NO_PERMISSION = "You can only control your own information";
+
+    public static final String DUPLICATE_NAME = "The same name already exists";
+    public static final String DUPLICATE_EMAIL = "The same email already exists";
+
+    public static final String NOT_MATCH_PASSWORD = "Password does not match.";
+
+    public static final String NOT_FOUND_CAREER = "Not found career";
+    public static final String NOT_FOUND_TRAINER = "Not found trainer";
+    public static final String NOT_FOUND_REVIEW = "Not found review";
+    public static final String NOT_FOUND_USER = "Not found user";
+    public static final String NOT_FOUND_PT = "Not found pt";
+    public static final String NOT_FOUND_SPORTS = "Not found sports";
+    public static final String NOT_FOUND_BODYINFO = "Not found body_info";
+
+    public static final String FAILED_UPLOAD_IMAGE = "Failed to upload image";
+
+    public static final String INVALID_TOKEN = "Invalid or Expired token";
+
     @ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ExistsEmailException.class)
-    public ResponseEntity<String> handleEmailNotFoundException(ExistsEmailException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(PasswordMismatchException.class)
     public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(NotFoundEmailException.class)
-    public ResponseEntity<String> handleNotFoundEmailException(NotFoundEmailException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
@@ -36,19 +45,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NotFoundTrainerException.class)
-    public ResponseEntity<String> handleInvalidIdException(NotFoundTrainerException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NotFoundCareerException.class)
-    public ResponseEntity<String> handleCareerNotFoundException(NotFoundCareerException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    @ExceptionHandler(PermissionException.class)
+    public ResponseEntity<String> handlePermissionException(PermissionException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<String> handleInvalidTokenException(InvalidTokenException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    @ExceptionHandler(DuplicateException.class)
+    public ResponseEntity<String> handleDuplicateException(DuplicateException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 }
-

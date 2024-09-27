@@ -11,21 +11,25 @@ import linkfit.entity.Person;
 import linkfit.util.JwtUtil;
 
 @Service
-public class AuthService<T extends Person> {
+public class AuthService<T extends Person<?>> {
 
     private final PersonService<T> personService;
     private final ImageUploadService imageUploadService;
     private final JwtUtil jwtUtil;
 
-    public AuthService(@Qualifier("personService") PersonService<T> personService,
-        ImageUploadService imageUploadService, JwtUtil jwtUtil) {
+    public AuthService(
+        @Qualifier("personService") PersonService<T> personService,
+        ImageUploadService imageUploadService,
+        JwtUtil jwtUtil) {
         this.personService = personService;
         this.imageUploadService = imageUploadService;
         this.jwtUtil = jwtUtil;
     }
 
     @Transactional
-    public void register(RegisterRequest<T> request, MultipartFile profileImage) {
+    public void register(
+        RegisterRequest<T> request,
+        MultipartFile profileImage) {
         T entity = request.toEntity();
         personService.existsByEmail(request.getEmail());
         request.verifyPassword();
@@ -34,8 +38,8 @@ public class AuthService<T extends Person> {
     }
 
     public String login(LoginRequest request) {
-        T entity = personService.findByEmail(request.getEmail());
-        entity.validatePassword(request.getPassword());
+        T entity = personService.findByEmail(request.email());
+        entity.validatePassword(request.password());
         return jwtUtil.generateToken(entity.getId(), entity.getEmail());
     }
 }

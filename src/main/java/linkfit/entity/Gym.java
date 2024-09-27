@@ -12,19 +12,18 @@ public class Gym {
     private Long id;
 
     @Column(nullable = false)
-    private String gymLocation;
+    private String location;
 
     @Column(nullable = false)
-    private String gymName;
+    private String name;
 
-    protected Gym() {
+    protected Gym() {}
+
+    public String getLocation() {
+        return location;
     }
 
-    public String getGymLocation() {
-        return gymLocation;
-    }
-
-    public String getGymName() {
-        return gymName;
+    public String getName() {
+        return name;
     }
 }

@@ -1,15 +1,17 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
+
 import java.util.List;
 
+import java.util.Objects;
+import linkfit.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.entity.Trainer;
-import linkfit.exception.InvalidIdException;
-import linkfit.exception.NotFoundTrainerException;
 import linkfit.repository.TrainerRepository;
 import linkfit.util.JwtUtil;
 
@@ -20,7 +22,9 @@ public class TrainerService extends PersonService<Trainer> {
     private final CareerService careerService;
     private final JwtUtil jwtUtil;
 
-    public TrainerService(TrainerRepository trainerRepository, CareerService careerService,
+    public TrainerService(
+        TrainerRepository trainerRepository,
+        CareerService careerService,
         JwtUtil jwtUtil) {
         super(trainerRepository);
         this.careerService = careerService;
@@ -36,7 +40,7 @@ public class TrainerService extends PersonService<Trainer> {
     //Trainer Career 삭제
     public void deleteCareer(String authorization, Long careerId) {
         Trainer trainer = getTrainer(authorization);
-        if (trainer.getId() == careerService.findTrainerIdByCareerId(careerId)) {
+        if (Objects.equals(trainer.getId(), careerService.findTrainerIdByCareerId(careerId))) {
             careerService.deleteCareer(careerId);
         }
     }
@@ -49,9 +53,8 @@ public class TrainerService extends PersonService<Trainer> {
 
     public Trainer getTrainer(String authorization) {
         Long trainerId = jwtUtil.parseToken(authorization);
-        Trainer trainer = trainerRepository.findById(trainerId)
-            .orElseThrow(() -> new InvalidIdException("Trainer profile does not exist."));
-        return trainer;
+        return trainerRepository.findById(trainerId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
     }
 
     public List<CareerResponse> getCareersByTrainerId(Long trainerId) {
@@ -61,7 +64,7 @@ public class TrainerService extends PersonService<Trainer> {
     //Trainer Profile 조회
     public TrainerProfileResponse getProfile(Long trainerId) {
         Trainer trainer = trainerRepository.findById(trainerId)
-            .orElseThrow(() -> new NotFoundTrainerException("Trainer not found"));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
         return trainer.toDto();
     }
 }

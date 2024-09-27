@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import linkfit.dto.TrainerProfileResponse;
 
 @Entity
-@Table(name = "TRAINER_TB", indexes = @Index(name = "idx_trainer_email", columnList = "email"))
-public class Trainer extends Person {
+@Table(name = "TRAINER_TB", indexes = @Index(name = "IDX_TRAINER_EMAIL", columnList = "EMAIL"))
+public class Trainer extends Person<TrainerProfileResponse> {
 
     @ManyToOne
-    @JoinColumn(name = "GYM_ID")
+    @JoinColumn(nullable = false)
     private Gym gym;
 
     @Column(nullable = false)
@@ -17,10 +17,10 @@ public class Trainer extends Person {
     public String getGender() {
         return gender;
     }
-
-    public String getGymName() {
-        return gym.getGymName();
-    }
+    
+    public Gym getGym() {
+		return gym;
+	}
 
     protected Trainer() {
         super();
@@ -31,6 +31,7 @@ public class Trainer extends Person {
         this.gender = gender;
     }
 
+    @Override
     public TrainerProfileResponse toDto() {
         return new TrainerProfileResponse(this.getEmail(), this.getPassword(), this.getName(), this.getGender());
     }

@@ -31,8 +31,8 @@ public class AuthController {
 
     @PostMapping("/user/register")
     public ResponseEntity<Void> registerUser(
-        @RequestPart("user") UserRegisterRequest request,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+            @RequestPart("user") UserRegisterRequest request,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userAuthService.register(request, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -45,8 +45,8 @@ public class AuthController {
 
     @PostMapping("/trainer/register")
     public ResponseEntity<Void> registerTrainer(
-        @RequestPart("trainer") TrainerRegisterRequest request,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+            @RequestPart("trainer") TrainerRegisterRequest request,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         trainerAuthService.register(request, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
