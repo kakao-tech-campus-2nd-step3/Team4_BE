@@ -1,6 +1,5 @@
 package linkfit.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -9,16 +8,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import linkfit.config.properties.KakaoProperties;
 import linkfit.dto.Coordinate;
 
 @Service
 public class DistanceCalculatorService {
 	
-	@Value("${kakao.api-key}")
-	private String KAKAO_API_KEY;
-	@Value("${kakao.address-search-url}")
-	private String ADDRESS_SEARCH_URL;
+	private final KakaoProperties kakaoProperties;
 
+	public DistanceCalculatorService(KakaoProperties kakaoProperties) {
+		this.kakaoProperties = kakaoProperties;
+	}
+	
 	public Coordinate getCoordinates(String address) {
         String response = requestAddressCoordinates(address);
         return parseCoordinatesFromResponse(response);
@@ -27,9 +28,9 @@ public class DistanceCalculatorService {
 	private String requestAddressCoordinates(String address) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "KakaoAK " + KAKAO_API_KEY);
+        headers.set("Authorization", "KakaoAK " + kakaoProperties.apiKey());
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ADDRESS_SEARCH_URL)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(kakaoProperties.addressSearchUrl())
                 .queryParam("query", address);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);

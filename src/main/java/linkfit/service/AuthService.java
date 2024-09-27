@@ -11,7 +11,7 @@ import linkfit.entity.Person;
 import linkfit.util.JwtUtil;
 
 @Service
-public class AuthService<T extends Person> {
+public class AuthService<T extends Person<?>> {
 
     private final PersonService<T> personService;
     private final ImageUploadService imageUploadService;
