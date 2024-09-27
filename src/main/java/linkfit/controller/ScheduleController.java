@@ -1,5 +1,7 @@
 package linkfit.controller;
 
+import jakarta.validation.Valid;
+import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
 import linkfit.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +30,15 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponse> getSchedules(@PathVariable Long ptId) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(scheduleService.getSchedules(ptId));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> registerSchedule(
+        @RequestHeader("Authorization") String authorization,
+        @PathVariable Long ptId,
+        @Valid @RequestBody ScheduleRequest scheduleRequest) {
+        scheduleService.registerSchedule(authorization, ptId, scheduleRequest);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .build();
     }
 }

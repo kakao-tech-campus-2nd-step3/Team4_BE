@@ -29,6 +29,18 @@ public class Schedule {
     @Column(nullable = false)
     private int status = 0;
 
+    protected Schedule() {}
 
+    public Schedule(Pt pt, LocalDateTime startTime) {
+        this.pt = pt;
+        this.startTime = startTime;
+        this.status = 0;
+    }
 
+    public Schedule(Pt pt, LocalDateTime startTime, String content) {
+        this.pt = pt;
+        this.startTime = startTime;
+        this.content = content;
+        this.status = 0;
+    }
 }
