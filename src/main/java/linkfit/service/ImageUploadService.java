@@ -27,7 +27,7 @@ public class ImageUploadService {
         this.awsProperties = awsProperties;
     }
 
-    public <T extends Person> void saveProfileImage(T entity, MultipartFile profileImage) {
+    public <T extends Person<?>> void saveProfileImage(T entity, MultipartFile profileImage) {
         entity.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = uploadFile(profileImage);
