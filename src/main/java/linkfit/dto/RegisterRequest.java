@@ -1,7 +1,6 @@
 package linkfit.dto;
 
 import linkfit.entity.Person;
-import linkfit.exception.PasswordMismatchException;
 
 public abstract class RegisterRequest<T extends Person<?>> {
 
@@ -31,12 +30,6 @@ public abstract class RegisterRequest<T extends Person<?>> {
 
 	public String getName() {
 		return name;
-	}
-
-	public void verifyPassword() {
-		if (!this.password.equals(this.passwordConfirm)) {
-			throw new PasswordMismatchException("Passwords do not match.");
-		}
 	}
 
 	public abstract T toEntity();
