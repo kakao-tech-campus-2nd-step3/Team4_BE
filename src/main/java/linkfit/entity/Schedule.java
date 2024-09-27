@@ -44,6 +44,26 @@ public class Schedule {
         this.status = 0;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Pt getPt() {
+        return pt;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
     public void complete() {
         this.status = 1;
     }

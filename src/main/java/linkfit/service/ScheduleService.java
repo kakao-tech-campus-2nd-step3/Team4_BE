@@ -1,6 +1,8 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.ALREADY_COMPLETED_SCHEDULE;
 import static linkfit.exception.GlobalExceptionHandler.NOT_EXIST_ID;
+import static linkfit.exception.GlobalExceptionHandler.UNRELATED_SCHEDULE;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import java.util.List;
@@ -9,6 +11,7 @@ import linkfit.dto.ScheduleResponse;
 import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
 import linkfit.exception.InvalidIdException;
+import linkfit.exception.PermissionException;
 import linkfit.repository.PtRepository;
 import linkfit.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +55,28 @@ public class ScheduleService {
             .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
     }
 
-    public void completeSchedule(String authorization, Long scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
-            .orElseThrow(() -> new NotFoundException(NOT_EXIST_ID));
+    public void completeSchedule(String authorization, Long ptId, Long scheduleId) {
+        Schedule schedule = findSchedule(scheduleId);
+        isRelatedSchedule(schedule, ptId);
         schedule.complete();
         scheduleRepository.save(schedule);
+    }
+
+    public void deleteSchedule(String authorization, Long ptId, Long scheduleId) {
+        Schedule schedule = findSchedule(scheduleId);
+        isRelatedSchedule(schedule, ptId);
+        if(schedule.getStatus() == 1)
+            throw new PermissionException(ALREADY_COMPLETED_SCHEDULE);
+        scheduleRepository.delete(schedule);
+    }
+
+    private Schedule findSchedule(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new NotFoundException(NOT_EXIST_ID));
+    }
+
+    private void isRelatedSchedule(Schedule schedule, Long ptId) {
+        if(!schedule.getPt().getId().equals(ptId))
+            throw new PermissionException(UNRELATED_SCHEDULE);
     }
 }

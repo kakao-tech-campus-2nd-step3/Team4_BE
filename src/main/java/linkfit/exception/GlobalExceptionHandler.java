@@ -11,6 +11,8 @@ public class GlobalExceptionHandler {
 
     public static final String NOT_EXIST_ID = "Not Exist Id";
     public static final String NO_PERMISSION = "You can only control your own information";
+    public static final String ALREADY_COMPLETED_SCHEDULE = "Cannot delete an already completed schedule";
+    public static final String UNRELATED_SCHEDULE = "Not a schedule related to your request";
 
     @ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
