@@ -1,16 +1,14 @@
 package linkfit.service;
 
 import static linkfit.exception.GlobalExceptionHandler.NOT_EXIST_ID;
-import static linkfit.exception.GlobalExceptionHandler.NO_PERMISSION;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import java.util.List;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
 import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
-import linkfit.entity.Trainer;
 import linkfit.exception.InvalidIdException;
-import linkfit.exception.PermissionException;
 import linkfit.repository.PtRepository;
 import linkfit.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +50,12 @@ public class ScheduleService {
     private Pt findPt(Long ptId) {
         return ptRepository.findById(ptId)
             .orElseThrow(() -> new InvalidIdException(NOT_EXIST_ID));
+    }
+
+    public void completeSchedule(String authorization, Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new NotFoundException(NOT_EXIST_ID));
+        schedule.complete();
+        scheduleRepository.save(schedule);
     }
 }

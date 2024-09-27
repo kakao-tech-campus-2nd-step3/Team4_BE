@@ -43,4 +43,8 @@ public class Schedule {
         this.content = content;
         this.status = 0;
     }
+
+    public void complete() {
+        this.status = 1;
+    }
 }

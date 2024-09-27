@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,15 @@ public class ScheduleController {
         @Valid @RequestBody ScheduleRequest scheduleRequest) {
         scheduleService.registerSchedule(authorization, ptId, scheduleRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
+            .build();
+    }
+
+    @PutMapping("/{scheduleId}")
+    public ResponseEntity<Void> completeSchedule(
+        @RequestHeader("Authorization") String authorization,
+        @PathVariable Long scheduleId) {
+        scheduleService.completeSchedule(authorization, scheduleId);
+        return ResponseEntity.status(HttpStatus.OK)
             .build();
     }
 }
