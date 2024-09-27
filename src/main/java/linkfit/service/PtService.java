@@ -3,7 +3,7 @@ package linkfit.service;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PT;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_USER;
-import static linkfit.exception.GlobalExceptionHandler.NO_PERMISSION;
+import static linkfit.exception.GlobalExceptionHandler.NOT_OWNER;
 
 import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
@@ -24,7 +24,6 @@ import linkfit.repository.ScheduleRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -98,7 +97,7 @@ public class PtService {
         Trainer trainer = getTrainer(authorization);
         Pt suggestion = findSuggestion(ptId);
         if(!suggestion.getTrainer().equals(trainer)) {
-            throw new PermissionException(NO_PERMISSION);
+            throw new PermissionException(NOT_OWNER);
         }
         ptRepository.deleteById(ptId);
     }
@@ -111,7 +110,7 @@ public class PtService {
         int status = ptSuggestionUpdateRequest.status();
         Pt suggestion = findSuggestion(ptId);
         if(!suggestion.getUser().equals(user)) {
-            throw new PermissionException(NO_PERMISSION);
+            throw new PermissionException(NOT_OWNER);
         }
         ptRepository.save(updateStatus(suggestion, status));
     }
@@ -138,7 +137,7 @@ public class PtService {
         User user = getUser(authorization);
         Pt pt = findSuggestion(ptId);
         if(!pt.getUser().equals(user)) {
-            throw new PermissionException(NO_PERMISSION);
+            throw new PermissionException(NOT_OWNER);
         }
         return new PtTrainerResponse(pt.getTrainer());
     }
@@ -147,7 +146,7 @@ public class PtService {
         Trainer trainer = getTrainer(authorization);
         Pt pt = findSuggestion(ptId);
         if(!pt.getTrainer().equals(trainer)) {
-            throw new PermissionException(NO_PERMISSION);
+            throw new PermissionException(NOT_OWNER);
         }
         return new PtUserResponse(pt.getUser());
     }
