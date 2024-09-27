@@ -6,8 +6,8 @@ public class UserRegisterRequest extends RegisterRequest<User> {
 
     private final String local;
 
-    public UserRegisterRequest(String email, String password, String passwordConfirm, String name, String local) {
-        super(email, password, passwordConfirm, name);
+    public UserRegisterRequest(String email, String password, String name, String local) {
+        super(email, password, name);
         this.local = local;
     }
 

@@ -6,8 +6,8 @@ public class TrainerRegisterRequest extends RegisterRequest<Trainer> {
 
     private final String gender;
 
-    public TrainerRegisterRequest(String email, String password, String passwordConfirm, String name, String gender) {
-        super(email, password, passwordConfirm, name);
+    public TrainerRegisterRequest(String email, String password, String name, String gender) {
+        super(email, password, name);
         this.gender = gender;
     }
 
