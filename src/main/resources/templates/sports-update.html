@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>스포츠 수정</title>
+</head>
+<body>
+<a href="/admin/sports"><- 스포츠 관리 목록으로 돌아가기</a>
+<h1>스포츠 수정</h1>
+<form th:action="@{/admin/sports/{id}(id=${sportsId})}" th:object="${sports}" method="post">
+  <input type="hidden" name="_method" value="put" />
+  <!-- 변경 전 값 표시 -->
+  <div>
+    <span>변경 전: </span>
+    <span th:text="${origin}"></span>
+  </div>
+  <!-- 변경 후 입력 필드 -->
+  <div>
+    <label for="name">-> 변경 후: </label>
+    <input type="text" id="name" th:field="*{name}" required />
+  </div>
+  <!-- 에러 메시지 표시 -->
+  <div>
+    <span th:if="${origin.equals(sports.name)}">변경하려는 이름이 똑같습니다.</span>
+    <span th:errors="*{name}">입력한 이름에 오류가 있습니다.</span>
+  </div>
+  <!-- 등록 버튼 -->
+  <div>
+    <button type="submit">수정</button>
+  </div>
+</form>
+</body>
+</html>

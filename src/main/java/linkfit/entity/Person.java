@@ -1,5 +1,7 @@
 package linkfit.entity;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +10,7 @@ import jakarta.persistence.MappedSuperclass;
 import linkfit.exception.PasswordMismatchException;
 
 @MappedSuperclass
-public class Person {
+public abstract class Person<T> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,8 +55,7 @@ public class Person {
         this.profileImageUrl = profileImageUrl;
     }
 
-    protected Person() {
-    }
+    protected Person() {}
 
     public Person(String email, String passowrd, String name) {
         this.email = email;
@@ -64,7 +65,9 @@ public class Person {
 
     public void validatePassword(String inputPassword) {
         if (!inputPassword.equals(this.password)) {
-            throw new PasswordMismatchException("Password does not match.");
+            throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
         }
     }
+    
+    public abstract T toDto();
 }
