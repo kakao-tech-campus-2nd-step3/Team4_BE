@@ -52,6 +52,25 @@ public class Pt {
         this.price = price;
     }
 
+    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, int status) {
+        this.id = id;
+        this.user = user;
+        this.trainer = trainer;
+        this.totalCount = totalCount;
+        this.price = price;
+        this.status = status;
+    }
+
+    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, int status, LocalDateTime startDate) {
+        this.id = id;
+        this.user = user;
+        this.trainer = trainer;
+        this.totalCount = totalCount;
+        this.price = price;
+        this.status = status;
+        this.startDate = startDate;
+    }
+
     public Long getId() {
         return id;
     }
