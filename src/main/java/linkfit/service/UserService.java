@@ -23,7 +23,6 @@ public class UserService extends PersonService<User> {
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
 
-
     public UserService(UserRepository userRepository, BodyInfoRepository bodyInfoRepository,
         JwtUtil jwtUtil, ImageUploadService imageUploadService) {
         super(userRepository);

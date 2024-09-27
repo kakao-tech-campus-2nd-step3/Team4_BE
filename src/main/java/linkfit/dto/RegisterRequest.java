@@ -3,7 +3,7 @@ package linkfit.dto;
 import linkfit.entity.Person;
 import linkfit.exception.PasswordMismatchException;
 
-public abstract class RegisterRequest<T extends Person> {
+public abstract class RegisterRequest<T extends Person<?>> {
 
 	private final String email;
 	private final String password;
