@@ -1,8 +1,10 @@
 package linkfit.service;
 
 import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_EMAIL;
 
 import linkfit.exception.DuplicateException;
+import linkfit.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import linkfit.entity.Person;
@@ -29,6 +31,6 @@ public class PersonService<T extends Person<?>> {
 
     public T findByEmail(String email) {
         return personRepository.findByEmail(email)
-            .orElseThrow(() -> new DuplicateException(DUPLICATE_EMAIL));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_EMAIL));
     }
 }
