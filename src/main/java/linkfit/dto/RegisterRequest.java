@@ -8,6 +8,12 @@ public abstract class RegisterRequest<T extends Person<?>> {
 	private final String password;
 	private final String name;
 
+	protected RegisterRequest() {
+		this.email = "";
+		this.password = "";
+		this.name = "";
+	}
+	
 	public RegisterRequest(String email, String password, String name) {
 		this.email = email;
 		this.password = password;
