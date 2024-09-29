@@ -27,7 +27,8 @@ public class BodyInfo {
 
     private LocalDateTime createDate;
 
-    protected BodyInfo() {}
+    protected BodyInfo() {
+    }
 
     public BodyInfo(User user, String inbodyImageUrl) {
         this.user = user;

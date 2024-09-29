@@ -43,7 +43,8 @@ public class ImageUploadService {
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             amazonS3.putObject(awsProperties.s3().bucket(), key, file.getInputStream(), metadata);
-            return String.format("https://%s.s3.%s.amazonaws.com/%s", awsProperties.s3().bucket(), awsProperties.region(), key);
+            return String.format("https://%s.s3.%s.amazonaws.com/%s", awsProperties.s3().bucket(),
+                awsProperties.region(), key);
         } catch (IOException e) {
             throw new ImageUploadException(FAILED_UPLOAD_IMAGE);
         }

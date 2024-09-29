@@ -27,65 +27,72 @@ import linkfit.util.JwtUtil;
 @Service
 public class UserService {
 
-	private final UserRepository userRepository;
-	private final BodyInfoRepository bodyInfoRepository;
-	private final JwtUtil jwtUtil;
-	private final ImageUploadService imageUploadService;
+    private final UserRepository userRepository;
+    private final BodyInfoRepository bodyInfoRepository;
+    private final JwtUtil jwtUtil;
+    private final ImageUploadService imageUploadService;
 
-	public UserService(UserRepository userRepository, BodyInfoRepository bodyInfoRepository, JwtUtil jwtUtil,
-			ImageUploadService imageUploadService) {
-		this.userRepository = userRepository;
-		this.bodyInfoRepository = bodyInfoRepository;
-		this.jwtUtil = jwtUtil;
-		this.imageUploadService = imageUploadService;
-	}
+    public UserService(
+        UserRepository userRepository,
+        BodyInfoRepository bodyInfoRepository,
+        JwtUtil jwtUtil,
+        ImageUploadService imageUploadService) {
+        this.userRepository = userRepository;
+        this.bodyInfoRepository = bodyInfoRepository;
+        this.jwtUtil = jwtUtil;
+        this.imageUploadService = imageUploadService;
+    }
 
-	@Transactional
-	public void register(RegisterRequest<User> request, MultipartFile profileImage) {
-		if (userRepository.existsByEmail(request.getEmail())) {
-			throw new DuplicateException(DUPLICATE_EMAIL);
-		}
-		User user = request.toEntity();
-		imageUploadService.saveProfileImage(user, profileImage);
-		userRepository.save(user);
-	}
+    @Transactional
+    public void register(RegisterRequest<User> request, MultipartFile profileImage) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new DuplicateException(DUPLICATE_EMAIL);
+        }
+        User user = request.toEntity();
+        imageUploadService.saveProfileImage(user, profileImage);
+        userRepository.save(user);
+    }
 
-	public String login(LoginRequest request) {
-		User user = userRepository.findByEmail(request.email())
-				.orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
-		user.validatePassword(request.password());
-		return jwtUtil.generateToken(user.getId(), user.getEmail());
-	}
+    public String login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.email())
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
+        user.validatePassword(request.password());
+        return jwtUtil.generateToken(user.getId(), user.getEmail());
+    }
 
-	public UserProfileResponse getProfile(String authorization) {
-		User user = getUser(authorization);
-		return user.toDto();
-	}
+    public UserProfileResponse getProfile(String authorization) {
+        User user = getUser(authorization);
+        return user.toDto();
+    }
 
-	public void updateProfile(String authorization, UserProfileRequest request, MultipartFile profileImage) {
-		User user = getUser(authorization);
-		imageUploadService.saveProfileImage(user, profileImage);
-		user.update(request);
-		userRepository.save(user);
-	}
+    public void updateProfile(String authorization, UserProfileRequest request, MultipartFile profileImage) {
+        User user = getUser(authorization);
+        imageUploadService.saveProfileImage(user, profileImage);
+        user.update(request);
+        userRepository.save(user);
+    }
 
-	public void registerBodyInfo(String authorization, MultipartFile profileImage) {
-		User user = getUser(authorization);
-		imageUploadService.saveProfileImage(user, profileImage);
-	}
+    public void registerBodyInfo(String authorization, MultipartFile profileImage) {
+        User user = getUser(authorization);
+        imageUploadService.saveProfileImage(user, profileImage);
+    }
 
-	public List<UserBodyInfoResponse> getAllBodyInfo(String authorization, Pageable pageable) {
-		User user = getUser(authorization);
-		Page<BodyInfo> bodyInfos = bodyInfoRepository.findAllByUserId(user.getId(), pageable);
-		return bodyInfos.stream().map(BodyInfo::toDto).toList();
-	}
+    public List<UserBodyInfoResponse> getAllBodyInfo(String authorization, Pageable pageable) {
+        User user = getUser(authorization);
+        Page<BodyInfo> bodyInfos = bodyInfoRepository.findAllByUserId(user.getId(), pageable);
+        return bodyInfos.stream()
+            .map(BodyInfo::toDto)
+            .toList();
+    }
 
-	public User getUser(String authorization) {
-		Long userId = jwtUtil.parseToken(authorization);
-		return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
-	}
+    public User getUser(String authorization) {
+        Long userId = jwtUtil.parseToken(authorization);
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
+    }
 
-	public BodyInfo getUserBodyInfo(Long userId) {
-		return bodyInfoRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
-	}
+    public BodyInfo getUserBodyInfo(Long userId) {
+        return bodyInfoRepository.findByUserId(userId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+    }
 }

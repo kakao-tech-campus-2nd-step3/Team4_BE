@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface CareerRepository extends JpaRepository<Career, Long> {
+
     List<Career> findAllByTrainerId(Long id);
 }

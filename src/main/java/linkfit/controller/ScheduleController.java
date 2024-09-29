@@ -1,6 +1,5 @@
 package linkfit.controller;
 
-import com.amazonaws.Response;
 import jakarta.validation.Valid;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;

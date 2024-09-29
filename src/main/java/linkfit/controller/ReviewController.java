@@ -25,14 +25,14 @@ public class ReviewController {
 
     @GetMapping("/{trainerId}")
     public ResponseEntity<List<ReviewResponse>> getTrainerReviews(
-            @PathVariable("trainerId") Long trainerId) {
+        @PathVariable("trainerId") Long trainerId) {
         List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @GetMapping("/user")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(
-            @RequestHeader("Authorization") String authorization) {
+        @RequestHeader("Authorization") String authorization) {
         List<ReviewResponse> list = reviewService.getMyReviewsByUser(authorization);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
@@ -40,15 +40,15 @@ public class ReviewController {
 
     @GetMapping("/trainer")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(
-            @RequestHeader("Authorization") String authorization) {
+        @RequestHeader("Authorization") String authorization) {
         List<ReviewResponse> list = reviewService.getMyReviewsByTrainer(authorization);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReviewById(
-            @RequestHeader("Authorization") String authorization,
-            @PathVariable("reviewId") Long reviewId) {
+        @RequestHeader("Authorization") String authorization,
+        @PathVariable("reviewId") Long reviewId) {
         reviewService.deleteReview(authorization, reviewId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

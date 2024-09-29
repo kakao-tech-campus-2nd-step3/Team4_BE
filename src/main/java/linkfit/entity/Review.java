@@ -79,7 +79,7 @@ public class Review {
         return createdDate;
     }
 
-    public ReviewResponse toDto(){
-        return new ReviewResponse(getId(),getContent(),getCreatedDate(),getScore());
+    public ReviewResponse toDto() {
+        return new ReviewResponse(getId(), getContent(), getCreatedDate(), getScore());
     }
 }

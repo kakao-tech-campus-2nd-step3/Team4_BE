@@ -36,7 +36,7 @@ public class PreferenceService {
     public void registerPreference(String authorization, PreferenceRequest request) {
         User user = userService.getUser(authorization);
         BodyInfo bodyInfo = userService.getUserBodyInfo(user.getId());
-				Preference preference = request.toEntity(bodyInfo);
+        Preference preference = request.toEntity(bodyInfo);
         preferenceRepository.save(preference);
     }
 
@@ -58,7 +58,8 @@ public class PreferenceService {
         List<PreferenceResponse> response) {
         String userLocation = preference.getBodyInfo().getUser().getLocation();
         Coordinate userCoordinates = distanceCalculatorService.getCoordinates(userLocation);
-        double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates, userCoordinates);
+        double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates,
+            userCoordinates);
         if (preference.getRange() >= distance) {
             response.add(preference.toDto());
         }

@@ -8,7 +8,7 @@ import linkfit.dto.TrainerProfileResponse;
 public class Trainer extends Person<TrainerProfileResponse> {
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Gym gym;
 
     @Column(nullable = false)
@@ -17,10 +17,10 @@ public class Trainer extends Person<TrainerProfileResponse> {
     public String getGender() {
         return gender;
     }
-    
+
     public Gym getGym() {
-		return gym;
-	}
+        return gym;
+    }
 
     protected Trainer() {
         super();
@@ -33,6 +33,7 @@ public class Trainer extends Person<TrainerProfileResponse> {
 
     @Override
     public TrainerProfileResponse toDto() {
-        return new TrainerProfileResponse(this.getEmail(), this.getPassword(), this.getName(), this.getGender());
+        return new TrainerProfileResponse(this.getEmail(), this.getPassword(), this.getName(),
+            this.getGender());
     }
 }

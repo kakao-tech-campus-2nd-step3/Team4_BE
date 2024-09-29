@@ -5,10 +5,10 @@ import linkfit.entity.Trainer;
 public class TrainerRegisterRequest extends RegisterRequest<Trainer> {
 
     private final String gender;
-    
+
     protected TrainerRegisterRequest() {
-    	super();
-    	this.gender = "";
+        super();
+        this.gender = "";
     }
 
     public TrainerRegisterRequest(String email, String password, String name, String gender) {

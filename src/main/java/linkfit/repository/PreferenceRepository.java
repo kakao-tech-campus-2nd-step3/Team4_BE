@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import linkfit.entity.Preference;
 
 @Repository
-public interface PreferenceRepository extends JpaRepository<Preference, Long>{
-	
+public interface PreferenceRepository extends JpaRepository<Preference, Long> {
+
 }

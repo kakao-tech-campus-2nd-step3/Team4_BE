@@ -57,8 +57,9 @@ public class ScheduleService {
         ScheduleRequest scheduleRequest) {
         Pt pt = findPt(ptId);
         Trainer trainer = getTrainer(authorization);
-        if(!pt.getTrainer().equals(trainer))
+        if (!pt.getTrainer().equals(trainer)) {
             throw new PermissionException(NOT_OWNER);
+        }
         Schedule schedule = scheduleRequest.toEntity(pt);
         scheduleRepository.save(schedule);
     }
@@ -80,8 +81,9 @@ public class ScheduleService {
         Schedule schedule = findSchedule(scheduleId);
         isRelatedSchedule(schedule, ptId);
         isTrainerOwner(authorization, schedule);
-        if(schedule.getStatus() == 1)
+        if (schedule.getStatus() == 1) {
             throw new PermissionException(ALREADY_COMPLETED_SCHEDULE);
+        }
         scheduleRepository.delete(schedule);
     }
 
@@ -91,8 +93,9 @@ public class ScheduleService {
     }
 
     private void isRelatedSchedule(Schedule schedule, Long ptId) {
-        if(!schedule.getPt().getId().equals(ptId))
+        if (!schedule.getPt().getId().equals(ptId)) {
             throw new PermissionException(UNRELATED_SCHEDULE);
+        }
     }
 
     private Trainer getTrainer(String authorization) {
@@ -109,13 +112,15 @@ public class ScheduleService {
 
     private void isTrainerOwner(String authorization, Schedule schedule) {
         Trainer trainer = getTrainer(authorization);
-        if(!trainer.equals(schedule.getPt().getTrainer()))
+        if (!trainer.equals(schedule.getPt().getTrainer())) {
             throw new PermissionException(NOT_OWNER);
+        }
     }
 
     private void isUserOwner(String authorization, Schedule schedule) {
         User user = getUser(authorization);
-        if(!user.equals(schedule.getPt().getUser()))
+        if (!user.equals(schedule.getPt().getUser())) {
             throw new PermissionException(NOT_OWNER);
+        }
     }
 }

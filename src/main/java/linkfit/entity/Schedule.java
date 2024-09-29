@@ -33,7 +33,8 @@ public class Schedule {
 
     private int status = 0;
 
-    protected Schedule() {}
+    protected Schedule() {
+    }
 
     public Schedule(Pt pt, LocalDateTime startTime) {
         this.pt = pt;
