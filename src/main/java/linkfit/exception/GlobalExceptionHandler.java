@@ -9,8 +9,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    public static final String NO_PERMISSION = "You can only control your own information";
-
     public static final String DUPLICATE_NAME = "The same name already exists";
     public static final String DUPLICATE_EMAIL = "The same email already exists";
 
@@ -29,6 +27,7 @@ public class GlobalExceptionHandler {
     public static final String FAILED_UPLOAD_IMAGE = "Failed to upload image";
 
     public static final String INVALID_TOKEN = "Invalid or Expired token";
+    public static final String NOT_OWNER = "You can only control your own data";
 
     public static final String ALREADY_COMPLETED_SCHEDULE = "Cannot delete an already completed schedule";
     public static final String UNRELATED_SCHEDULE = "Not a schedule related to your request";
