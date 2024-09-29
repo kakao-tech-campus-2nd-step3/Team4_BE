@@ -40,6 +40,7 @@ public class AuthController {
 
     @PostMapping("/user/login")
     public ResponseEntity<String> loginUser(@Valid @RequestBody LoginRequest request) {
+        System.out.println("email: "+request.email()+", pw: "+request.password());
         String token = userAuthService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
