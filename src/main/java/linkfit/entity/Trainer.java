@@ -8,7 +8,6 @@ import linkfit.dto.TrainerProfileResponse;
 public class Trainer extends Person<TrainerProfileResponse> {
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Gym gym;
 
     @Column(nullable = false)
