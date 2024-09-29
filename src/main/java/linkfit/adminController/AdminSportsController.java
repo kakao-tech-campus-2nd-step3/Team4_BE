@@ -46,7 +46,7 @@ public class AdminSportsController {
         @Valid @ModelAttribute SportsRequest sportsRequest,
         BindingResult bindingResult,
         Model model) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "sports-form";
         }
@@ -68,7 +68,7 @@ public class AdminSportsController {
         @Valid @ModelAttribute SportsRequest sportsRequest,
         BindingResult bindingResult,
         Model model) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "sports-update";
         }

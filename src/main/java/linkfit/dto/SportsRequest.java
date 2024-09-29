@@ -8,7 +8,8 @@ public class SportsRequest {
     @NotNull
     private String name;
 
-    public SportsRequest() {}
+    public SportsRequest() {
+    }
 
     public SportsRequest(@NotNull String name) {
         this.name = name;

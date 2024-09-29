@@ -50,7 +50,7 @@ public class Preference {
     public Preference(String gender, Sports sports, BodyInfo bodyInfo, int range, String goal) {
         this.gender = gender;
         this.sports = sports;
-				this.bodyInfo = bodyInfo;
+        this.bodyInfo = bodyInfo;
         this.range = range;
         this.goal = goal;
     }

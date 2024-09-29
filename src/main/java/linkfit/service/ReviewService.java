@@ -64,7 +64,7 @@ public class ReviewService {
 
     public void deleteReview(String authorization, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException(NOT_FOUND_REVIEW));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_REVIEW));
         reviewRepository.delete(review);
     }
 }

@@ -46,7 +46,8 @@ public class PtController {
     public ResponseEntity<List<PtSuggestionResponse>> getAllPtSuggestion(
         @RequestHeader("Authorization") String authorization,
         Pageable pageable) {
-        List<PtSuggestionResponse> responseBody = ptService.getAllPtSuggestion(authorization, pageable);
+        List<PtSuggestionResponse> responseBody = ptService.getAllPtSuggestion(authorization,
+            pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
