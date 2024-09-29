@@ -30,33 +30,34 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<UserProfileResponse> getProfile(
-            @RequestHeader("Authorization") String authorization) {
+        @RequestHeader("Authorization") String authorization) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(userService.getProfile(authorization));
+            .body(userService.getProfile(authorization));
     }
 
     @PutMapping("/profile")
     public ResponseEntity<Void> updateProfile(
-            @RequestHeader("Authorization") String authorization,
-            @RequestPart("user") UserProfileRequest request,
-            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        @RequestHeader("Authorization") String authorization,
+        @RequestPart("user") UserProfileRequest request,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userService.updateProfile(authorization, request, profileImage);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping("/info")
     public ResponseEntity<Void> registerBodyInfo(
-            @RequestHeader("Authorization") String authorization,
-            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        @RequestHeader("Authorization") String authorization,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userService.registerBodyInfo(authorization, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/info")
     public ResponseEntity<List<UserBodyInfoResponse>> getAllBodyInfo(
-            @RequestHeader("Authorization") String authorization,
-            Pageable pageable) {
-        List<UserBodyInfoResponse> responseBody = userService.getAllBodyInfo(authorization, pageable);
+        @RequestHeader("Authorization") String authorization,
+        Pageable pageable) {
+        List<UserBodyInfoResponse> responseBody = userService.getAllBodyInfo(authorization,
+            pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }

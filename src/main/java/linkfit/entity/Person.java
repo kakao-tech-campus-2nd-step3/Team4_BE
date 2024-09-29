@@ -55,7 +55,8 @@ public abstract class Person<T> {
         this.profileImageUrl = profileImageUrl;
     }
 
-    protected Person() {}
+    protected Person() {
+    }
 
     public Person(String email, String passowrd, String name) {
         this.email = email;
@@ -68,6 +69,6 @@ public abstract class Person<T> {
             throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
         }
     }
-    
+
     public abstract T toDto();
 }

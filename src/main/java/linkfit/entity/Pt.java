@@ -43,7 +43,8 @@ public class Pt {
     @Column(nullable = false)
     private int status = 0;
 
-    protected Pt() {}
+    protected Pt() {
+    }
 
     public Pt(User user, Trainer trainer, int totalCount, int price) {
         this.user = user;
@@ -61,7 +62,8 @@ public class Pt {
         this.status = status;
     }
 
-    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, int status, LocalDateTime startDate) {
+    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, int status,
+        LocalDateTime startDate) {
         this.id = id;
         this.user = user;
         this.trainer = trainer;

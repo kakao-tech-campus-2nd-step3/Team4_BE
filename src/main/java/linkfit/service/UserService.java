@@ -72,9 +72,9 @@ public class UserService extends PersonService<User> {
         return userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
     }
-    
+
     public BodyInfo getUserBodyInfo(Long userId) {
-    	return bodyInfoRepository.findByUserId(userId)
-    			.orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+        return bodyInfoRepository.findByUserId(userId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
     }
 }

@@ -24,7 +24,8 @@ public class Sports {
     // 논리 삭제를 위한 필드
     private boolean deleted = Boolean.FALSE;
 
-    protected Sports() {}
+    protected Sports() {
+    }
 
     public Sports(String name) {
         this.name = name;
