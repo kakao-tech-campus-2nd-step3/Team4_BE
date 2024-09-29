@@ -60,7 +60,7 @@ public class ScheduleController {
         @RequestHeader("Authorization") String authorization,
         @PathVariable Long ptId,
         @PathVariable Long scheduleId) {
-        scheduleService.completeSchedule(authorization, ptId, scheduleId);
+        scheduleService.deleteSchedule(authorization, ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
     }

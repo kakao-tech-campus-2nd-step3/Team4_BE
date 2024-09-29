@@ -1,5 +1,6 @@
 package linkfit.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,8 @@ public class AuthController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> loginUser(@Valid @RequestBody LoginRequest request) {
+        System.out.println("email: "+request.email()+", pw: "+request.password());
         String token = userAuthService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }

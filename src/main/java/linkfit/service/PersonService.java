@@ -5,7 +5,6 @@ import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_EMAIL;
 
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
-
 import org.springframework.stereotype.Service;
 
 import linkfit.entity.Person;
