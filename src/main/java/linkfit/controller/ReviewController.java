@@ -1,7 +1,6 @@
 package linkfit.controller;
 
 import java.util.List;
-
 import linkfit.dto.ReviewResponse;
 import linkfit.service.ReviewService;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,6 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-
     @GetMapping("/trainer")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(
         @RequestHeader("Authorization") String authorization) {
@@ -53,6 +51,4 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
-
-
 }

@@ -1,5 +1,10 @@
 package linkfit.controller;
 
+import linkfit.dto.LoginRequest;
+import linkfit.dto.TrainerRegisterRequest;
+import linkfit.dto.UserRegisterRequest;
+import linkfit.service.TrainerService;
+import linkfit.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,12 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import linkfit.dto.LoginRequest;
-import linkfit.dto.TrainerRegisterRequest;
-import linkfit.dto.UserRegisterRequest;
-import linkfit.service.TrainerService;
-import linkfit.service.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,8 +28,8 @@ public class AuthController {
 
     @PostMapping("/user/register")
     public ResponseEntity<Void> registerUser(
-            @RequestPart("user") UserRegisterRequest request,
-            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        @RequestPart("user") UserRegisterRequest request,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userService.register(request, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -43,8 +42,8 @@ public class AuthController {
 
     @PostMapping("/trainer/register")
     public ResponseEntity<Void> registerTrainer(
-            @RequestPart("trainer") TrainerRegisterRequest request,
-            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        @RequestPart("trainer") TrainerRegisterRequest request,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         trainerService.register(request, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
