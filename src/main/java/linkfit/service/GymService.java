@@ -1,6 +1,7 @@
 package linkfit.service;
 
 import java.util.List;
+import linkfit.dto.GymRegisterRequest;
 import linkfit.entity.Gym;
 import linkfit.repository.GymRepository;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,9 @@ public class GymService {
 
     public List<Gym> findAllGym() {
         return gymRepository.findAll();
+    }
+
+    public void registerGym(GymRegisterRequest gymRegisterRequest) {
+        gymRepository.save(gymRegisterRequest.toEntity());
     }
 }
