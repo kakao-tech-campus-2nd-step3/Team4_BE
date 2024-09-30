@@ -4,24 +4,24 @@ import linkfit.entity.User;
 
 public class UserRegisterRequest extends RegisterRequest<User> {
 
-    private final String local;
+    private final String location;
 
     protected UserRegisterRequest() {
         super();
-        this.local = "";
+        this.location = "";
     }
 
-    public UserRegisterRequest(String email, String password, String name, String local) {
+    public UserRegisterRequest(String email, String password, String name, String location) {
         super(email, password, name);
-        this.local = local;
+        this.location = location;
     }
 
-    public String getLocal() {
-        return local;
+    public String getLocation() {
+        return location;
     }
 
     @Override
     public User toEntity() {
-        return new User(getEmail(), getPassword(), getName(), local);
+        return new User(getEmail(), getPassword(), getName(), location);
     }
 }
