@@ -4,6 +4,7 @@ import java.util.List;
 import linkfit.dto.GymRegisterRequest;
 import linkfit.entity.Gym;
 import linkfit.repository.GymRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,8 +16,8 @@ public class GymService {
         this.gymRepository = gymRepository;
     }
 
-    public List<Gym> findAllGym() {
-        return gymRepository.findAll();
+    public List<Gym> findAllGym(Pageable pageable) {
+        return gymRepository.findAll(pageable).stream().toList();
     }
 
     public void registerGym(GymRegisterRequest gymRegisterRequest) {

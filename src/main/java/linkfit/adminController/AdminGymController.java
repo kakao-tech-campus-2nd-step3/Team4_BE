@@ -1,8 +1,11 @@
 package linkfit.adminController;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import linkfit.dto.GymRegisterRequest;
+import linkfit.entity.Gym;
 import linkfit.service.GymService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,8 +25,9 @@ public class AdminGymController {
     }
 
     @GetMapping
-    public String findAllGym(Model model) {
-        model.addAttribute("gymList", gymService.findAllGym());
+    public String findAllGym(Model model, Pageable pageable) {
+        List<Gym> gymList = gymService.findAllGym(pageable);
+        model.addAttribute("gymList", gymList);
         return "gym";
     }
 
