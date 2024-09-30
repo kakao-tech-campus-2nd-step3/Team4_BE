@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>헬스장 목록 관리</title>
+</head>
+<body>
+<h1>헬스장 관리 페이지</h1>
+<h2>관리 목록</h2>
+<a href="/admin/gym/register">[ 신규 등록 ]</a>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody th:each="gym: ${gymList}">
+  <tr>
+    <td>
+      <span th:text="${gym.id}"></span>
+    </td>
+    <td>
+      <span th:text="${gym.name}"></span>
+    </td>
+    <td>
+      <span th:text="${gym.location}"></span>
+    </td>
+    <td>
+      <form th:action="@{/admin/sports/{id}(id=${sports.id})}" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
