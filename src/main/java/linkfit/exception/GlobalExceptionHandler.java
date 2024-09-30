@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
     public static final String NOT_FOUND_BODYINFO = "Not found body_info";
     public static final String NOT_FOUND_SCHEDULE = "Not found schedule";
     public static final String NOT_FOUND_EMAIL = "Not found email";
+    public static final String NOT_FOUND_GYM = "Not found gym";
 
     public static final String FAILED_UPLOAD_IMAGE = "Failed to upload image";
 

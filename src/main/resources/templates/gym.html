@@ -14,6 +14,7 @@
     <th>ID</th>
     <th>Name</th>
     <th>Location</th>
+    <th>Action</th>
   </tr>
   </thead>
   <tbody th:each="gym: ${gymList}">
@@ -26,6 +27,12 @@
     </td>
     <td>
       <span th:text="${gym.location}"></span>
+    </td>
+    <td>
+      <form th:action="@{/admin/gyms/{id}(id=${gym.id})}" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <button type="submit">삭제</button>
+      </form>
     </td>
   </tr>
   </tbody>
