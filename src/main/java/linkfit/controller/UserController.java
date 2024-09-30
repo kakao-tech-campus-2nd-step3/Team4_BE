@@ -47,8 +47,8 @@ public class UserController {
     @PostMapping("/info")
     public ResponseEntity<Void> registerBodyInfo(
         @RequestHeader("Authorization") String authorization,
-        @RequestPart(value = "inbodyImage", required = false) MultipartFile profileImage) {
-        userService.registerBodyInfo(authorization, profileImage);
+        @RequestPart(value = "inbodyImage") MultipartFile inbodyImage) {
+        userService.registerBodyInfo(authorization, inbodyImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
