@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import linkfit.dto.LoginRequest;
 import linkfit.dto.RegisterRequest;
-import linkfit.dto.UserBodyInfoResponse;
+import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.entity.BodyInfo;
@@ -77,7 +77,7 @@ public class UserService {
         imageUploadService.saveProfileImage(user, profileImage);
     }
 
-    public List<UserBodyInfoResponse> getAllBodyInfo(String authorization, Pageable pageable) {
+    public List<BodyInfoResponse> getAllBodyInfo(String authorization, Pageable pageable) {
         User user = getUser(authorization);
         Page<BodyInfo> bodyInfos = bodyInfoRepository.findAllByUserId(user.getId(), pageable);
         return bodyInfos.stream()

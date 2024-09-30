@@ -2,7 +2,7 @@ package linkfit.controller;
 
 import java.util.List;
 
-import linkfit.dto.UserBodyInfoResponse;
+import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.service.UserService;
@@ -47,16 +47,16 @@ public class UserController {
     @PostMapping("/info")
     public ResponseEntity<Void> registerBodyInfo(
         @RequestHeader("Authorization") String authorization,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        @RequestPart(value = "inbodyImage", required = false) MultipartFile profileImage) {
         userService.registerBodyInfo(authorization, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/info")
-    public ResponseEntity<List<UserBodyInfoResponse>> getAllBodyInfo(
+    public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(
         @RequestHeader("Authorization") String authorization,
         Pageable pageable) {
-        List<UserBodyInfoResponse> responseBody = userService.getAllBodyInfo(authorization,
+        List<BodyInfoResponse> responseBody = userService.getAllBodyInfo(authorization,
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);

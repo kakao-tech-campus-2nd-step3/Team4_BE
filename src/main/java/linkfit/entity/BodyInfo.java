@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
-import linkfit.dto.UserBodyInfoResponse;
+import linkfit.dto.BodyInfoResponse;
 
 @Entity
 @Table(name = "BODY_INFO_TB")
@@ -52,8 +52,8 @@ public class BodyInfo {
         return createDate;
     }
 
-    public UserBodyInfoResponse toDto() {
-        return new UserBodyInfoResponse(
+    public BodyInfoResponse toDto() {
+        return new BodyInfoResponse(
             getInbodyImageUrl(),
             getCreateDate()
         );
