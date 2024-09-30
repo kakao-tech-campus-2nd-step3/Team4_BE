@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>신규 헬스장 등록</title>
+</head>
+<body>
+<a href="/admin/gyms"><- 헬스장 관리 목록으로 돌아가기</a>
+<h1>신규 헬스장 등록</h1>
+<form th:action="@{/admin/gyms/register}" th:object="${gym}" method="post">
+  <div>
+    <label for="name">헬스장 이름: </label>
+    <input type="text" id="name" th:field="*{name}" required />
+  </div>
+  <div>
+    <label for="name">헬스장 위치: </label>
+    <input type="text" id="location" th:field="*{location}" required />
+  </div>
+  <div>
+    <button type="submit">등록</button>
+  </div>
+</form>
+</body>
+</html>

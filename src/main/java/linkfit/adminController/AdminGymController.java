@@ -1,5 +1,6 @@
 package linkfit.adminController;
 
+import linkfit.dto.GymRegisterRequest;
 import linkfit.service.GymService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,5 +21,11 @@ public class AdminGymController {
     public String findAllGym(Model model) {
         model.addAttribute("gymList", gymService.findAllGym());
         return "gym";
+    }
+
+    @GetMapping("/register")
+    public String registerGym(Model model) {
+        model.addAttribute("gym", new GymRegisterRequest());
+        return "gym-form";
     }
 }
