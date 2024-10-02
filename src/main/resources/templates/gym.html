@@ -14,6 +14,7 @@
     <th>ID</th>
     <th>Name</th>
     <th>Location</th>
+    <th>Details</th>
     <th>Action</th>
   </tr>
   </thead>
@@ -27,6 +28,9 @@
     </td>
     <td>
       <span th:text="${gym.location}"></span>
+    </td>
+    <td>
+      <a th:href="@{/admin/gyms/{gym-id}(gym-id=${gym.id})}">[ 상세 ] </a>
     </td>
     <td>
       <form th:action="@{/admin/gyms/{id}(id=${gym.id})}" method="post">
