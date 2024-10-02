@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin/gyms")
@@ -63,5 +64,13 @@ public class AdminGymController {
         model.addAttribute("gym", gymDetailResponse.gym());
         model.addAttribute("trainerList", gymDetailResponse.trainerList());
         return "gym-details";
+    }
+
+    @GetMapping("/search")
+    public String searchGymByName(@RequestParam String keyword, Model model, Pageable pageable) {
+        List<Gym> gymList = gymService.findAllByKeyword(keyword, pageable);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("gymList", gymList);
+        return "gym-search-list";
     }
 }

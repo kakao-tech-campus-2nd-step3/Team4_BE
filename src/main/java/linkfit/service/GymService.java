@@ -10,6 +10,7 @@ import linkfit.entity.Trainer;
 import linkfit.exception.NotFoundException;
 import linkfit.repository.GymRepository;
 import linkfit.repository.TrainerRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +34,9 @@ public class GymService {
     }
 
     public void deleteGym(Long gymId) {
-        if(!gymRepository.existsById(gymId))
+        if (!gymRepository.existsById(gymId)) {
             throw new NotFoundException(NOT_FOUND_GYM);
+        }
         gymRepository.deleteById(gymId);
     }
 
@@ -43,5 +45,10 @@ public class GymService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_GYM));
         List<Trainer> trainerList = trainerRepository.findAllByGym(gym, pageable);
         return new GymDetailResponse(gym, trainerList);
+    }
+
+    public List<Gym> findAllByKeyword(String keyword, Pageable pageable) {
+        Page<Gym> gymList = gymRepository.findAllByNameContaining(keyword, pageable);
+        return gymList.stream().toList();
     }
 }

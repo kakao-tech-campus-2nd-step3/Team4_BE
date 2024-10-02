@@ -6,6 +6,14 @@
 </head>
 <body>
 <h1>헬스장 관리 페이지</h1>
+<h2>헬스장 검색</h2>
+<form th:action="@{/admin/gyms/search}" method="get">
+  <div>
+    <label for="keyword">검색할 헬스장 이름을 입력하세요: </label>
+    <input type="text" id="keyword" name="keyword" required>
+    <button type="submit">조회</button>
+  </div>
+</form>
 <h2>관리 목록</h2>
 <a href="/admin/gyms/register">[ 신규 등록 ]</a>
 <table>
@@ -30,7 +38,7 @@
       <span th:text="${gym.location}"></span>
     </td>
     <td>
-      <a th:href="@{/admin/gyms/{gym-id}(gym-id=${gym.id})}">[ 상세 ] </a>
+      <a th:href="@{/admin/gyms/{gym-id}(gym-id=${gym.id})}">[ 상세 ]</a>
     </td>
     <td>
       <form th:action="@{/admin/gyms/{id}(id=${gym.id})}" method="post">
