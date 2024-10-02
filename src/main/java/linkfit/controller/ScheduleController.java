@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
 import linkfit.service.ScheduleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +22,6 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @Autowired
     public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }

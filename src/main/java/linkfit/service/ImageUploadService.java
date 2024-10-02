@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 import linkfit.config.properties.AwsProperties;
+import linkfit.entity.BodyInfo;
+import linkfit.entity.Trainer;
+import linkfit.entity.User;
+
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
-import linkfit.entity.Person;
 import linkfit.exception.ImageUploadException;
 
 @Service
@@ -28,12 +31,29 @@ public class ImageUploadService {
         this.awsProperties = awsProperties;
     }
 
-    public <T extends Person<?>> void saveProfileImage(T entity, MultipartFile profileImage) {
-        entity.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
+    public void saveUserProfileImage(User user, MultipartFile profileImage) {
+    	user.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = uploadFile(profileImage);
-            entity.setProfileImageUrl(imageUrl);
+            user.setProfileImageUrl(imageUrl);
         }
+    }
+    
+    public void saveTrainerProfileImage(Trainer trainer, MultipartFile profileImage) {
+    	trainer.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = uploadFile(profileImage);
+            trainer.setProfileImageUrl(imageUrl);
+        }
+    }
+    
+    public BodyInfo saveInbodyImage(User user, MultipartFile inbodyImage) {
+        if (inbodyImage == null) {
+            throw new ImageUploadException("유효하지 않은 Inbody Image");
+        }
+        String imageUrl = uploadFile(inbodyImage);
+        return new BodyInfo(user, imageUrl);
+
     }
 
     private String uploadFile(MultipartFile file) {

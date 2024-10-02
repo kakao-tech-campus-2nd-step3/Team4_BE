@@ -12,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.LoginRequest;
-import linkfit.dto.RegisterRequest;
 import linkfit.dto.TrainerProfileResponse;
+import linkfit.dto.TrainerRegisterRequest;
 import linkfit.entity.Trainer;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
@@ -40,12 +40,12 @@ public class TrainerService {
     }
 
     @Transactional
-    public void register(RegisterRequest<Trainer> request, MultipartFile profileImage) {
-        if (trainerRepository.existsByEmail(request.getEmail())) {
+    public void register(TrainerRegisterRequest request, MultipartFile profileImage) {
+        if (trainerRepository.existsByEmail(request.email())) {
             throw new DuplicateException(DUPLICATE_EMAIL);
         }
         Trainer trainer = request.toEntity();
-        imageUploadService.saveProfileImage(trainer, profileImage);
+        imageUploadService.saveTrainerProfileImage(trainer, profileImage);
         trainerRepository.save(trainer);
     }
 

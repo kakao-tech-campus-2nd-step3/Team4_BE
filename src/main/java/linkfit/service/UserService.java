@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import linkfit.dto.LoginRequest;
-import linkfit.dto.RegisterRequest;
 import linkfit.dto.UserBodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
+import linkfit.dto.UserRegisterRequest;
 import linkfit.entity.BodyInfo;
 import linkfit.entity.User;
 import linkfit.exception.DuplicateException;
@@ -44,12 +44,12 @@ public class UserService {
     }
 
     @Transactional
-    public void register(RegisterRequest<User> request, MultipartFile profileImage) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+    public void register(UserRegisterRequest request, MultipartFile profileImage) {
+        if (userRepository.existsByEmail(request.email())) {
             throw new DuplicateException(DUPLICATE_EMAIL);
         }
         User user = request.toEntity();
-        imageUploadService.saveProfileImage(user, profileImage);
+        imageUploadService.saveUserProfileImage(user, profileImage);
         userRepository.save(user);
     }
 
@@ -67,14 +67,14 @@ public class UserService {
 
     public void updateProfile(String authorization, UserProfileRequest request, MultipartFile profileImage) {
         User user = getUser(authorization);
-        imageUploadService.saveProfileImage(user, profileImage);
+        imageUploadService.saveUserProfileImage(user, profileImage);
         user.update(request);
         userRepository.save(user);
     }
 
     public void registerBodyInfo(String authorization, MultipartFile profileImage) {
         User user = getUser(authorization);
-        imageUploadService.saveProfileImage(user, profileImage);
+        imageUploadService.saveInbodyImage(user, profileImage);
     }
 
     public List<UserBodyInfoResponse> getAllBodyInfo(String authorization, Pageable pageable) {
