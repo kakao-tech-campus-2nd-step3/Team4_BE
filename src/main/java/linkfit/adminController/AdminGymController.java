@@ -2,7 +2,7 @@ package linkfit.adminController;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import linkfit.dto.GymDetailResponse;
+import linkfit.dto.AdminGymDetailResponse;
 import linkfit.dto.GymRegisterRequest;
 import linkfit.entity.Gym;
 import linkfit.service.GymService;
@@ -60,9 +60,9 @@ public class AdminGymController {
 
     @GetMapping("/{gymId}")
     public String getGymDetails(@PathVariable Long gymId, Model model, Pageable pageable) {
-        GymDetailResponse gymDetailResponse = gymService.getGymDetails(gymId, pageable);
-        model.addAttribute("gym", gymDetailResponse.gym());
-        model.addAttribute("trainerList", gymDetailResponse.trainerList());
+        AdminGymDetailResponse adminGymDetailResponse = gymService.getGymDetailsForAdmin(gymId, pageable);
+        model.addAttribute("gym", adminGymDetailResponse.gym());
+        model.addAttribute("trainerList", adminGymDetailResponse.trainerList());
         return "gym-details";
     }
 
