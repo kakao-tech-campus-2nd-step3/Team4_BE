@@ -54,6 +54,7 @@ public class BodyInfo {
 
     public BodyInfoResponse toDto() {
         return new BodyInfoResponse(
+            getId(),
             getInbodyImageUrl(),
             getCreateDate()
         );
