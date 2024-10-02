@@ -9,7 +9,9 @@ import linkfit.service.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -60,6 +62,15 @@ public class UserController {
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
+    }
+
+    @DeleteMapping("/info/{infoId}")
+    public ResponseEntity<Void> deleteBodyInfo(@RequestHeader("Authorization") String authorization,
+        @PathVariable("infoId") Long infoId) {
+        userService.deleteBodyInfo(authorization,infoId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 
 

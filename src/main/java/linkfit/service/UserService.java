@@ -5,6 +5,7 @@ import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_USER;
 import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
 
 import java.util.List;
+import java.util.Objects;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,8 @@ public class UserService {
         return user.toDto();
     }
 
-    public void updateProfile(String authorization, UserProfileRequest request, MultipartFile profileImage) {
+    public void updateProfile(String authorization, UserProfileRequest request,
+        MultipartFile profileImage) {
         User user = getUser(authorization);
         imageUploadService.saveProfileImage(user, profileImage);
         user.update(request);
@@ -95,5 +97,16 @@ public class UserService {
     public BodyInfo getUserBodyInfo(Long userId) {
         return bodyInfoRepository.findByUserId(userId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+    }
+
+    public void deleteBodyInfo(String authorization, Long infoId) {
+        User user = getUser(authorization);
+        BodyInfo bodyInfo = bodyInfoRepository.findById(infoId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+
+        if (Objects.equals(user.getId(), bodyInfo.getUser().getId())) {
+            bodyInfoRepository.delete(bodyInfo);
+        }
+
     }
 }
