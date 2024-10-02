@@ -17,6 +17,4 @@ public interface BodyInfoRepository extends JpaRepository<BodyInfo, Long> {
     Optional<BodyInfo> findByUserId(Long userId);
 
 
-
-
 }
