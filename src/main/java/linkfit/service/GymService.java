@@ -3,7 +3,6 @@ package linkfit.service;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_GYM;
 
 import java.util.List;
-import linkfit.dto.AdminGymDetailResponse;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymSearchResponse;
@@ -48,12 +47,6 @@ public class GymService {
         gymRepository.deleteById(gymId);
     }
 
-    public AdminGymDetailResponse getGymDetailsForAdmin(Long gymId, Pageable pageable) {
-        Gym gym = getGymById(gymId);
-        List<Trainer> trainerList = trainerRepository.findAllByGym(gym, pageable);
-        return new AdminGymDetailResponse(gym, trainerList);
-    }
-
     public GymSearchResponse findAllByKeyword(String keyword, Pageable pageable) {
         Page<Gym> gymList = gymRepository.findAllByNameContaining(keyword, pageable);
         return new GymSearchResponse(gymList.getContent());
@@ -65,7 +58,7 @@ public class GymService {
         return new GymDetailResponse(gym, images);
     }
 
-    private Gym getGymById(Long id) {
+    public Gym getGymById(Long id) {
         return gymRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_GYM));
     }

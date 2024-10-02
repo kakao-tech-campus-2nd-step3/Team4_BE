@@ -2,9 +2,9 @@ package linkfit.adminController;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import linkfit.dto.AdminGymDetailResponse;
 import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymSearchResponse;
+import linkfit.dto.GymTrainersResponse;
 import linkfit.entity.Gym;
 import linkfit.service.GymService;
 import org.springframework.data.domain.Pageable;
@@ -61,9 +61,10 @@ public class AdminGymController {
 
     @GetMapping("/{gymId}")
     public String getGymDetails(@PathVariable Long gymId, Model model, Pageable pageable) {
-        AdminGymDetailResponse adminGymDetailResponse = gymService.getGymDetailsForAdmin(gymId, pageable);
-        model.addAttribute("gym", adminGymDetailResponse.gym());
-        model.addAttribute("trainerList", adminGymDetailResponse.trainerList());
+        Gym gym = gymService.getGymById(gymId);
+        model.addAttribute("gym", gym);
+        GymTrainersResponse trainers = gymService.getGymTrainers(gymId, pageable);
+        model.addAttribute("trainerList", trainers);
         return "gym-details";
     }
 
