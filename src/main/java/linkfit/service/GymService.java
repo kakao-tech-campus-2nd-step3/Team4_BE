@@ -7,6 +7,7 @@ import linkfit.dto.AdminGymDetailResponse;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymSearchResponse;
+import linkfit.dto.GymTrainersResponse;
 import linkfit.entity.Gym;
 import linkfit.entity.GymImage;
 import linkfit.entity.Trainer;
@@ -67,5 +68,11 @@ public class GymService {
     private Gym getGymById(Long id) {
         return gymRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_GYM));
+    }
+
+    public GymTrainersResponse getGymTrainers(Long gymId, Pageable pageable) {
+        Gym gym = getGymById(gymId);
+        List<Trainer> trainerList = trainerRepository.findAllByGym(gym, pageable);
+        return new GymTrainersResponse(trainerList);
     }
 }

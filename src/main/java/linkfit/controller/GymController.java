@@ -2,6 +2,7 @@ package linkfit.controller;
 
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymSearchResponse;
+import linkfit.dto.GymTrainersResponse;
 import linkfit.service.GymService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,14 @@ public class GymController {
     public ResponseEntity<GymSearchResponse> searchGymByKeyword(@RequestBody String keyword,
         Pageable pageable) {
         GymSearchResponse responseBody = gymService.findAllByKeyword(keyword, pageable);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
+    }
+
+    @GetMapping("/{gymId}/trainers")
+    public ResponseEntity<GymTrainersResponse> getGymTrainers(@PathVariable Long gymId,
+        Pageable pageable) {
+        GymTrainersResponse responseBody = gymService.getGymTrainers(gymId, pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
