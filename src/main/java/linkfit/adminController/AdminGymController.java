@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.dto.AdminGymDetailResponse;
 import linkfit.dto.GymRegisterRequest;
+import linkfit.dto.GymSearchResponse;
 import linkfit.entity.Gym;
 import linkfit.service.GymService;
 import org.springframework.data.domain.Pageable;
@@ -68,7 +69,7 @@ public class AdminGymController {
 
     @GetMapping("/search")
     public String searchGymByName(@RequestParam String keyword, Model model, Pageable pageable) {
-        List<Gym> gymList = gymService.findAllByKeyword(keyword, pageable);
+        GymSearchResponse gymList = gymService.findAllByKeyword(keyword, pageable);
         model.addAttribute("keyword", keyword);
         model.addAttribute("gymList", gymList);
         return "gym-search-list";

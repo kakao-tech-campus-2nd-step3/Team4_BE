@@ -6,6 +6,7 @@ import java.util.List;
 import linkfit.dto.AdminGymDetailResponse;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymRegisterRequest;
+import linkfit.dto.GymSearchResponse;
 import linkfit.entity.Gym;
 import linkfit.entity.GymImage;
 import linkfit.entity.Trainer;
@@ -52,9 +53,9 @@ public class GymService {
         return new AdminGymDetailResponse(gym, trainerList);
     }
 
-    public List<Gym> findAllByKeyword(String keyword, Pageable pageable) {
+    public GymSearchResponse findAllByKeyword(String keyword, Pageable pageable) {
         Page<Gym> gymList = gymRepository.findAllByNameContaining(keyword, pageable);
-        return gymList.stream().toList();
+        return new GymSearchResponse(gymList.getContent());
     }
 
     public GymDetailResponse getGymDetails(Long gymId) {
