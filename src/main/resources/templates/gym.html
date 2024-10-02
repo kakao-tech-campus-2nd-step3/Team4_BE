@@ -29,13 +29,13 @@
   <tbody th:each="gym: ${gymList}">
   <tr>
     <td>
-      <span th:text="${gym.id}"></span>
+      <span th:text="${gym.id}"/>
     </td>
     <td>
-      <span th:text="${gym.name}"></span>
+      <span th:text="${gym.name}"/>
     </td>
     <td>
-      <span th:text="${gym.location}"></span>
+      <span th:text="${gym.location}"/>
     </td>
     <td>
       <a th:href="@{/admin/gyms/{gym-id}(gym-id=${gym.id})}">[ 상세 ]</a>

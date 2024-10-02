@@ -19,10 +19,10 @@
   <tbody th:each="sports: ${sportsList}">
   <tr>
     <td>
-      <span th:text="${sports.id}"></span>
+      <span th:text="${sports.id}"/>
     </td>
     <td>
-      <span th:text="${sports.name}"></span>
+      <span th:text="${sports.name}"/>
     </td>
     <td>
       <form th:action="@{/admin/sports/{id}(id=${sports.id})}" method="get">
