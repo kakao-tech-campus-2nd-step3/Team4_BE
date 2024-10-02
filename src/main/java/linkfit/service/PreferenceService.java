@@ -3,6 +3,7 @@ package linkfit.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import linkfit.entity.Sports;
 import org.springframework.stereotype.Service;
 
 import linkfit.dto.Coordinate;
@@ -22,21 +23,25 @@ public class PreferenceService {
     private TrainerService trainerService;
     private DistanceCalculatorService distanceCalculatorService;
 
-    public PreferenceService(
-        PreferenceRepository preferenceRepository,
-        UserService userService,
-        TrainerService trainerService,
-        DistanceCalculatorService distanceCalculatorService) {
+    private SportsService sportsService;
+
+    public PreferenceService(PreferenceRepository preferenceRepository, UserService userService,
+        TrainerService trainerService, DistanceCalculatorService distanceCalculatorService,
+        SportsService sportsService) {
         this.preferenceRepository = preferenceRepository;
         this.userService = userService;
         this.trainerService = trainerService;
         this.distanceCalculatorService = distanceCalculatorService;
+        this.sportsService = sportsService;
     }
 
     public void registerPreference(String authorization, PreferenceRequest request) {
         User user = userService.getUser(authorization);
-        BodyInfo bodyInfo = userService.getUserBodyInfo(user.getId());
-        Preference preference = request.toEntity(bodyInfo);
+        //최신 BodyInfo를 받아오는 메서드로 수정 필요
+        BodyInfo bodyInfo = userService.getRecentBodyInfo(user.getId());
+        Sports sports = sportsService.getSportsById(request.sportsId());
+        Preference preference = new Preference(request.gender(), sports, bodyInfo, request.range(),
+            request.goal());
         preferenceRepository.save(preference);
     }
 

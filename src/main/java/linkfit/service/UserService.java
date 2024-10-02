@@ -99,6 +99,11 @@ public class UserService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
     }
 
+    public BodyInfo getRecentBodyInfo(Long userId){
+        return bodyInfoRepository.findFirstByUserIdOrderByCreateDateDesc(userId)
+            .orElseThrow(()-> new NotFoundException(NOT_FOUND_BODYINFO));
+    }
+
     public void deleteBodyInfo(String authorization, Long infoId) {
         User user = getUser(authorization);
         BodyInfo bodyInfo = bodyInfoRepository.findById(infoId)
