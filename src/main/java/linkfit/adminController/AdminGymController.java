@@ -3,6 +3,7 @@ package linkfit.adminController;
 import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.dto.GymRegisterRequest;
+import linkfit.dto.GymRegisterWaitingResponse;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
 import linkfit.entity.Gym;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,20 +37,16 @@ public class AdminGymController {
         return "gym";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/register-waiting")
     public String getGymRegisterForm(Model model) {
-        model.addAttribute("gym", new GymRegisterRequest());
-        return "gym-form";
+        List<GymRegisterWaitingResponse> gymRegisterWaitingList = gymService.getGymRegisterWaitingList();
+        model.addAttribute("gymList", gymRegisterWaitingList);
+        return "gym-register-request-list";
     }
 
-    @PostMapping("/register")
-    public String registerGym(@Valid @ModelAttribute GymRegisterRequest gymRegisterRequest,
-        BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "gym-form";
-        }
-        gymService.registerGym(gymRegisterRequest);
+    @PutMapping("/{gymId}")
+    public String approvalGym(@PathVariable Long gymId) {
+        gymService.approvalGym(gymId);
         return "redirect:/admin/gyms";
     }
 
