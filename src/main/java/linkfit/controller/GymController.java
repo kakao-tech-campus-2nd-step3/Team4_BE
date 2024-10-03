@@ -48,7 +48,7 @@ public class GymController {
             .body(responseBody);
     }
 
-    @GetMapping("/api/gyms/locations")
+    @GetMapping("/locations")
     public ResponseEntity<List<GymLocationResponse>> getGymLocations() {
         List<GymLocationResponse> responseBody = gymService.getGymLocations();
         return ResponseEntity.status(HttpStatus.OK)
