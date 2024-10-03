@@ -16,8 +16,17 @@ public class Gym {
 
     @Column(nullable = false)
     private String name;
+    
+    // 0: 승인x, 1: 승인o
+    @Column(nullable = false, columnDefinition = "integer defalut 0")
+    private int status;
 
     protected Gym() {
+    }
+    
+    public Gym(String location, String name) {
+    	this.location = location;
+    	this.name = name;
     }
 
     public String getLocation() {

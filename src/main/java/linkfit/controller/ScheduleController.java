@@ -20,45 +20,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/pt/{ptId}/schedule")
 public class ScheduleController {
 
-    private final ScheduleService scheduleService;
+	private final ScheduleService scheduleService;
 
-    public ScheduleController(ScheduleService scheduleService) {
-        this.scheduleService = scheduleService;
-    }
+	public ScheduleController(ScheduleService scheduleService) {
+		this.scheduleService = scheduleService;
+	}
 
-    @GetMapping
-    public ResponseEntity<ScheduleResponse> getSchedules(@PathVariable Long ptId) {
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(scheduleService.getSchedules(ptId));
-    }
+	@GetMapping
+	public ResponseEntity<ScheduleResponse> getSchedules(@PathVariable Long ptId) {
+		return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getSchedules(ptId));
+	}
 
-    @PostMapping
-    public ResponseEntity<Void> registerSchedule(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId,
-        @Valid @RequestBody ScheduleRequest scheduleRequest) {
-        scheduleService.registerSchedule(authorization, ptId, scheduleRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .build();
-    }
+	@PostMapping
+	public ResponseEntity<Void> registerSchedule(@RequestHeader("Authorization") String authorization,
+			@PathVariable Long ptId, @Valid @RequestBody ScheduleRequest scheduleRequest) {
+		scheduleService.registerSchedule(authorization, ptId, scheduleRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
 
-    @PutMapping("/{scheduleId}")
-    public ResponseEntity<Void> completeSchedule(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId,
-        @PathVariable Long scheduleId) {
-        scheduleService.completeSchedule(authorization, ptId, scheduleId);
-        return ResponseEntity.status(HttpStatus.OK)
-            .build();
-    }
+	@PutMapping("/{scheduleId}")
+	public ResponseEntity<Void> completeSchedule(@RequestHeader("Authorization") String authorization,
+			@PathVariable Long ptId, @PathVariable Long scheduleId) {
+		scheduleService.completeSchedule(authorization, ptId, scheduleId);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 
-    @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId,
-        @PathVariable Long scheduleId) {
-        scheduleService.deleteSchedule(authorization, ptId, scheduleId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .build();
-    }
+	@DeleteMapping("/{scheduleId}")
+	public ResponseEntity<Void> deleteSchedule(@RequestHeader("Authorization") String authorization,
+			@PathVariable Long ptId, @PathVariable Long scheduleId) {
+		scheduleService.deleteSchedule(authorization, ptId, scheduleId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
 }
