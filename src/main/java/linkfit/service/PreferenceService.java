@@ -17,51 +17,45 @@ import linkfit.repository.PreferenceRepository;
 @Service
 public class PreferenceService {
 
-    private PreferenceRepository preferenceRepository;
-    private UserService userService;
-    private TrainerService trainerService;
-    private DistanceCalculatorService distanceCalculatorService;
+	private PreferenceRepository preferenceRepository;
+	private UserService userService;
+	private TrainerService trainerService;
+	private DistanceCalculatorService distanceCalculatorService;
 
-    public PreferenceService(
-        PreferenceRepository preferenceRepository,
-        UserService userService,
-        TrainerService trainerService,
-        DistanceCalculatorService distanceCalculatorService) {
-        this.preferenceRepository = preferenceRepository;
-        this.userService = userService;
-        this.trainerService = trainerService;
-        this.distanceCalculatorService = distanceCalculatorService;
-    }
+	public PreferenceService(PreferenceRepository preferenceRepository, UserService userService,
+			TrainerService trainerService, DistanceCalculatorService distanceCalculatorService) {
+		this.preferenceRepository = preferenceRepository;
+		this.userService = userService;
+		this.trainerService = trainerService;
+		this.distanceCalculatorService = distanceCalculatorService;
+	}
 
-    public void registerPreference(String authorization, PreferenceRequest request) {
-        User user = userService.getUser(authorization);
-        BodyInfo bodyInfo = userService.getUserBodyInfo(user.getId());
-        Preference preference = request.toEntity(bodyInfo);
-        preferenceRepository.save(preference);
-    }
+	public void registerPreference(String authorization, PreferenceRequest request) {
+		User user = userService.getUser(authorization);
+		BodyInfo bodyInfo = userService.getUserBodyInfo(user.getId());
+		Preference preference = request.toEntity(bodyInfo);
+		preferenceRepository.save(preference);
+	}
 
-    public List<PreferenceResponse> getAllPreference(String authorization) {
-        Trainer trainer = trainerService.getTrainer(authorization);
-        String gymLocation = trainer.getGym().getLocation();
-        List<Preference> preferences = preferenceRepository.findAll();
-        List<PreferenceResponse> response = new ArrayList<>();
-        Coordinate gymCoordinates = distanceCalculatorService.getCoordinates(gymLocation);
-        for (Preference preference : preferences) {
-            processPreference(preference, gymCoordinates, response);
-        }
-        return response;
-    }
+	public List<PreferenceResponse> getAllPreference(String authorization) {
+		Trainer trainer = trainerService.getTrainer(authorization);
+		String gymLocation = trainer.getGym().getLocation();
+		List<Preference> preferences = preferenceRepository.findAll();
+		List<PreferenceResponse> response = new ArrayList<>();
+		Coordinate gymCoordinates = distanceCalculatorService.getCoordinates(gymLocation);
+		for (Preference preference : preferences) {
+			processPreference(preference, gymCoordinates, response);
+		}
+		return response;
+	}
 
-    private void processPreference(
-        Preference preference,
-        Coordinate gymCoordinates,
-        List<PreferenceResponse> response) {
-        String userLocation = preference.getBodyInfo().getUser().getLocation();
-        Coordinate userCoordinates = distanceCalculatorService.getCoordinates(userLocation);
-        double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates,
-            userCoordinates);
-        if (preference.getRange() >= distance) {
-            response.add(preference.toDto());
-        }
-    }
+	private void processPreference(Preference preference, Coordinate gymCoordinates,
+			List<PreferenceResponse> response) {
+		String userLocation = preference.getBodyInfo().getUser().getLocation();
+		Coordinate userCoordinates = distanceCalculatorService.getCoordinates(userLocation);
+		double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates, userCoordinates);
+		if (preference.getRange() >= distance) {
+			response.add(preference.toDto());
+		}
+	}
 }
