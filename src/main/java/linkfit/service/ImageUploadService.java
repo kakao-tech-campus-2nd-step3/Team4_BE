@@ -6,17 +6,16 @@ import java.io.IOException;
 import java.util.UUID;
 
 import linkfit.config.properties.AwsProperties;
+
+import linkfit.entity.BodyInfo;
+import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.StreamingHttpOutputMessage.Body;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-
-import linkfit.entity.Person;
-import linkfit.entity.BodyInfo;
 
 import linkfit.exception.ImageUploadException;
 
@@ -32,19 +31,26 @@ public class ImageUploadService {
         this.awsProperties = awsProperties;
     }
 
-    public <T extends Person<?>> void saveProfileImage(T entity, MultipartFile profileImage) {
-        entity.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
+    public void saveUserProfileImage(User user, MultipartFile profileImage) {
+        user.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = uploadFile(profileImage);
-            entity.setProfileImageUrl(imageUrl);
+            user.setProfileImageUrl(imageUrl);
+        }
+    }
+
+    public void saveTrainerProfileImage(Trainer trainer, MultipartFile profileImage) {
+        trainer.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = uploadFile(profileImage);
+            trainer.setProfileImageUrl(imageUrl);
         }
     }
 
     public BodyInfo saveInbodyImage(User user, MultipartFile inbodyImage) {
-        if (inbodyImage == null && !inbodyImage.isEmpty()) {
+        if (inbodyImage == null) {
             throw new ImageUploadException("유효하지 않은 Inbody Image");
         }
-
         String imageUrl = uploadFile(inbodyImage);
         return new BodyInfo(user, imageUrl);
 
@@ -58,7 +64,7 @@ public class ImageUploadService {
             metadata.setContentLength(file.getSize());
             amazonS3.putObject(awsProperties.s3().bucket(), key, file.getInputStream(), metadata);
             return String.format("https://%s.s3.%s.amazonaws.com/%s", awsProperties.s3().bucket(),
-                awsProperties.region(), key);
+                    awsProperties.region(), key);
         } catch (IOException e) {
             throw new ImageUploadException(FAILED_UPLOAD_IMAGE);
         }

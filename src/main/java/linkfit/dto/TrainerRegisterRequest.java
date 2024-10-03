@@ -2,26 +2,9 @@ package linkfit.dto;
 
 import linkfit.entity.Trainer;
 
-public class TrainerRegisterRequest extends RegisterRequest<Trainer> {
+public record TrainerRegisterRequest(String email, String password, String name, String gender) {
 
-    private final String gender;
-
-    protected TrainerRegisterRequest() {
-        super();
-        this.gender = "";
-    }
-
-    public TrainerRegisterRequest(String email, String password, String name, String gender) {
-        super(email, password, name);
-        this.gender = gender;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    @Override
     public Trainer toEntity() {
-        return new Trainer(getEmail(), getPassword(), getName(), gender);
+        return new Trainer(email, password(), name(), gender);
     }
 }

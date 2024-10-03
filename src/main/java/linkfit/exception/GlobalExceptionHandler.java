@@ -63,4 +63,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleDuplicateException(DuplicateException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
+    
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<String> handleInvalidTokenException(DuplicateException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
 }

@@ -55,6 +55,8 @@ public class Preference {
         this.goal = goal;
     }
 
+
+
     public PreferenceResponse toDto() {
         PreferenceResponse preferenceResponse = new PreferenceResponse(
             bodyInfo.getUser().getId(), bodyInfo.getUser().getName(),

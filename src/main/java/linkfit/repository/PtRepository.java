@@ -8,7 +8,9 @@ import linkfit.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PtRepository extends JpaRepository<Pt, Long> {
 
     Page<Pt> findAllByTrainer(Trainer trainer, Pageable pageable);

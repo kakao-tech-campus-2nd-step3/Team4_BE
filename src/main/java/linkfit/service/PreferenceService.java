@@ -18,16 +18,15 @@ import linkfit.repository.PreferenceRepository;
 @Service
 public class PreferenceService {
 
-    private PreferenceRepository preferenceRepository;
-    private UserService userService;
-    private TrainerService trainerService;
-    private DistanceCalculatorService distanceCalculatorService;
-
-    private SportsService sportsService;
+    private final PreferenceRepository preferenceRepository;
+    private final UserService userService;
+    private final TrainerService trainerService;
+    private final DistanceCalculatorService distanceCalculatorService;
+    private final SportsService sportsService;
 
     public PreferenceService(PreferenceRepository preferenceRepository, UserService userService,
-        TrainerService trainerService, DistanceCalculatorService distanceCalculatorService,
-        SportsService sportsService) {
+                             TrainerService trainerService, DistanceCalculatorService distanceCalculatorService,
+                             SportsService sportsService) {
         this.preferenceRepository = preferenceRepository;
         this.userService = userService;
         this.trainerService = trainerService;
@@ -40,10 +39,10 @@ public class PreferenceService {
         //최신 BodyInfo를 받아오는 메서드로 수정 필요
         BodyInfo bodyInfo = userService.getRecentBodyInfo(user.getId());
         Sports sports = sportsService.getSportsById(request.sportsId());
-        Preference preference = new Preference(request.gender(), sports, bodyInfo, request.range(),
-            request.goal());
+        Preference preference = request.toEntity(bodyInfo, sports);
         preferenceRepository.save(preference);
     }
+
 
     public List<PreferenceResponse> getAllPreference(String authorization) {
         Trainer trainer = trainerService.getTrainer(authorization);
@@ -57,14 +56,11 @@ public class PreferenceService {
         return response;
     }
 
-    private void processPreference(
-        Preference preference,
-        Coordinate gymCoordinates,
-        List<PreferenceResponse> response) {
+    private void processPreference(Preference preference, Coordinate gymCoordinates,
+                                   List<PreferenceResponse> response) {
         String userLocation = preference.getBodyInfo().getUser().getLocation();
         Coordinate userCoordinates = distanceCalculatorService.getCoordinates(userLocation);
-        double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates,
-            userCoordinates);
+        double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates, userCoordinates);
         if (preference.getRange() >= distance) {
             response.add(preference.toDto());
         }
