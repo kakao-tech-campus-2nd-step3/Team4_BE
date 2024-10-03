@@ -17,6 +17,8 @@ public class Gym {
     @Column(nullable = false)
     private String location;
 
+    private String description = null;
+
     @ManyToOne
     private Trainer admin = null;
 
@@ -38,6 +40,10 @@ public class Gym {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Trainer getAdmin() {
