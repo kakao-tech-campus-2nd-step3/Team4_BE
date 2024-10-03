@@ -1,6 +1,8 @@
 package linkfit.controller;
 
+import java.util.List;
 import linkfit.dto.GymDetailResponse;
+import linkfit.dto.GymLocationResponse;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
 import linkfit.service.GymService;
@@ -42,6 +44,13 @@ public class GymController {
     public ResponseEntity<GymTrainersResponse> getGymTrainers(@PathVariable Long gymId,
         Pageable pageable) {
         GymTrainersResponse responseBody = gymService.getGymTrainers(gymId, pageable);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
+    }
+
+    @GetMapping("/api/gyms/locations")
+    public ResponseEntity<List<GymLocationResponse>> getGymLocations() {
+        List<GymLocationResponse> responseBody = gymService.getGymLocations();
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }

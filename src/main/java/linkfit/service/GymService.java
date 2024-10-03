@@ -4,6 +4,7 @@ import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_GYM;
 
 import java.util.List;
 import linkfit.dto.GymDetailResponse;
+import linkfit.dto.GymLocationResponse;
 import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
@@ -67,5 +68,12 @@ public class GymService {
         Gym gym = getGymById(gymId);
         List<Trainer> trainerList = trainerRepository.findAllByGym(gym, pageable);
         return new GymTrainersResponse(trainerList);
+    }
+
+    public List<GymLocationResponse> getGymLocations() {
+        List<Gym> gymList = gymRepository.findAll();
+        return gymList.stream()
+            .map(gym -> new GymLocationResponse(gym.getId(), gym.getLocation()))  // Assuming GymLocationResponse has these fields
+            .toList();
     }
 }
