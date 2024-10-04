@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>헬스장 검색 결과</title>
+</head>
+<body>
+<a href="/admin/gyms"><- 헬스장 관리 목록으로 돌아가기</a>
+<h1>헬스장 검색 결과</h1>
+<div th:if="${#lists.isEmpty(gymList)}">
+  <span>헬스장 이름에 "<strong th:text="${keyword}"></strong>"가 포함된 결과가 없습니다.</span>
+</div>
+<div th:if="${not #lists.isEmpty(gymList)}">
+  <span>"<strong th:text="${keyword}"></strong>"(으)로 검색한 결과입니다."</span>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Details</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody th:each="gym : ${gymList}">
+    <tr>
+      <td>
+        <span th:text="${gym.id}"/>
+      </td>
+      <td>
+        <span th:text="${gym.name}"/>
+      </td>
+      <td>
+        <span th:text="${gym.location}"/>
+      </td>
+      <td>
+        <a th:href="@{/admin/gyms/{gym-id}(gym-id=${gym.id})}">[ 상세 ] </a>
+      </td>
+      <td>
+        <form th:action="@{/admin/gyms/{id}(id=${gym.id})}" method="post">
+          <input type="hidden" name="_method" value="delete"/>
+          <button type="submit">삭제</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

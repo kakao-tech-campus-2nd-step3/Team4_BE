@@ -2,6 +2,8 @@
 package linkfit.entity;
 
 import jakarta.persistence.*;
+import linkfit.dto.GymRegisterWaitingResponse;
+import linkfit.status.GymStatus;
 
 @Entity
 @Table(name = "GYM_TB")
@@ -12,14 +14,20 @@ public class Gym {
     private Long id;
 
     @Column(nullable = false)
-    private String location;
-
-    @Column(nullable = false)
     private String name;
     
     // 0: 승인x, 1: 승인o
     @Column(nullable = false, columnDefinition = "integer defalut 0")
     private int status;
+
+    @Column(nullable = false)
+    private String location;
+
+    private String description = null;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private GymStatus status = GymStatus.WAITING;
 
     protected Gym() {
     }
@@ -29,11 +37,40 @@ public class Gym {
     	this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public Gym(String name, String location) {
+        this.name = name;
+        this.location = location;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public GymStatus getStatus() {
+        return status;
+    }
+
+    public GymRegisterWaitingResponse toDTO() {
+        return new GymRegisterWaitingResponse(id, name, location);
+    }
+
+    public void approval() {
+        status = GymStatus.APPROVAL;
+    }
+
+    public void refuse() {
+        status = GymStatus.REFUSE;
     }
 }
