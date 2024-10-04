@@ -31,20 +31,11 @@ public class ImageUploadService {
         this.awsProperties = awsProperties;
     }
 
-    public void saveUserProfileImage(User user, MultipartFile profileImage) {
-        user.setProfileImageUrl("https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg");
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = uploadFile(profileImage);
-            user.setProfileImageUrl(imageUrl);
+    public String uploadProfileImage(MultipartFile profileImage) {
+        if (profileImage == null || profileImage.isEmpty()) {
+            return "https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg";
         }
-    }
-
-    public void saveTrainerProfileImage(Trainer trainer, MultipartFile profileImage) {
-        trainer.setProfileImageUrl("https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg");
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = uploadFile(profileImage);
-            trainer.setProfileImageUrl(imageUrl);
-        }
+        return uploadFile(profileImage);
     }
 
     public String saveImage(MultipartFile image) {
