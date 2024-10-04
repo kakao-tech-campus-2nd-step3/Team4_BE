@@ -7,7 +7,8 @@ import static linkfit.exception.GlobalExceptionHandler.NOT_OWNER;
 
 import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
-import linkfit.dto.PtSuggestionResponse;
+import linkfit.dto.ReceivePtSuggestResponse;
+import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.PtSuggestionUpdateRequest;
 import linkfit.dto.PtTrainerResponse;
 import linkfit.dto.PtUserResponse;
@@ -23,6 +24,7 @@ import linkfit.repository.PtRepository;
 import linkfit.repository.ScheduleRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
+import linkfit.status.PtStatus;
 import linkfit.util.JwtUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -84,12 +86,20 @@ public class PtService {
         ptRepository.save(suggestion);
     }
 
-    public List<PtSuggestionResponse> getAllPtSuggestion(
+    public List<SendPtSuggestResponse> getAllSendSuggestion(
         String authorization,
         Pageable pageable) {
         Trainer trainer = getTrainer(authorization);
         return ptRepository.findAllByTrainer(trainer, pageable).stream()
-            .map(Pt::toDto)
+            .map(Pt::toSendDto)
+            .toList();
+    }
+
+    public List<ReceivePtSuggestResponse> getAllReceiveSuggestion(String authorization,
+        Pageable pageable) {
+        User user = getUser(authorization);
+        return ptRepository.findAllByUserAndStatus(user, PtStatus.WAITING, pageable).stream()
+            .map(Pt::toReceiveDto)
             .toList();
     }
 
