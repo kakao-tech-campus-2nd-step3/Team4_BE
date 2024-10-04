@@ -73,4 +73,8 @@ public class Gym {
     public void refuse() {
         status = GymStatus.REFUSE;
     }
+
+    public void updateGym(String description) {
+        this.description = description;
+    }
 }

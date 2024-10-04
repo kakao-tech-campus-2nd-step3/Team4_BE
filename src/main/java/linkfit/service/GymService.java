@@ -1,6 +1,8 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.GYM_ADMIN_PERMISSION_DENIED;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_GYM;
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_RELATION;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 import static linkfit.status.GymStatus.APPROVAL;
 import static linkfit.status.GymStatus.WAITING;
@@ -12,11 +14,13 @@ import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymRegisterWaitingResponse;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
+import linkfit.dto.GymDescriptionRequest;
 import linkfit.entity.Gym;
 import linkfit.entity.GymAdminRelation;
 import linkfit.entity.GymImage;
 import linkfit.entity.Trainer;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PermissionException;
 import linkfit.repository.GymAdminRelationRepository;
 import linkfit.repository.GymImageRepository;
 import linkfit.repository.GymRepository;
@@ -25,8 +29,11 @@ import linkfit.util.JwtUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Transactional
 public class GymService {
 
     private final GymRepository gymRepository;
@@ -34,15 +41,18 @@ public class GymService {
     private final GymImageRepository gymImageRepository;
     private final GymAdminRelationRepository gymAdminRelationRepository;
     private final JwtUtil jwtUtil;
+    private final ImageUploadService imageUploadService;
 
     public GymService(GymRepository gymRepository, TrainerRepository trainerRepository,
         GymImageRepository gymImageRepository,
-        GymAdminRelationRepository gymAdminRelationRepository, JwtUtil jwtUtil) {
+        GymAdminRelationRepository gymAdminRelationRepository, JwtUtil jwtUtil,
+        ImageUploadService imageUploadService) {
         this.gymRepository = gymRepository;
         this.trainerRepository = trainerRepository;
         this.gymImageRepository = gymImageRepository;
         this.gymAdminRelationRepository = gymAdminRelationRepository;
         this.jwtUtil = jwtUtil;
+        this.imageUploadService = imageUploadService;
     }
 
     public List<Gym> findAllGym(Pageable pageable) {
@@ -116,4 +126,34 @@ public class GymService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
     }
 
+    public void updateGym(Long gymId, String authorization,
+        GymDescriptionRequest gymDescriptionRequest, List<MultipartFile> gymImages) {
+        Trainer trainer = getTrainer(authorization);
+        Gym gym = getGymById(gymId);
+        validPermission(gym, trainer);
+        updateDescription(gym, gymDescriptionRequest.description());
+        updateImages(gym, gymImages);
+    }
+
+    private void validPermission(Gym gym, Trainer trainer) {
+        GymAdminRelation gymAdminRelation = gymAdminRelationRepository.findByGym(gym)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_RELATION));
+        if (!trainer.equals(gymAdminRelation.getTrainer())) {
+            throw new PermissionException(GYM_ADMIN_PERMISSION_DENIED);
+        }
+    }
+
+    private void updateDescription(Gym gym, String description) {
+        gym.updateGym(description);
+        gymRepository.save(gym);
+    }
+
+    private void updateImages(Gym gym, List<MultipartFile> gymImages) {
+        gymImageRepository.deleteAllByGym(gym);
+        for (MultipartFile image : gymImages) {
+            String imageUrl = imageUploadService.saveGymImage(image);
+            GymImage gymImage = new GymImage(gym, imageUrl);
+            gymImageRepository.save(gymImage);
+        }
+    }
 }

@@ -7,3 +7,7 @@ VALUES ('a@naver.com', '123', '일반회원1', 'https://nurspace-bucket.s3.ap-no
 INSERT INTO TRAINER_TB(email, password, name, profile_image_url, gym_id, gender)
 VALUES ('t@naver.com', '123', '트레이너1', 'https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg', 1, 'MALE');
 
+INSERT INTO GYM_ADMIN_RELATION_TB(gym_id, trainer_id) VALUES (1, 1);
+
+INSERT INTO BODY_INFO_TB(user_id, inbody_image_url, create_date, deleted)
+VALUES (1, 'https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg', NOW(),FALSE)

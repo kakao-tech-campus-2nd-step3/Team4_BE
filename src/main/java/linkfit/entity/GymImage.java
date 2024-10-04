@@ -24,6 +24,13 @@ public class GymImage {
     @Column(nullable = false)
     private String imageUrl;
 
+    protected GymImage() {}
+
+    public GymImage(Gym gym, String imageUrl) {
+        this.gym = gym;
+        this.imageUrl = imageUrl;
+    }
+
     public Long getId() {
         return id;
     }
