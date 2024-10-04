@@ -35,17 +35,15 @@ public class PtController {
 
     @GetMapping("/trainer")
     public ResponseEntity<List<TrainerPtResponse>> getAllPt(
-        @RequestHeader("Authorization") String authorization,
-        Pageable pageable) {
+        @RequestHeader("Authorization") String authorization, Pageable pageable) {
         List<TrainerPtResponse> responseBody = ptService.getAllPt(authorization, pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
-    @GetMapping("/trainer/suggest")
+    @GetMapping("/suggests/trainer")
     public ResponseEntity<List<PtSuggestionResponse>> getAllPtSuggestion(
-        @RequestHeader("Authorization") String authorization,
-        Pageable pageable) {
+        @RequestHeader("Authorization") String authorization, Pageable pageable) {
         List<PtSuggestionResponse> responseBody = ptService.getAllPtSuggestion(authorization,
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
@@ -61,8 +59,7 @@ public class PtController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> suggestPt(
-        @RequestHeader("Authorization") String authorization,
+    public ResponseEntity<Void> suggestPt(@RequestHeader("Authorization") String authorization,
         @Valid @RequestBody PtSuggestionRequest ptSuggestionRequest) {
         ptService.suggestPt(authorization, ptSuggestionRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -71,8 +68,7 @@ public class PtController {
 
     @DeleteMapping("/{ptId}")
     public ResponseEntity<Void> recallPtSuggestion(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId) {
+        @RequestHeader("Authorization") String authorization, @PathVariable Long ptId) {
         ptService.recallPtSuggestion(authorization, ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
@@ -80,8 +76,7 @@ public class PtController {
 
     @PutMapping("/{ptId}")
     public ResponseEntity<Void> updatePtSuggestion(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId,
+        @RequestHeader("Authorization") String authorization, @PathVariable Long ptId,
         @Valid @RequestBody PtSuggestionUpdateRequest ptSuggestionUpdateRequest) {
         ptService.updatePtSuggestion(authorization, ptId, ptSuggestionUpdateRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
@@ -90,8 +85,7 @@ public class PtController {
 
     @GetMapping("/{ptId}/user")
     public ResponseEntity<PtTrainerResponse> getPtTrainerProfile(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId) {
+        @RequestHeader("Authorization") String authorization, @PathVariable Long ptId) {
         PtTrainerResponse responseBody = ptService.getPtTrainerProfile(authorization, ptId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
@@ -99,8 +93,7 @@ public class PtController {
 
     @GetMapping("/{ptId}/trainer")
     public ResponseEntity<PtUserResponse> getPtUserProfile(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId) {
+        @RequestHeader("Authorization") String authorization, @PathVariable Long ptId) {
         PtUserResponse responseBody = ptService.getPtUserProfile(authorization, ptId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);

@@ -109,7 +109,8 @@ public class Pt {
     }
 
     public PtSuggestionResponse toDto() {
-        return new PtSuggestionResponse(id, user, totalCount, price, status);
+        return new PtSuggestionResponse(id, user.getName(), user.getProfileImageUrl(), totalCount,
+            price, status);
     }
 
     public void refuse() {
