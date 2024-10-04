@@ -1,20 +1,19 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PREFERENCE;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import linkfit.entity.Sports;
-import org.springframework.stereotype.Service;
-
 import linkfit.dto.Coordinate;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
-import linkfit.entity.BodyInfo;
 import linkfit.entity.Preference;
+import linkfit.entity.Sports;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
 import linkfit.repository.PreferenceRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PreferenceService {
@@ -37,10 +36,8 @@ public class PreferenceService {
 
     public void registerPreference(String authorization, PreferenceRequest request) {
         User user = userService.getUser(authorization);
-        //최신 BodyInfo를 받아오는 메서드로 수정 필요
-        BodyInfo bodyInfo = userService.getRecentBodyInfo(user.getId());
         Sports sports = sportsService.getSportsById(request.sportsId());
-        Preference preference = request.toEntity(bodyInfo, sports);
+        Preference preference = request.toEntity(user, sports);
         preferenceRepository.save(preference);
     }
 
@@ -59,19 +56,20 @@ public class PreferenceService {
 
     private void processPreference(Preference preference, Coordinate gymCoordinates,
         List<PreferenceResponse> response) {
-        String userLocation = preference.getBodyInfo().getUser().getLocation();
+        User user = preference.getUser();
+        String userLocation = user.getLocation();
         Coordinate userCoordinates = distanceCalculatorService.getCoordinates(userLocation);
         double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates,
             userCoordinates);
         if (preference.getRange() >= distance) {
-            response.add(preference.toDto());
+            response.add(preference.toDto(userService.getRecentBodyInfo(user.getId())));
         }
     }
     
     public void deletePreference(String authorization) {
     	User user = userService.getUser(authorization);
-    	Preference preference = preferenceRepository.getByUserId(user.getId())
-    			.orElseThrow(() -> new NotFoundException("You have not registered for matching."));
+        Preference preference = preferenceRepository.findByUser(user)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFERENCE));
     	preferenceRepository.delete(preference);
     }
 }

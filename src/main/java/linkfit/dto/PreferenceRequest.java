@@ -1,14 +1,13 @@
 package linkfit.dto;
 
-import linkfit.entity.BodyInfo;
 import linkfit.entity.Preference;
 import linkfit.entity.Sports;
+import linkfit.entity.User;
+import linkfit.status.TrainerGender;
 
-public record PreferenceRequest(String gender, Long sportsId, Integer range, String goal) {
+public record PreferenceRequest(Long sportsId, TrainerGender gender, int range, String goal) {
 
-
-    public Preference toEntity(BodyInfo bodyInfo, Sports sports){
-        return new Preference(gender, sports, bodyInfo, range,
-                goal());
+    public Preference toEntity(User user, Sports sports) {
+        return new Preference(user, sports, gender, range, goal);
     }
 }
