@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import linkfit.config.properties.AwsProperties;
 
-import linkfit.entity.BodyInfo;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
