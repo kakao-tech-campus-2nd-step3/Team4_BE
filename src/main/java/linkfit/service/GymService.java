@@ -1,7 +1,6 @@
 package linkfit.service;
 
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_GYM;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_RELATION;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 import static linkfit.status.GymStatus.APPROVAL;
 import static linkfit.status.GymStatus.WAITING;
@@ -95,7 +94,8 @@ public class GymService {
             .toList();
     }
 
-    public void sendGymRegistrationRequest(String authorization, GymRegisterRequest gymRegisterRequest) {
+    public void sendGymRegistrationRequest(String authorization,
+        GymRegisterRequest gymRegisterRequest) {
         Trainer trainer = getTrainer(authorization);
         Gym gym = gymRegisterRequest.toEntity();
         gymRepository.save(gym);

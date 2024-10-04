@@ -1,8 +1,6 @@
 package linkfit.adminController;
 
-import jakarta.validation.Valid;
 import java.util.List;
-import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymRegisterWaitingResponse;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
