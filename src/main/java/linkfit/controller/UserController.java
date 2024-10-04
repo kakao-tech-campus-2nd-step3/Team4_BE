@@ -67,7 +67,7 @@ public class UserController {
     @DeleteMapping("/info/{infoId}")
     public ResponseEntity<Void> deleteBodyInfo(@RequestHeader("Authorization") String authorization,
         @PathVariable("infoId") Long infoId) {
-        userService.deleteBodyInfo(authorization,infoId);
+        userService.deleteBodyInfo(authorization, infoId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

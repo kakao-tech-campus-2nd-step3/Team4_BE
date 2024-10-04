@@ -1,6 +1,8 @@
 package linkfit.dto;
 
-public record TrainerProfileResponse(String name, String gender, String profileImageUrl,
+import linkfit.status.TrainerGender;
+
+public record TrainerProfileResponse(String name, TrainerGender gender, String profileImageUrl,
                                      String gymName) {
 
 }

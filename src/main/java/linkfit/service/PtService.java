@@ -120,7 +120,7 @@ public class PtService {
             throw new IllegalArgumentException();
         }
         if (status == 1) {
-            pt.reject();
+            pt.refuse();
         }
         if (status == 3) {
             pt.accept();

@@ -25,8 +25,8 @@ public class PreferenceService {
     private final SportsService sportsService;
 
     public PreferenceService(PreferenceRepository preferenceRepository, UserService userService,
-                             TrainerService trainerService, DistanceCalculatorService distanceCalculatorService,
-                             SportsService sportsService) {
+        TrainerService trainerService, DistanceCalculatorService distanceCalculatorService,
+        SportsService sportsService) {
         this.preferenceRepository = preferenceRepository;
         this.userService = userService;
         this.trainerService = trainerService;
@@ -57,10 +57,11 @@ public class PreferenceService {
     }
 
     private void processPreference(Preference preference, Coordinate gymCoordinates,
-                                   List<PreferenceResponse> response) {
+        List<PreferenceResponse> response) {
         String userLocation = preference.getBodyInfo().getUser().getLocation();
         Coordinate userCoordinates = distanceCalculatorService.getCoordinates(userLocation);
-        double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates, userCoordinates);
+        double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates,
+            userCoordinates);
         if (preference.getRange() >= distance) {
             response.add(preference.toDto());
         }

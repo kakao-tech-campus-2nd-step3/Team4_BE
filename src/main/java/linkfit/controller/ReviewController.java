@@ -47,9 +47,10 @@ public class ReviewController {
     }
 
     @PostMapping("/{trainerId}")
-    public ResponseEntity<Void> addReview(@RequestHeader("Authorization") String authorization, @RequestBody
-        ReviewRequest request, @PathVariable("trainerId") Long trainerId){
-        reviewService.addReview(authorization,request,trainerId) ;
+    public ResponseEntity<Void> addReview(@RequestHeader("Authorization") String authorization,
+        @RequestBody
+        ReviewRequest request, @PathVariable("trainerId") Long trainerId) {
+        reviewService.addReview(authorization, request, trainerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

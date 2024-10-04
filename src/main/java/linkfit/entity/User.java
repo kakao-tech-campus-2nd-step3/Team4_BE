@@ -10,58 +10,59 @@ import jakarta.persistence.Table;
 import linkfit.dto.UserProfileResponse;
 import linkfit.exception.PasswordMismatchException;
 import linkfit.dto.UserProfileRequest;
+
 import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
 
 @Entity
 @Table(name = "USER_TB", indexes = @Index(name = "IDX_USER_EMAIL", columnList = "EMAIL"))
 public class User {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
-	@Column(nullable = false)
+
+    @Column(nullable = false)
     private String email;
-	
-	@Column(nullable = false)
+
+    @Column(nullable = false)
     private String password;
-	
-	@Column(nullable = false)
+
+    @Column(nullable = false)
     private String name;
-	
-	@Column(nullable = false)
+
+    @Column(nullable = false)
     private String profileImageUrl;
-	
+
     @Column(nullable = false)
     private String location;
 
     public Long getId() {
-    	return id;
+        return id;
     }
-    
+
     public String getEmail() {
-    	return email;
+        return email;
     }
-    
+
     public String getName() {
-    	return name;
+        return name;
     }
-    
+
     public String getProfileImageUrl() {
-    	return profileImageUrl;
+        return profileImageUrl;
     }
-    
+
     public String getLocation() {
         return location;
     }
-    
+
     public void setName(String name) {
-    	this.name = name;
+        this.name = name;
     }
-    
+
     public void setProfileImageUrl(String profileImageUrl) {
-		this.profileImageUrl = profileImageUrl;
-	}
+        this.profileImageUrl = profileImageUrl;
+    }
 
     public void setLocation(String location) {
         this.location = location;
@@ -71,9 +72,9 @@ public class User {
     }
 
     public User(String email, String password, String name, String location) {
-    	this.email = email;
-    	this.password = password;
-    	this.name = name;
+        this.email = email;
+        this.password = password;
+        this.name = name;
         this.location = location;
     }
 
@@ -81,7 +82,7 @@ public class User {
         this.setName(request.name());
         this.setLocation(request.location());
     }
-    
+
     public void validatePassword(String inputPassword) {
         if (!inputPassword.equals(this.password)) {
             throw new PasswordMismatchException(NOT_MATCH_PASSWORD);

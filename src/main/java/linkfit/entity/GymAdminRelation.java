@@ -24,7 +24,8 @@ public class GymAdminRelation {
     @JoinColumn(nullable = false)
     private Trainer trainer;
 
-    protected GymAdminRelation() {}
+    protected GymAdminRelation() {
+    }
 
     public GymAdminRelation(Gym gym, Trainer trainer) {
         this.gym = gym;

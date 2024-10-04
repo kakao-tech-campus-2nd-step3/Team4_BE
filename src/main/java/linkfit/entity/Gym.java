@@ -1,7 +1,16 @@
 
 package linkfit.entity;
 
-import jakarta.persistence.*;
+import static linkfit.status.GymStatus.WAITING;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import linkfit.dto.GymRegisterWaitingResponse;
 import linkfit.status.GymStatus;
 
@@ -15,10 +24,6 @@ public class Gym {
 
     @Column(nullable = false)
     private String name;
-    
-    // 0: 승인x, 1: 승인o
-    @Column(nullable = false, columnDefinition = "integer defalut 0")
-    private int status;
 
     @Column(nullable = false)
     private String location;
@@ -27,14 +32,9 @@ public class Gym {
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private GymStatus status = GymStatus.WAITING;
+    private GymStatus status = WAITING;
 
     protected Gym() {
-    }
-    
-    public Gym(String location, String name) {
-    	this.location = location;
-    	this.name = name;
     }
 
     public Gym(String name, String location) {

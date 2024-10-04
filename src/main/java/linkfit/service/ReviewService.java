@@ -17,6 +17,7 @@ import linkfit.repository.PtRepository;
 import linkfit.repository.ReviewRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
+import linkfit.status.PtStatus;
 import linkfit.util.JwtUtil;
 import org.springframework.stereotype.Service;
 
@@ -74,9 +75,10 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    private void reviewPermission(User user){
-        Pt pt = ptRepository.findByUser(user).orElseThrow(()->new NotFoundException(NOT_FOUND_PT));
-        if(pt.getStatus()==4){
+    private void reviewPermission(User user) {
+        Pt pt = ptRepository.findByUser(user)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
+        if (pt.getStatus() == PtStatus.COMPLETE) {
             throw new PermissionException(REVIEW_PERMISSION_DENIED);
         }
     }

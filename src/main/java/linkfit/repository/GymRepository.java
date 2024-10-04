@@ -11,7 +11,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GymRepository extends JpaRepository<Gym, Long> {
+
     Page<Gym> findAllByNameContainingAndStatus(String keyword, GymStatus status, Pageable pageable);
+
     List<Gym> findAllByStatus(GymStatus status);
+
     Page<Gym> findAllByStatus(GymStatus status, Pageable pageable);
 }

@@ -56,7 +56,6 @@ public class Preference {
     }
 
 
-
     public PreferenceResponse toDto() {
         PreferenceResponse preferenceResponse = new PreferenceResponse(
             bodyInfo.getUser().getId(), bodyInfo.getUser().getName(),

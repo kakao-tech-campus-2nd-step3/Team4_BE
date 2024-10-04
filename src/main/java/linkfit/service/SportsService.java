@@ -63,8 +63,9 @@ public class SportsService {
         sportsRepository.deleteById(id);
     }
 
-    public Sports getSportsById(Long id){
-        return sportsRepository.findById(id).orElseThrow(()->new NotFoundException(NOT_FOUND_SPORTS));
+    public Sports getSportsById(Long id) {
+        return sportsRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_SPORTS));
     }
 
     private void isExist(Long id) {
