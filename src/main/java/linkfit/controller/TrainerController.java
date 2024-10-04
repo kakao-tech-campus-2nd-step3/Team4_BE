@@ -65,4 +65,13 @@ public class TrainerController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(res);
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<TrainerProfileResponse> getMyProfile(
+        @RequestHeader("Authorization") String authorization) {
+        TrainerProfileResponse responseBody = trainerService.getMyProfile(authorization);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
+    }
+
 }
