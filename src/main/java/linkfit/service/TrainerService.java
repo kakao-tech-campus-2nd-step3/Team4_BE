@@ -27,11 +27,8 @@ public class TrainerService {
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
 
-    public TrainerService(
-        TrainerRepository trainerRepository,
-        CareerService careerService,
-        JwtUtil jwtUtil,
-        ImageUploadService imageUploadService) {
+    public TrainerService(TrainerRepository trainerRepository, CareerService careerService,
+        JwtUtil jwtUtil, ImageUploadService imageUploadService) {
         this.trainerRepository = trainerRepository;
         this.careerService = careerService;
         this.jwtUtil = jwtUtil;
@@ -57,24 +54,28 @@ public class TrainerService {
     }
 
     public List<CareerResponse> getCareers(String authorization) {
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getMyInfo(authorization);
         return careerService.getAllTrainerCareers(trainer.getId());
     }
 
     public void deleteCareer(String authorization, Long careerId) {
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getMyInfo(authorization);
         if (Objects.equals(trainer.getId(), careerService.findTrainerIdByCareerId(careerId))) {
             careerService.deleteCareer(careerId);
         }
     }
 
     public void addCareer(String authorization, CareerRequest request) {
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getMyInfo(authorization);
         careerService.addCareer(trainer, request);
     }
 
-    public Trainer getTrainer(String authorization) {
+    public Trainer getMyInfo(String authorization) {
         Long trainerId = jwtUtil.parseToken(authorization);
+        return getTrainer(trainerId);
+    }
+
+    private Trainer getTrainer(Long trainerId) {
         return trainerRepository.findById(trainerId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
     }
@@ -84,8 +85,12 @@ public class TrainerService {
     }
 
     public TrainerProfileResponse getProfile(Long trainerId) {
-        Trainer trainer = trainerRepository.findById(trainerId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
+        Trainer trainer = getTrainer(trainerId);
+        return trainer.toDto();
+    }
+
+    public TrainerProfileResponse getMyProfile(String authorization) {
+        Trainer trainer = getMyInfo(authorization);
         return trainer.toDto();
     }
 }
