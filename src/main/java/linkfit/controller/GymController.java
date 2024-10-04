@@ -2,12 +2,12 @@ package linkfit.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
 import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
-import linkfit.dto.GymDescriptionRequest;
 import linkfit.service.GymService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

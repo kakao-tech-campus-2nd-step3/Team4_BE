@@ -1,7 +1,6 @@
 package linkfit.controller;
 
 import java.util.List;
-
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.TrainerProfileResponse;

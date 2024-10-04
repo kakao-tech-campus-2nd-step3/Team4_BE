@@ -1,14 +1,10 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 
 import java.util.List;
 import java.util.Objects;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.LoginRequest;
@@ -19,6 +15,9 @@ import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
 import linkfit.repository.TrainerRepository;
 import linkfit.util.JwtUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class TrainerService {

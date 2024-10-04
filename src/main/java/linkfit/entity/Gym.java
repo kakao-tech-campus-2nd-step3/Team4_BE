@@ -1,4 +1,3 @@
-
 package linkfit.entity;
 
 import static linkfit.status.GymStatus.WAITING;

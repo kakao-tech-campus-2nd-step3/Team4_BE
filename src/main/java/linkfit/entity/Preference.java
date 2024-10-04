@@ -45,11 +45,11 @@ public class Preference {
         this.goal = goal;
     }
 
-    public int getRange() {
-        return range;
+    protected Preference() {
     }
 
-    protected Preference() {
+    public int getRange() {
+        return range;
     }
 
     public User getUser() {

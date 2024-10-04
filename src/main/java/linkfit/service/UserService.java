@@ -1,20 +1,13 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_BODYINFO;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_USER;
-import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
 
 import java.util.List;
 import java.util.Objects;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import linkfit.dto.LoginRequest;
 import linkfit.dto.BodyInfoResponse;
+import linkfit.dto.LoginRequest;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.dto.UserRegisterRequest;
@@ -25,6 +18,11 @@ import linkfit.exception.NotFoundException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService {

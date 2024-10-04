@@ -2,7 +2,6 @@ package linkfit.repository;
 
 import java.util.List;
 import linkfit.entity.Gym;
-
 import linkfit.status.GymStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
