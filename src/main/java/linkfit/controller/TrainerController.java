@@ -58,7 +58,7 @@ public class TrainerController {
             .body(list);
     }
 
-    @GetMapping("/profile/{trainerId}")
+    @GetMapping("/{trainerId}")
     public ResponseEntity<TrainerProfileResponse> getTrainerProfile(
         @PathVariable("trainerId") Long trainerId) {
         TrainerProfileResponse res = trainerService.getProfile(trainerId);
