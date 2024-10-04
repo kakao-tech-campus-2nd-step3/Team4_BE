@@ -28,6 +28,7 @@ public class AmazonS3ClientConfig {
             awsProperties.credentials().secretKey());
         return AmazonS3ClientBuilder.standard()
             .withCredentials(new AWSStaticCredentialsProvider(credentials))
-            .withRegion(Regions.fromName(awsProperties.region().statics())).build();
+            .withRegion(Regions.fromName(awsProperties.region().value()))
+            .build();
     }
 }
