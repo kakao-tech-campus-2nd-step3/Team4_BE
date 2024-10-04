@@ -20,6 +20,10 @@ spring:
     show-sql: true
     defer-datasource-initialization: true
 
+  sql:
+    init:
+      mode: always
+
 jwt:
   expiration-time: 1800000
 
@@ -32,7 +36,7 @@ cloud:
       statics: ap-northeast-2
     s3:
       bucket: nurspace-bucket
-      
+
 kakao:
   api-key: ${KAKAO_API_KEY}
   address-search-url: ${ADDRESS_SEARCH_URL}

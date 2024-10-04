@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/trainer")
+@RequestMapping("/api/trainers")
 public class TrainerController {
 
     private final TrainerService trainerService;

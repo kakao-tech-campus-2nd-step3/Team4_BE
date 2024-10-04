@@ -1,39 +1,85 @@
 package linkfit.entity;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
+
 import jakarta.persistence.*;
 import linkfit.dto.TrainerProfileResponse;
+import linkfit.exception.PasswordMismatchException;
+import linkfit.status.TrainerGender;
 
 @Entity
 @Table(name = "TRAINER_TB", indexes = @Index(name = "IDX_TRAINER_EMAIL", columnList = "EMAIL"))
-public class Trainer extends Person<TrainerProfileResponse> {
+public class Trainer {
 
-    @ManyToOne
-    @JoinColumn(nullable = true)
-    private Gym gym;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
-    private String gender;
+    private String email;
 
-    public String getGender() {
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String profileImageUrl;
+
+    @ManyToOne
+    private Gym gym;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private TrainerGender gender;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TrainerGender getGender() {
         return gender;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
     public Gym getGym() {
         return gym;
     }
 
-    protected Trainer() {
-        super();
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
-    public Trainer(String email, String password, String name, String gender) {
-        super(email, password, name);
+    protected Trainer() {
+    }
+
+    public Trainer(String email, String password, String name, TrainerGender gender) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
         this.gender = gender;
     }
 
-    @Override
+    public void validatePassword(String inputPassword) {
+        if (!inputPassword.equals(this.password)) {
+            throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
+        }
+    }
+
     public TrainerProfileResponse toDto() {
-        return new TrainerProfileResponse(this.getEmail(), this.getPassword(), this.getName(),
-            this.getGender());
+        return new TrainerProfileResponse(getName(), getGender(), getProfileImageUrl(),
+            getGym().getName());
     }
 }
