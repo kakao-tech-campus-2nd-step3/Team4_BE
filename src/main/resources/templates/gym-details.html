@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>헬스장 상세 정보</title>
+</head>
+<body>
+<a href="/admin/gyms"><- 헬스장 관리 페이지로 돌아가기</a>
+<h1>헬스장 상세 페이지</h1>
+<h2>헬스장 정보</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Location</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>
+      <span th:text="${gym.id}"/>
+    </td>
+    <td>
+      <span th:text="${gym.name}"/>
+    </td>
+    <td>
+      <span th:text="${gym.location}"/>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>헬스장 소속 트레이너 목록</h2>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Gender</th>
+  </tr>
+  </thead>
+  <tbody th:each="trainer : ${trainerList}">
+  <tr>
+    <td>
+      <span th:text="${trainer.id}"/>
+    </td>
+    <td>
+      <span th:text="${trainer.name}"/>
+    </td>
+    <td>
+      <span th:text="${trainer.gender}"/>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
