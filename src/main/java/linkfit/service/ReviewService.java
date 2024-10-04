@@ -4,7 +4,6 @@ import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PT;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_REVIEW;
 import static linkfit.exception.GlobalExceptionHandler.REVIEW_PERMISSION_DENIED;
 
-import java.awt.print.PrinterException;
 import java.util.List;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
@@ -80,6 +79,5 @@ public class ReviewService {
         if(pt.getStatus()==4){
             throw new PermissionException(REVIEW_PERMISSION_DENIED);
         }
-
     }
 }
