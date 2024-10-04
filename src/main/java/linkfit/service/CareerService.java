@@ -2,6 +2,7 @@ package linkfit.service;
 
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_CAREER;
 
+import java.util.List;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.entity.Career;
@@ -9,8 +10,6 @@ import linkfit.entity.Trainer;
 import linkfit.exception.NotFoundException;
 import linkfit.repository.CareerRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CareerService {

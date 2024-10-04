@@ -43,7 +43,7 @@ public class PreferenceService {
 
 
     public List<PreferenceResponse> getAllPreference(String authorization) {
-        Trainer trainer = trainerService.getTrainer(authorization);
+        Trainer trainer = trainerService.getMyInfo(authorization);
         String gymLocation = trainer.getGym().getLocation();
         List<Preference> preferences = preferenceRepository.findAll();
         List<PreferenceResponse> response = new ArrayList<>();
@@ -65,11 +65,11 @@ public class PreferenceService {
             response.add(preference.toDto(userService.getRecentBodyInfo(user.getId())));
         }
     }
-    
+
     public void deletePreference(String authorization) {
-    	User user = userService.getUser(authorization);
+        User user = userService.getUser(authorization);
         Preference preference = preferenceRepository.findByUser(user)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFERENCE));
-    	preferenceRepository.delete(preference);
+        preferenceRepository.delete(preference);
     }
 }

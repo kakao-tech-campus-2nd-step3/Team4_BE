@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
 import java.time.LocalDateTime;
 import linkfit.dto.BodyInfoResponse;
 import org.hibernate.annotations.SQLDelete;
@@ -31,7 +30,7 @@ public class BodyInfo {
 
     private LocalDateTime createDate;
 
-    private boolean deleted = Boolean.FALSE;
+    private final boolean deleted = Boolean.FALSE;
 
     protected BodyInfo() {
     }

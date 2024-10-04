@@ -1,7 +1,6 @@
 package linkfit.controller;
 
 import java.util.List;
-
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.TrainerProfileResponse;
@@ -40,7 +39,8 @@ public class TrainerController {
         @RequestHeader("Authorization") String authorization,
         @RequestBody CareerRequest request) {
         trainerService.addCareer(authorization, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .build();
     }
 
     @DeleteMapping("/{careerId}")
@@ -48,7 +48,8 @@ public class TrainerController {
         @RequestHeader("Authorization") String authorization,
         @PathVariable("careerId") Long careerId) {
         trainerService.deleteCareer(authorization, careerId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            .build();
     }
 
     @GetMapping("/career/{trainerId}")
@@ -59,11 +60,20 @@ public class TrainerController {
             .body(list);
     }
 
-    @GetMapping("/profile/{trainerId}")
+    @GetMapping("/{trainerId}")
     public ResponseEntity<TrainerProfileResponse> getTrainerProfile(
         @PathVariable("trainerId") Long trainerId) {
-        TrainerProfileResponse res = trainerService.getProfile(trainerId);
+        TrainerProfileResponse responseBody = trainerService.getProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(res);
+            .body(responseBody);
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<TrainerProfileResponse> getMyProfile(
+        @RequestHeader("Authorization") String authorization) {
+        TrainerProfileResponse responseBody = trainerService.getMyProfile(authorization);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
+    }
+
 }

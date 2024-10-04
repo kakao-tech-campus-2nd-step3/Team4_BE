@@ -8,9 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
 import java.time.LocalDateTime;
-
 import linkfit.dto.ReviewResponse;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -43,7 +41,7 @@ public class Review {
     @CreatedDate
     private LocalDateTime createdDate;
 
-    private boolean deleted = Boolean.FALSE;
+    private final boolean deleted = Boolean.FALSE;
 
     protected Review() {
     }
