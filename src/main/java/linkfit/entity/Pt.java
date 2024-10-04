@@ -1,6 +1,7 @@
 package linkfit.entity;
 
 import static linkfit.status.PtStatus.APPROVAL;
+import static linkfit.status.PtStatus.RECALL;
 import static linkfit.status.PtStatus.REFUSE;
 import static linkfit.status.PtStatus.WAITING;
 
@@ -123,8 +124,12 @@ public class Pt {
         this.status = REFUSE;
     }
 
-    public void accept() {
+    public void approval() {
         this.status = APPROVAL;
         this.startDate = LocalDateTime.now();
+    }
+
+    public void recall() {
+        this.status = RECALL;
     }
 }

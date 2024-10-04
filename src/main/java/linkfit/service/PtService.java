@@ -9,7 +9,6 @@ import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
-import linkfit.dto.PtSuggestionUpdateRequest;
 import linkfit.dto.PtUserResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
@@ -70,7 +69,7 @@ public class PtService {
         return new UserPtResponse(pt, schedules);
     }
 
-    public void suggestPt(
+    public void sendSuggestion(
         String authorization,
         PtSuggestionRequest ptSuggestionRequest) {
         Trainer trainer = getTrainer(authorization);
@@ -102,39 +101,34 @@ public class PtService {
             .toList();
     }
 
-    public void recallPtSuggestion(String authorization, Long ptId) {
+    public void approvalSuggestion(String authorization, Long ptId) {
+        User user = getUser(authorization);
+        Pt suggestion = findSuggestion(ptId);
+        if (!suggestion.getUser().equals(user)) {
+            throw new PermissionException(NOT_OWNER);
+        }
+        suggestion.approval();
+        ptRepository.save(suggestion);
+    }
+
+    public void recallSuggestion(String authorization, Long ptId) {
         Trainer trainer = getTrainer(authorization);
         Pt suggestion = findSuggestion(ptId);
         if (!suggestion.getTrainer().equals(trainer)) {
             throw new PermissionException(NOT_OWNER);
         }
-        ptRepository.deleteById(ptId);
+        suggestion.recall();
+        ptRepository.save(suggestion);
     }
 
-    public void updatePtSuggestion(
-        String authorization,
-        Long ptId,
-        PtSuggestionUpdateRequest ptSuggestionUpdateRequest) {
+    public void refuseSuggestion(String authorization, Long ptId) {
         User user = getUser(authorization);
-        int status = ptSuggestionUpdateRequest.status();
         Pt suggestion = findSuggestion(ptId);
         if (!suggestion.getUser().equals(user)) {
             throw new PermissionException(NOT_OWNER);
         }
-        ptRepository.save(updateStatus(suggestion, status));
-    }
-
-    private Pt updateStatus(Pt pt, int status) {
-        if (status != 1 && status != 3) {
-            throw new IllegalArgumentException();
-        }
-        if (status == 1) {
-            pt.refuse();
-        }
-        if (status == 3) {
-            pt.accept();
-        }
-        return pt;
+        suggestion.refuse();
+        ptRepository.save(suggestion);
     }
 
     private Pt findSuggestion(Long ptId) {
@@ -142,7 +136,7 @@ public class PtService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
     }
 
-    public PtUserResponse getPtUserProfile(String authorization, Long ptId) {
+    public PtUserResponse getProgressPtUserDetails(String authorization, Long ptId) {
         Trainer trainer = getTrainer(authorization);
         Pt pt = findSuggestion(ptId);
         if (!pt.getTrainer().equals(trainer)) {
