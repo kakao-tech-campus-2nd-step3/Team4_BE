@@ -32,8 +32,8 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<UserProfileResponse> getProfile(
         @RequestHeader("Authorization") String authorization) {
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(userService.getProfile(authorization));
+        UserProfileResponse response = userService.getProfile(authorization);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/profile")
@@ -69,8 +69,5 @@ public class UserController {
         userService.deleteBodyInfo(authorization, infoId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
-
-
 }

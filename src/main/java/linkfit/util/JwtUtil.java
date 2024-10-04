@@ -15,12 +15,17 @@ import org.springframework.stereotype.Component;
 public class JwtUtil {
 
     private final SecretKey secretKey;
-
     private final long expirationTime;
+    private final String masterToken;
+    private final Long masterId;
 
-    public JwtUtil(@Value("${jwt.expiration-time}") long expirationTime) {
+    public JwtUtil(@Value("${jwt.expiration-time}") long expirationTime,
+                   @Value("${jwt.master-token}") String masterToken,
+                   @Value("${jwt.master-id}") Long masterId) {
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         this.expirationTime = expirationTime;
+        this.masterToken = masterToken;
+        this.masterId = masterId;
     }
 
     public String generateToken(Long id, String email) {
@@ -37,15 +42,23 @@ public class JwtUtil {
     }
 
     public Long parseToken(String token) {
+        String processedToken = token.replace("Bearer ", "");
+        if (isMasterToken(processedToken)) {
+            return masterId;
+        }
         try {
             return Jwts.parser()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getEncoded()))
                 .build()
-                .parseSignedClaims(token.replace("Bearer ", ""))
+                .parseSignedClaims(processedToken)
                 .getPayload()
                 .get("id", Long.class);
         } catch (Exception e) {
             throw new InvalidTokenException(INVALID_TOKEN);
         }
+    }
+
+    private boolean isMasterToken(String token) {
+        return masterToken.equals(token);
     }
 }
