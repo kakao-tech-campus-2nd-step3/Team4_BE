@@ -13,6 +13,7 @@ import linkfit.entity.BodyInfo;
 import linkfit.entity.Preference;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
+import linkfit.exception.NotFoundException;
 import linkfit.repository.PreferenceRepository;
 
 @Service
@@ -64,5 +65,12 @@ public class PreferenceService {
         if (preference.getRange() >= distance) {
             response.add(preference.toDto());
         }
+    }
+    
+    public void deletePreference(String authorization) {
+    	User user = userService.getUser(authorization);
+    	Preference preference = preferenceRepository.getByUserId(user.getId())
+    			.orElseThrow(() -> new NotFoundException("You have not registered for matching."));
+    	preferenceRepository.delete(preference);
     }
 }

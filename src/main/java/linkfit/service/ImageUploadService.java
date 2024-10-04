@@ -32,7 +32,7 @@ public class ImageUploadService {
     }
 
     public void saveUserProfileImage(User user, MultipartFile profileImage) {
-        user.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
+        user.setProfileImageUrl("https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg");
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = uploadFile(profileImage);
             user.setProfileImageUrl(imageUrl);
@@ -40,7 +40,7 @@ public class ImageUploadService {
     }
 
     public void saveTrainerProfileImage(Trainer trainer, MultipartFile profileImage) {
-        trainer.setProfileImageUrl("https://default-profile-url.com/default_profile.png");
+        trainer.setProfileImageUrl("https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg");
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = uploadFile(profileImage);
             trainer.setProfileImageUrl(imageUrl);
