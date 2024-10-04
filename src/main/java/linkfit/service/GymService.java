@@ -151,7 +151,7 @@ public class GymService {
     private void updateImages(Gym gym, List<MultipartFile> gymImages) {
         gymImageRepository.deleteAllByGym(gym);
         for (MultipartFile image : gymImages) {
-            String imageUrl = imageUploadService.saveGymImage(image);
+            String imageUrl = imageUploadService.saveImage(image);
             GymImage gymImage = new GymImage(gym, imageUrl);
             gymImageRepository.save(gymImage);
         }

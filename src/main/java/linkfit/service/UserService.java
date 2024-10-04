@@ -77,7 +77,8 @@ public class UserService {
 
     public void registerBodyInfo(String authorization, MultipartFile profileImage) {
         User user = getUser(authorization);
-        BodyInfo bodyInfo = imageUploadService.saveInbodyImage(user, profileImage);
+        String imageUrl = imageUploadService.saveImage(profileImage);
+        BodyInfo bodyInfo = new BodyInfo(user, imageUrl);
         bodyInfoRepository.save(bodyInfo);
 
     }

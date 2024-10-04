@@ -9,7 +9,6 @@ import java.util.UUID;
 import linkfit.config.properties.AwsProperties;
 
 import linkfit.entity.BodyInfo;
-import linkfit.entity.GymImage;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -49,20 +48,11 @@ public class ImageUploadService {
         }
     }
 
-    public BodyInfo saveInbodyImage(User user, MultipartFile inbodyImage) {
-        if (inbodyImage == null) {
-            throw new ImageUploadException("유효하지 않은 Inbody Image");
-        }
-        String imageUrl = uploadFile(inbodyImage);
-        return new BodyInfo(user, imageUrl);
-
-    }
-
-    public String saveGymImage(MultipartFile gymImage) {
-        if (gymImage == null) {
+    public String saveImage(MultipartFile image) {
+        if (image == null) {
             throw new ImageUploadException(NOT_FOUND_IMAGE);
         }
-        return uploadFile(gymImage);
+        return uploadFile(image);
     }
 
     private String uploadFile(MultipartFile file) {
