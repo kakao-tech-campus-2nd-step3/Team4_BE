@@ -6,7 +6,6 @@ import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.PtSuggestionUpdateRequest;
-import linkfit.dto.PtTrainerResponse;
 import linkfit.dto.PtUserResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
@@ -91,14 +90,6 @@ public class PtController {
         ptService.updatePtSuggestion(authorization, ptId, ptSuggestionUpdateRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
-    }
-
-    @GetMapping("/{ptId}/user")
-    public ResponseEntity<PtTrainerResponse> getPtTrainerProfile(
-        @RequestHeader("Authorization") String authorization, @PathVariable Long ptId) {
-        PtTrainerResponse responseBody = ptService.getPtTrainerProfile(authorization, ptId);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(responseBody);
     }
 
     @GetMapping("/{ptId}/trainer")

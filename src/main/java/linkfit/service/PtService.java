@@ -10,7 +10,6 @@ import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.PtSuggestionUpdateRequest;
-import linkfit.dto.PtTrainerResponse;
 import linkfit.dto.PtUserResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
@@ -141,15 +140,6 @@ public class PtService {
     private Pt findSuggestion(Long ptId) {
         return ptRepository.findById(ptId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
-    }
-
-    public PtTrainerResponse getPtTrainerProfile(String authorization, Long ptId) {
-        User user = getUser(authorization);
-        Pt pt = findSuggestion(ptId);
-        if (!pt.getUser().equals(user)) {
-            throw new PermissionException(NOT_OWNER);
-        }
-        return new PtTrainerResponse(pt.getTrainer());
     }
 
     public PtUserResponse getPtUserProfile(String authorization, Long ptId) {
