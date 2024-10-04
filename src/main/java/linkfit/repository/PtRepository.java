@@ -13,5 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface PtRepository extends JpaRepository<Pt, Long> {
 
     Page<Pt> findAllByTrainer(Trainer trainer, Pageable pageable);
+
     Optional<Pt> findByUser(User user);
 }

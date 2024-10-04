@@ -65,11 +65,11 @@ public class PreferenceService {
             response.add(preference.toDto(userService.getRecentBodyInfo(user.getId())));
         }
     }
-    
+
     public void deletePreference(String authorization) {
-    	User user = userService.getUser(authorization);
+        User user = userService.getUser(authorization);
         Preference preference = preferenceRepository.findByUser(user)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFERENCE));
-    	preferenceRepository.delete(preference);
+        preferenceRepository.delete(preference);
     }
 }

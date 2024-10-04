@@ -1,6 +1,13 @@
 package linkfit.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import linkfit.dto.CareerResponse;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -22,7 +29,15 @@ public class Career {
     @Column(nullable = false)
     private String career;
 
-    private boolean deleted = Boolean.FALSE;
+    private final boolean deleted = Boolean.FALSE;
+
+    protected Career() {
+    }
+
+    public Career(Trainer trainer, String career) {
+        this.trainer = trainer;
+        this.career = career;
+    }
 
     public Long getId() {
         return id;
@@ -34,14 +49,6 @@ public class Career {
 
     public String getCareer() {
         return career;
-    }
-
-    protected Career() {
-    }
-
-    public Career(Trainer trainer, String career) {
-        this.trainer = trainer;
-        this.career = career;
     }
 
     public CareerResponse toDto() {

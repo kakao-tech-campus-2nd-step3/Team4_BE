@@ -8,13 +8,13 @@ import static linkfit.status.GymStatus.APPROVAL;
 import static linkfit.status.GymStatus.WAITING;
 
 import java.util.List;
+import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
 import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymRegisterWaitingResponse;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
-import linkfit.dto.GymDescriptionRequest;
 import linkfit.entity.Gym;
 import linkfit.entity.GymAdminRelation;
 import linkfit.entity.GymImage;
