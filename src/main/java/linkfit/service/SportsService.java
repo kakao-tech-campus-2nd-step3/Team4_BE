@@ -28,7 +28,7 @@ public class SportsService {
     }
 
     private void isExistSports(SportsRequest sportsRequest) {
-        if(sportsRepository.existsByName(sportsRequest.getName())) {
+        if (sportsRepository.existsByName(sportsRequest.name())) {
             throw new DuplicateException(DUPLICATE_NAME);
         }
     }
@@ -47,13 +47,13 @@ public class SportsService {
 
     public void updateSports(Long id, SportsRequest sportsRequest) {
         Sports sports = sportsRepository.findById(id)
-            .orElseThrow(()-> new NotFoundException(NOT_FOUND_SPORTS));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_SPORTS));
         isDuplicateName(sports, sportsRequest);
-        sportsRepository.save(new Sports(id, sportsRequest.getName()));
+        sportsRepository.save(new Sports(id, sportsRequest.name()));
     }
 
     private void isDuplicateName(Sports sports, SportsRequest sportsRequest) {
-        if(sports.getName().equals(sportsRequest.getName())) {
+        if (sports.getName().equals(sportsRequest.name())) {
             throw new DuplicateException(DUPLICATE_NAME);
         }
     }
@@ -63,8 +63,13 @@ public class SportsService {
         sportsRepository.deleteById(id);
     }
 
+    public Sports getSportsById(Long id) {
+        return sportsRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_SPORTS));
+    }
+
     private void isExist(Long id) {
-        if(!sportsRepository.existsById(id)) {
+        if (!sportsRepository.existsById(id)) {
             throw new NotFoundException(NOT_FOUND_SPORTS);
         }
     }

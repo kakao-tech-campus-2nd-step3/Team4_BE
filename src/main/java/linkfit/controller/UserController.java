@@ -2,14 +2,16 @@ package linkfit.controller;
 
 import java.util.List;
 
-import linkfit.dto.UserBodyInfoResponse;
+import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.service.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -30,34 +32,46 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<UserProfileResponse> getProfile(
-            @RequestHeader("Authorization") String authorization) {
+        @RequestHeader("Authorization") String authorization) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(userService.getProfile(authorization));
+            .body(userService.getProfile(authorization));
     }
 
     @PutMapping("/profile")
     public ResponseEntity<Void> updateProfile(
-            @RequestHeader("Authorization") String authorization,
-            @RequestPart("user") UserProfileRequest request,
-            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        @RequestHeader("Authorization") String authorization,
+        @RequestPart("user") UserProfileRequest request,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userService.updateProfile(authorization, request, profileImage);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping("/info")
     public ResponseEntity<Void> registerBodyInfo(
-            @RequestHeader("Authorization") String authorization,
-            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
-        userService.registerBodyInfo(authorization, profileImage);
+        @RequestHeader("Authorization") String authorization,
+        @RequestPart(value = "inbodyImage") MultipartFile inbodyImage) {
+        userService.registerBodyInfo(authorization, inbodyImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/info")
-    public ResponseEntity<List<UserBodyInfoResponse>> getAllBodyInfo(
-            @RequestHeader("Authorization") String authorization,
-            Pageable pageable) {
-        List<UserBodyInfoResponse> responseBody = userService.getAllBodyInfo(authorization, pageable);
+    public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(
+        @RequestHeader("Authorization") String authorization,
+        Pageable pageable) {
+        List<BodyInfoResponse> responseBody = userService.getAllBodyInfo(authorization,
+            pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
+
+    @DeleteMapping("/info/{infoId}")
+    public ResponseEntity<Void> deleteBodyInfo(@RequestHeader("Authorization") String authorization,
+        @PathVariable("infoId") Long infoId) {
+        userService.deleteBodyInfo(authorization, infoId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+
 }

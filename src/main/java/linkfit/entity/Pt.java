@@ -1,7 +1,13 @@
 package linkfit.entity;
 
+import static linkfit.status.PtStatus.APPROVAL;
+import static linkfit.status.PtStatus.REFUSE;
+import static linkfit.status.PtStatus.WAITING;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,6 +18,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import linkfit.dto.PtSuggestionResponse;
+import linkfit.status.PtStatus;
 
 @Entity
 @Table(name = "PT_TB")
@@ -39,17 +46,38 @@ public class Pt {
 
     private LocalDateTime startDate;
 
-    // 0: 대기중, 1: 회수된 제안, 2: 거절된 제안, 3: 수락된 제안
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private int status = 0;
+    private PtStatus status = WAITING;
 
-    protected Pt() {}
+    protected Pt() {
+    }
 
     public Pt(User user, Trainer trainer, int totalCount, int price) {
         this.user = user;
         this.trainer = trainer;
         this.totalCount = totalCount;
         this.price = price;
+    }
+
+    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, PtStatus status) {
+        this.id = id;
+        this.user = user;
+        this.trainer = trainer;
+        this.totalCount = totalCount;
+        this.price = price;
+        this.status = status;
+    }
+
+    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, PtStatus status,
+        LocalDateTime startDate) {
+        this.id = id;
+        this.user = user;
+        this.trainer = trainer;
+        this.totalCount = totalCount;
+        this.price = price;
+        this.status = status;
+        this.startDate = startDate;
     }
 
     public Long getId() {
@@ -76,7 +104,7 @@ public class Pt {
         return startDate;
     }
 
-    public int getStatus() {
+    public PtStatus getStatus() {
         return status;
     }
 
@@ -84,12 +112,12 @@ public class Pt {
         return new PtSuggestionResponse(id, user, totalCount, price, status);
     }
 
-    public void reject() {
-        this.status = 1;
+    public void refuse() {
+        this.status = REFUSE;
     }
 
     public void accept() {
-        this.status = 3;
+        this.status = APPROVAL;
         this.startDate = LocalDateTime.now();
     }
 }

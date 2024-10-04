@@ -1,17 +1,23 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PT;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_REVIEW;
+import static linkfit.exception.GlobalExceptionHandler.REVIEW_PERMISSION_DENIED;
 
 import java.util.List;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
+import linkfit.entity.Pt;
 import linkfit.entity.Review;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PermissionException;
+import linkfit.repository.PtRepository;
 import linkfit.repository.ReviewRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
+import linkfit.status.PtStatus;
 import linkfit.util.JwtUtil;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +27,16 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final TrainerRepository trainerRepository;
     private final UserRepository userRepository;
+
+    private final PtRepository ptRepository;
     private final JwtUtil jwtUtil;
 
-    public ReviewService(
-        ReviewRepository reviewRepository,
-        TrainerRepository trainerRepository,
-        UserRepository userRepository,
-        JwtUtil jwtUtil) {
+    public ReviewService(ReviewRepository reviewRepository, TrainerRepository trainerRepository,
+        UserRepository userRepository, PtRepository ptRepository, JwtUtil jwtUtil) {
         this.reviewRepository = reviewRepository;
         this.trainerRepository = trainerRepository;
         this.userRepository = userRepository;
+        this.ptRepository = ptRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -58,13 +64,22 @@ public class ReviewService {
         Long userId = jwtUtil.parseToken(authorization);
         User user = userRepository.getReferenceById(userId);
         Trainer trainer = trainerRepository.getReferenceById(trainerId);
+        reviewPermission(user);
         Review review = new Review(user, trainer, request.content(), request.score());
         reviewRepository.save(review);
     }
 
     public void deleteReview(String authorization, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException(NOT_FOUND_REVIEW));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_REVIEW));
         reviewRepository.delete(review);
+    }
+
+    private void reviewPermission(User user) {
+        Pt pt = ptRepository.findByUser(user)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
+        if (pt.getStatus() == PtStatus.COMPLETE) {
+            throw new PermissionException(REVIEW_PERMISSION_DENIED);
+        }
     }
 }

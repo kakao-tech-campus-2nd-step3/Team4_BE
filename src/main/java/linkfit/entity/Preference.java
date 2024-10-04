@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import linkfit.dto.PreferenceResponse;
+import linkfit.status.TrainerGender;
 
 @Entity
 @Table(name = "PREFERENCE_TB")
@@ -19,16 +20,16 @@ public class Preference {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private User user;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Sports sports;
 
-    @OneToOne
-    @JoinColumn(nullable = false)
-    private BodyInfo bodyInfo;
-
     @Column(nullable = false)
-    private String gender;
+    private TrainerGender gender;
 
     @Column(nullable = false)
     private int range;
@@ -36,8 +37,12 @@ public class Preference {
     @Column(nullable = false)
     private String goal;
 
-    public BodyInfo getBodyInfo() {
-        return bodyInfo;
+    public Preference(User user, Sports sports, TrainerGender gender, int range, String goal) {
+        this.user = user;
+        this.sports = sports;
+        this.gender = gender;
+        this.range = range;
+        this.goal = goal;
     }
 
     public int getRange() {
@@ -47,18 +52,12 @@ public class Preference {
     protected Preference() {
     }
 
-    public Preference(String gender, Sports sports, BodyInfo bodyInfo, int range, String goal) {
-        this.gender = gender;
-        this.sports = sports;
-				this.bodyInfo = bodyInfo;
-        this.range = range;
-        this.goal = goal;
+    public User getUser() {
+        return user;
     }
 
-    public PreferenceResponse toDto() {
-        PreferenceResponse preferenceResponse = new PreferenceResponse(
-            bodyInfo.getUser().getId(), bodyInfo.getUser().getName(),
-            bodyInfo.getInbodyImageUrl(), goal, bodyInfo.getUser().getProfileImageUrl());
-        return preferenceResponse;
+    public PreferenceResponse toDto(BodyInfo bodyInfo) {
+        return new PreferenceResponse(user.getId(), user.getName(),
+            bodyInfo.getInbodyImageUrl(), goal, user.getProfileImageUrl());
     }
 }

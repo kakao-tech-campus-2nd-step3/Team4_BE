@@ -29,10 +29,12 @@ public class DistanceCalculatorService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "KakaoAK " + kakaoProperties.apiKey());
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(kakaoProperties.addressSearchUrl())
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
+                kakaoProperties.addressSearchUrl())
             .queryParam("query", address);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(),
+            HttpMethod.GET, entity, String.class);
         return response.getBody();
     }
 
@@ -46,7 +48,8 @@ public class DistanceCalculatorService {
         double latDiff = Math.toRadians(coord2.latitude() - coord1.latitude());
         double lonDiff = Math.toRadians(coord2.longitude() - coord1.longitude());
         double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2)
-            + Math.cos(Math.toRadians(coord1.latitude())) * Math.cos(Math.toRadians(coord2.latitude()))
+            + Math.cos(Math.toRadians(coord1.latitude())) * Math.cos(
+            Math.toRadians(coord2.latitude()))
             * Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         final double EARTH_RADIUS = 6371; // 지구 반경 (단위: km)

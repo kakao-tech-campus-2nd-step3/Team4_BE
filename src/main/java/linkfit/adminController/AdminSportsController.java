@@ -46,7 +46,7 @@ public class AdminSportsController {
         @Valid @ModelAttribute SportsRequest sportsRequest,
         BindingResult bindingResult,
         Model model) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "sports-form";
         }
@@ -58,7 +58,8 @@ public class AdminSportsController {
     public String getSportsUpdateForm(Model model, @PathVariable Long sportsId) {
         Sports sports = sportsService.findSportsById(sportsId);
         model.addAttribute("origin", sports.getName());
-        model.addAttribute("sports", new SportsRequest());
+        model.addAttribute("sports", new SportsRequest(sports.getName()));
+        model.addAttribute("sportsId", sportsId);
         return "sports-update";
     }
 
@@ -68,7 +69,7 @@ public class AdminSportsController {
         @Valid @ModelAttribute SportsRequest sportsRequest,
         BindingResult bindingResult,
         Model model) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "sports-update";
         }

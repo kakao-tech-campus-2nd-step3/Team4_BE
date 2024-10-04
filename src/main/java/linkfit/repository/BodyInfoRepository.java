@@ -11,6 +11,10 @@ import linkfit.entity.BodyInfo;
 
 @Repository
 public interface BodyInfoRepository extends JpaRepository<BodyInfo, Long> {
+
     Page<BodyInfo> findAllByUserId(Long userId, Pageable pageable);
+
     Optional<BodyInfo> findByUserId(Long userId);
+
+    Optional<BodyInfo> findFirstByUserIdOrderByCreateDateDesc(Long userId);
 }
