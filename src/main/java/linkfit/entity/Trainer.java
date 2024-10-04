@@ -2,7 +2,16 @@ package linkfit.entity;
 
 import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.exception.PasswordMismatchException;
 import linkfit.status.TrainerGender;
@@ -34,6 +43,16 @@ public class Trainer {
     @Column(nullable = false)
     private TrainerGender gender;
 
+    protected Trainer() {
+    }
+
+    public Trainer(String email, String password, String name, TrainerGender gender) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+    }
+
     public Long getId() {
         return id;
     }
@@ -54,22 +73,12 @@ public class Trainer {
         return profileImageUrl;
     }
 
-    public Gym getGym() {
-        return gym;
-    }
-
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
 
-    protected Trainer() {
-    }
-
-    public Trainer(String email, String password, String name, TrainerGender gender) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.gender = gender;
+    public Gym getGym() {
+        return gym;
     }
 
     public void validatePassword(String inputPassword) {
@@ -79,7 +88,6 @@ public class Trainer {
     }
 
     public TrainerProfileResponse toDto() {
-        return new TrainerProfileResponse(getName(), getGender(), getProfileImageUrl(),
-            getGym().getName());
+        return new TrainerProfileResponse(name, gender, profileImageUrl, gym.getName());
     }
 }

@@ -1,7 +1,6 @@
 package linkfit.controller;
 
 import java.util.List;
-
 import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;

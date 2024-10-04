@@ -18,32 +18,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/preferences")
 public class PreferenceController {
 
-	private final PreferenceService preferenceService;
+    private final PreferenceService preferenceService;
 
-	public PreferenceController(PreferenceService preferenceService) {
-		this.preferenceService = preferenceService;
-	}
+    public PreferenceController(PreferenceService preferenceService) {
+        this.preferenceService = preferenceService;
+    }
 
-	@PostMapping
-	public ResponseEntity<Void> registerPreference(
-		@RequestHeader("Authorization") String authorization,
-		@RequestBody PreferenceRequest request) {
+    @PostMapping
+    public ResponseEntity<Void> registerPreference(
+        @RequestHeader("Authorization") String authorization,
+        @RequestBody PreferenceRequest request) {
 
-		preferenceService.registerPreference(authorization, request);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
-	}
+        preferenceService.registerPreference(authorization, request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
-	@GetMapping
-	public ResponseEntity<List<PreferenceResponse>> getAllPreference(
-		@RequestHeader("Authorization") String authorization) {
-		List<PreferenceResponse> preferences = preferenceService.getAllPreference(authorization);
-		return ResponseEntity.status(HttpStatus.OK).body(preferences);
-	}
+    @GetMapping
+    public ResponseEntity<List<PreferenceResponse>> getAllPreference(
+        @RequestHeader("Authorization") String authorization) {
+        List<PreferenceResponse> preferences = preferenceService.getAllPreference(authorization);
+        return ResponseEntity.status(HttpStatus.OK).body(preferences);
+    }
 
-	@DeleteMapping
-	public ResponseEntity<Void> deletePreference(
-		@RequestHeader("Authorization") String authorization) {
-		preferenceService.deletePreference(authorization);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	}
+    @DeleteMapping
+    public ResponseEntity<Void> deletePreference(
+        @RequestHeader("Authorization") String authorization) {
+        preferenceService.deletePreference(authorization);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

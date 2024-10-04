@@ -22,7 +22,7 @@ public class Sports {
     private String name;
 
     // 논리 삭제를 위한 필드
-    private boolean deleted = Boolean.FALSE;
+    private final boolean deleted = Boolean.FALSE;
 
     protected Sports() {
     }

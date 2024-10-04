@@ -3,21 +3,15 @@ package linkfit.service;
 import static linkfit.exception.GlobalExceptionHandler.FAILED_UPLOAD_IMAGE;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_IMAGE;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import java.io.IOException;
 import java.util.UUID;
-
 import linkfit.config.properties.AwsProperties;
-
-import linkfit.entity.Trainer;
-import linkfit.entity.User;
+import linkfit.exception.ImageUploadException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-
-import linkfit.exception.ImageUploadException;
 
 @Service
 @EnableConfigurationProperties(AwsProperties.class)
@@ -32,7 +26,7 @@ public class ImageUploadService {
     }
 
     public String uploadProfileImage(MultipartFile profileImage) {
-        if (profileImage == null || profileImage.isEmpty()) {
+        if (profileImage == null) {
             return "https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg";
         }
         return uploadFile(profileImage);
