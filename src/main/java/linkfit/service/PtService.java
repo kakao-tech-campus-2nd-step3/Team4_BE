@@ -9,7 +9,7 @@ import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
-import linkfit.dto.PtUserResponse;
+import linkfit.dto.ProgressPtDetailResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
@@ -136,13 +136,16 @@ public class PtService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
     }
 
-    public PtUserResponse getProgressPtUserDetails(String authorization, Long ptId) {
+    public ProgressPtDetailResponse getProgressUserDetails(String authorization, Long ptId) {
         Trainer trainer = getTrainer(authorization);
         Pt pt = findSuggestion(ptId);
         if (!pt.getTrainer().equals(trainer)) {
             throw new PermissionException(NOT_OWNER);
         }
-        return new PtUserResponse(pt.getUser());
+        User user = pt.getUser();
+        List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
+        return new ProgressPtDetailResponse(user.getId(), user.getName(), user.getProfileImageUrl(),
+            schedules);
     }
 
     private Trainer getTrainer(String authorization) {

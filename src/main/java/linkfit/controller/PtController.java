@@ -5,7 +5,7 @@ import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
-import linkfit.dto.PtUserResponse;
+import linkfit.dto.ProgressPtDetailResponse;
 import linkfit.dto.TrainerPtResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
@@ -99,9 +99,9 @@ public class PtController {
     }
 
     @GetMapping("/{ptId}/trainer")
-    public ResponseEntity<PtUserResponse> getProgressPtUserDetails(
+    public ResponseEntity<ProgressPtDetailResponse> getProgressUserDetails(
         @RequestHeader("Authorization") String authorization, @PathVariable Long ptId) {
-        PtUserResponse responseBody = ptService.getProgressPtUserDetails(authorization, ptId);
+        ProgressPtDetailResponse responseBody = ptService.getProgressUserDetails(authorization, ptId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
