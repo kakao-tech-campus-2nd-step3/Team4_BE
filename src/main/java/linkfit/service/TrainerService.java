@@ -1,6 +1,8 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.CARRER_PERMISSION_DENIED;
 import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_CAREER;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 
 import java.util.List;
@@ -10,9 +12,12 @@ import linkfit.dto.CareerResponse;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.dto.TrainerRegisterRequest;
+import linkfit.entity.Career;
 import linkfit.entity.Trainer;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PermissionException;
+import linkfit.repository.CareerRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.util.JwtUtil;
 import org.springframework.stereotype.Service;
@@ -26,13 +31,15 @@ public class TrainerService {
     private final CareerService careerService;
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
+    private final CareerRepository careerRepository;
 
     public TrainerService(TrainerRepository trainerRepository, CareerService careerService,
-        JwtUtil jwtUtil, ImageUploadService imageUploadService) {
+        JwtUtil jwtUtil, ImageUploadService imageUploadService, CareerRepository careerRepository) {
         this.trainerRepository = trainerRepository;
         this.careerService = careerService;
         this.jwtUtil = jwtUtil;
         this.imageUploadService = imageUploadService;
+        this.careerRepository = careerRepository;
     }
 
     @Transactional
@@ -55,14 +62,24 @@ public class TrainerService {
 
     public List<CareerResponse> getCareers(String authorization) {
         Trainer trainer = getMyInfo(authorization);
-        return careerService.getAllTrainerCareers(trainer.getId());
+        return careerService.getAllCareers(trainer.getId());
     }
 
     public void deleteCareer(String authorization, Long careerId) {
         Trainer trainer = getMyInfo(authorization);
-        if (Objects.equals(trainer.getId(), careerService.findTrainerIdByCareerId(careerId))) {
-            careerService.deleteCareer(careerId);
-        }
+        Career career = getCareer(careerId);
+        validOwner(trainer, career);
+        careerService.deleteCareer(careerId);
+    }
+
+    private Career getCareer(Long careerId) {
+        return careerRepository.findById(careerId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_CAREER));
+    }
+
+    private void validOwner(Trainer trainer, Career career) {
+        if(career.getTrainer() != trainer)
+            throw new PermissionException(CARRER_PERMISSION_DENIED);
     }
 
     public void addCareer(String authorization, CareerRequest request) {
@@ -81,7 +98,7 @@ public class TrainerService {
     }
 
     public List<CareerResponse> getCareersByTrainerId(Long trainerId) {
-        return careerService.getAllTrainerCareers(trainerId);
+        return careerService.getAllCareers(trainerId);
     }
 
     public TrainerProfileResponse getProfile(Long trainerId) {
