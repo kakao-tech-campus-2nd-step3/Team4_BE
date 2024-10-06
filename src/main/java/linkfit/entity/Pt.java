@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
+import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.status.PtStatus;
@@ -118,6 +119,10 @@ public class Pt {
     public ReceivePtSuggestResponse toReceiveDto() {
         return new ReceivePtSuggestResponse(id, trainer.getId(), trainer.getName(),
             trainer.getProfileImageUrl(), trainer.getGym().getName(), totalCount, price);
+    }
+
+    public ProgressPtListResponse toProgressDto() {
+        return new ProgressPtListResponse(id, user.getId(), user.getName(), user.getProfileImageUrl());
     }
 
     public void refuse() {

@@ -6,7 +6,7 @@ import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.ProgressPtDetailResponse;
-import linkfit.dto.TrainerPtResponse;
+import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
 import org.springframework.data.domain.Pageable;
@@ -33,9 +33,9 @@ public class PtController {
     }
 
     @GetMapping("/trainer")
-    public ResponseEntity<List<TrainerPtResponse>> getAllPt(
+    public ResponseEntity<List<ProgressPtListResponse>> getTrainerProgressPt(
         @RequestHeader("Authorization") String authorization, Pageable pageable) {
-        List<TrainerPtResponse> responseBody = ptService.getAllPt(authorization, pageable);
+        List<ProgressPtListResponse> responseBody = ptService.getTrainerProgressPt(authorization, pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }

@@ -10,7 +10,7 @@ import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.ProgressPtDetailResponse;
-import linkfit.dto.TrainerPtResponse;
+import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
@@ -49,14 +49,13 @@ public class PtService {
         this.trainerRepository = trainerRepository;
     }
 
-    public List<TrainerPtResponse> getAllPt(
+    public List<ProgressPtListResponse> getTrainerProgressPt(
         String authorization,
         Pageable pageable) {
         Trainer trainer = getTrainer(authorization);
         return ptRepository.findAllByTrainer(trainer, pageable)
             .stream()
-            .map(Pt::getUser)
-            .map(TrainerPtResponse::new)
+            .map(Pt::toProgressDto)
             .toList();
     }
 

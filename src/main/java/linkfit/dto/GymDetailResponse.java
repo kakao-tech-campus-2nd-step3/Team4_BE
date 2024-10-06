@@ -5,7 +5,7 @@ import linkfit.entity.Gym;
 import linkfit.entity.GymImage;
 
 public record GymDetailResponse(Long id, String name, String location, String description,
-                                List<String> gymImages) {
+                                List<String> images) {
 
     public GymDetailResponse(Gym gym, List<GymImage> images) {
         this(
