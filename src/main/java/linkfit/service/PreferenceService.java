@@ -43,7 +43,7 @@ public class PreferenceService {
 
 
     public List<PreferenceResponse> getAllPreference(String authorization) {
-        Trainer trainer = trainerService.getMyInfo(authorization);
+        Trainer trainer = trainerService.identifyTrainer(authorization);
         String gymLocation = trainer.getGym().getLocation();
         List<Preference> preferences = preferenceRepository.findAll();
         List<PreferenceResponse> response = new ArrayList<>();

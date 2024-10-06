@@ -52,7 +52,7 @@ public class TrainerController {
             .build();
     }
 
-    @GetMapping("/career/{trainerId}")
+    @GetMapping("/{trainerId}/careers")
     public ResponseEntity<List<CareerResponse>> getTrainerCareer(
         @PathVariable("trainerId") Long trainerId) {
         List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);

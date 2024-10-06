@@ -6,7 +6,6 @@ import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_CAREER;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 
 import java.util.List;
-import java.util.Objects;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.LoginRequest;
@@ -61,12 +60,12 @@ public class TrainerService {
     }
 
     public List<CareerResponse> getCareers(String authorization) {
-        Trainer trainer = getMyInfo(authorization);
+        Trainer trainer = identifyTrainer(authorization);
         return careerService.getAllCareers(trainer.getId());
     }
 
     public void deleteCareer(String authorization, Long careerId) {
-        Trainer trainer = getMyInfo(authorization);
+        Trainer trainer = identifyTrainer(authorization);
         Career career = getCareer(careerId);
         validOwner(trainer, career);
         careerService.deleteCareer(careerId);
@@ -83,11 +82,11 @@ public class TrainerService {
     }
 
     public void addCareer(String authorization, CareerRequest request) {
-        Trainer trainer = getMyInfo(authorization);
+        Trainer trainer = identifyTrainer(authorization);
         careerService.addCareer(trainer, request);
     }
 
-    public Trainer getMyInfo(String authorization) {
+    public Trainer identifyTrainer(String authorization) {
         Long trainerId = jwtUtil.parseToken(authorization);
         return getTrainer(trainerId);
     }
@@ -107,7 +106,7 @@ public class TrainerService {
     }
 
     public TrainerProfileResponse getMyProfile(String authorization) {
-        Trainer trainer = getMyInfo(authorization);
+        Trainer trainer = identifyTrainer(authorization);
         return trainer.toDto();
     }
 }
