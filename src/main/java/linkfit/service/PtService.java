@@ -18,6 +18,7 @@ import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
+import linkfit.repository.PreferenceRepository;
 import linkfit.repository.PtRepository;
 import linkfit.repository.ScheduleRepository;
 import linkfit.repository.TrainerRepository;
@@ -35,18 +36,20 @@ public class PtService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final TrainerRepository trainerRepository;
+    private final PreferenceRepository preferenceRepository;
 
     public PtService(
         PtRepository ptRepository,
         ScheduleRepository scheduleRepository,
         UserRepository userRepository,
         JwtUtil jwtUtil,
-        TrainerRepository trainerRepository) {
+        TrainerRepository trainerRepository, PreferenceRepository preferenceRepository) {
         this.ptRepository = ptRepository;
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.trainerRepository = trainerRepository;
+        this.preferenceRepository = preferenceRepository;
     }
 
     public List<ProgressPtListResponse> getTrainerProgressPt(
@@ -107,6 +110,7 @@ public class PtService {
             throw new PermissionException(NOT_OWNER);
         }
         suggestion.approval();
+        preferenceRepository.deleteByUser(user);
         ptRepository.save(suggestion);
     }
 
