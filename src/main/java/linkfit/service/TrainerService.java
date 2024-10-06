@@ -4,6 +4,7 @@ import static linkfit.exception.GlobalExceptionHandler.CARRER_PERMISSION_DENIED;
 import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_CAREER;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
+import static linkfit.exception.GlobalExceptionHandler.UNREGISTERED_TRAINER;
 
 import java.util.List;
 import linkfit.dto.CareerRequest;
@@ -60,20 +61,17 @@ public class TrainerService {
     }
 
     public List<CareerResponse> getCareers(String authorization) {
-        Trainer trainer = identifyTrainer(authorization);
+        Long trainerId = identifyTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
         return careerService.getAllCareerByTrainer(trainer);
     }
 
     public void deleteCareer(String authorization, Long careerId) {
-        Trainer trainer = identifyTrainer(authorization);
-        Career career = getCareer(careerId);
+        Long trainerId = identifyTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
+        Career career = careerService.getCareer(careerId);
         validOwner(trainer, career);
         careerService.deleteCareer(careerId);
-    }
-
-    private Career getCareer(Long careerId) {
-        return careerRepository.findById(careerId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_CAREER));
     }
 
     private void validOwner(Trainer trainer, Career career) {
@@ -82,16 +80,19 @@ public class TrainerService {
     }
 
     public void addCareer(String authorization, CareerRequest request) {
-        Trainer trainer = identifyTrainer(authorization);
+        Long trainerId = identifyTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
         careerService.addCareer(trainer, request);
     }
 
-    public Trainer identifyTrainer(String authorization) {
-        Long trainerId = jwtUtil.parseToken(authorization);
-        return getTrainer(trainerId);
+    public Long identifyTrainer(String authorization) {
+        Long trainerId =  jwtUtil.parseToken(authorization);
+        if(trainerRepository.existsById(trainerId))
+            throw new PermissionException(UNREGISTERED_TRAINER);
+        return trainerId;
     }
 
-    private Trainer getTrainer(Long trainerId) {
+    public Trainer getTrainer(Long trainerId) {
         return trainerRepository.findById(trainerId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
     }
@@ -107,7 +108,7 @@ public class TrainerService {
     }
 
     public TrainerProfileResponse getMyProfile(String authorization) {
-        Trainer trainer = identifyTrainer(authorization);
-        return trainer.toDto();
+        Long trainerId = identifyTrainer(authorization);
+        return getProfile(trainerId);
     }
 }

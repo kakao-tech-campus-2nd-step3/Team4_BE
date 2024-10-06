@@ -38,4 +38,9 @@ public class CareerService {
         }
         careerRepository.deleteById(careerId);
     }
+
+    public Career getCareer(Long careerId) {
+        return careerRepository.findById(careerId).
+        orElseThrow(() -> new NotFoundException(NOT_FOUND_CAREER));
+    }
 }

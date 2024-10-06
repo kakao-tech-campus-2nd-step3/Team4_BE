@@ -36,6 +36,7 @@ public class GlobalExceptionHandler {
     public static final String REVIEW_PERMISSION_DENIED = "You can only create a review after completing the pt.";
     public static final String GYM_ADMIN_PERMISSION_DENIED = "You do not have permission to handle information GYM.";
     public static final String CARRER_PERMISSION_DENIED = "You can only handle your own career.";
+    public static final String UNREGISTERED_TRAINER = "This is an unregistered trainer.";
 
     public static final String ALREADY_COMPLETED_SCHEDULE = "Cannot delete an already completed schedule";
     public static final String UNRELATED_SCHEDULE = "Not a schedule related to your request";
