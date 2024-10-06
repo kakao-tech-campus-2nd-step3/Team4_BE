@@ -2,6 +2,7 @@ package linkfit.service;
 
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_BODYINFO;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PREFERENCE;
+import static linkfit.exception.GlobalExceptionHandler.NOT_OWNER;
 
 import java.util.List;
 import linkfit.dto.Coordinate;
@@ -14,6 +15,7 @@ import linkfit.entity.Sports;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PermissionException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.PreferenceRepository;
 import linkfit.status.TrainerGender;
@@ -61,8 +63,7 @@ public class PreferenceService {
     }
 
     private void validGender(List<Preference> preferences, TrainerGender gender) {
-        preferences.removeIf(preference
-            -> preference.isInvalidTrainerGender(gender));
+        preferences.removeIf(preference -> preference.isInvalidTrainerGender(gender));
     }
 
     private void validDistance(List<Preference> preferences, Gym gym) {
@@ -80,10 +81,13 @@ public class PreferenceService {
         return preference.getRange() >= distance;
     }
 
-    public void deletePreference(String authorization) {
+    public void deletePreference(Long preferenceId, String authorization) {
         User user = userService.getUser(authorization);
-        Preference preference = preferenceRepository.findByUser(user)
+        Preference preference = preferenceRepository.findById(preferenceId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFERENCE));
+        if(!user.equals(preference.getUser())) {
+            throw new PermissionException(NOT_OWNER);
+        }
         preferenceRepository.delete(preference);
     }
 }

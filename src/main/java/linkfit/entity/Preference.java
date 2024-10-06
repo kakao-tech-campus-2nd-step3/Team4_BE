@@ -11,9 +11,13 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import linkfit.dto.PreferenceResponse;
 import linkfit.status.TrainerGender;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "PREFERENCE_TB")
+@SQLDelete(sql = "UPDATE preference_tb SET is_matching = false WHERE id = ?")
+@SQLRestriction("deleted = true")
 public class Preference {
 
     @Id
@@ -39,6 +43,9 @@ public class Preference {
 
     @Column(nullable = false)
     private String goal;
+
+    @Column(nullable = false)
+    private boolean isMatching = Boolean.TRUE;
 
     public Preference(User user, BodyInfo bodyInfo, Sports sports, TrainerGender gender, int range, String goal) {
         this.user = user;
