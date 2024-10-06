@@ -26,6 +26,8 @@ spring:
 
 jwt:
   expiration-time: 1800000
+  master-token: ${MASTER_TOKEN}
+  master-id: 1
 
 cloud:
   aws:
