@@ -34,9 +34,9 @@ public class PreferenceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PreferenceResponse>> getAllPreference(
+    public ResponseEntity<List<PreferenceResponse>> getAllMatchingPossible(
         @RequestHeader("Authorization") String authorization) {
-        List<PreferenceResponse> preferences = preferenceService.getAllPreference(authorization);
+        List<PreferenceResponse> preferences = preferenceService.getAllMatchingPossible(authorization);
         return ResponseEntity.status(HttpStatus.OK).body(preferences);
     }
 

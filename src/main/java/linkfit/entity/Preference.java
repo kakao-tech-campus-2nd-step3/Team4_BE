@@ -32,7 +32,6 @@ public class Preference {
     @JoinColumn(nullable = false)
     private Sports sports;
 
-    @Column(nullable = false)
     private TrainerGender gender;
 
     @Column(nullable = false)
@@ -61,8 +60,10 @@ public class Preference {
         return user;
     }
 
-    public BodyInfo getBodyInfo() {
-        return bodyInfo;
+    public boolean isInvalidTrainerGender(TrainerGender gender) {
+        if(this.gender == null)
+            return true;
+        return this.gender.equals(gender);
     }
 
     public PreferenceResponse toDto() {
