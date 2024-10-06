@@ -61,7 +61,7 @@ public class TrainerService {
 
     public List<CareerResponse> getCareers(String authorization) {
         Trainer trainer = identifyTrainer(authorization);
-        return careerService.getAllCareers(trainer.getId());
+        return careerService.getAllCareerByTrainer(trainer);
     }
 
     public void deleteCareer(String authorization, Long careerId) {
@@ -97,7 +97,8 @@ public class TrainerService {
     }
 
     public List<CareerResponse> getCareersByTrainerId(Long trainerId) {
-        return careerService.getAllCareers(trainerId);
+        Trainer trainer = getTrainer(trainerId);
+        return careerService.getAllCareerByTrainer(trainer);
     }
 
     public TrainerProfileResponse getProfile(Long trainerId) {

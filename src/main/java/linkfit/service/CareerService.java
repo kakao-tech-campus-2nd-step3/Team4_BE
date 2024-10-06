@@ -20,8 +20,8 @@ public class CareerService {
         this.careerRepository = careerRepository;
     }
 
-    public List<CareerResponse> getAllCareers(Long trainerId) {
-        List<Career> careers = careerRepository.findAllByTrainerId(trainerId);
+    public List<CareerResponse> getAllCareerByTrainer(Trainer trainer) {
+        List<Career> careers = careerRepository.findAllByTrainer(trainer);
         return careers.stream()
             .map(Career::toDto)
             .toList();
