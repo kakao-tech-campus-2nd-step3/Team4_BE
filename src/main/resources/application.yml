@@ -36,6 +36,8 @@ cloud:
       static: ap-northeast-2
     s3:
       bucket: nurspace-bucket
+    stack:
+      auto: false
 
 kakao:
   api-key: ${KAKAO_API_KEY}
