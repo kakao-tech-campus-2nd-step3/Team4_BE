@@ -1,37 +1,93 @@
 package linkfit.entity;
 
-import jakarta.persistence.*;
+import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import linkfit.dto.TrainerProfileResponse;
+import linkfit.exception.PasswordMismatchException;
+import linkfit.status.TrainerGender;
 
 @Entity
-@Table(name = "TRAINER_TB", indexes = @Index(name = "idx_trainer_email", columnList = "email"))
-public class Trainer extends Person {
+@Table(name = "TRAINER_TB", indexes = @Index(name = "IDX_TRAINER_EMAIL", columnList = "EMAIL"))
+public class Trainer {
 
-    @ManyToOne
-    @JoinColumn(name = "GYM_ID")
-    private Gym gym;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
-    private String gender;
+    private String email;
 
-    public String getGender() {
-        return gender;
-    }
+    @Column(nullable = false)
+    private String password;
 
-    public String getGymName() {
-        return gym.getGymName();
-    }
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String profileImageUrl;
+
+    @ManyToOne
+    private Gym gym;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private TrainerGender gender;
 
     protected Trainer() {
-        super();
     }
 
-    public Trainer(String email, String password, String name, String gender) {
-        super(email, password, name);
+    public Trainer(String email, String password, String name, TrainerGender gender) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
         this.gender = gender;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TrainerGender getGender() {
+        return gender;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public Gym getGym() {
+        return gym;
+    }
+
+    public void validatePassword(String inputPassword) {
+        if (!inputPassword.equals(this.password)) {
+            throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
+        }
+    }
+
     public TrainerProfileResponse toDto() {
-        return new TrainerProfileResponse(this.getEmail(), this.getPassword(), this.getName(), this.getGender());
+        return new TrainerProfileResponse(name, gender, profileImageUrl, gym.getName());
     }
 }

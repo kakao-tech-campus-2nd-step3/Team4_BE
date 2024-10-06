@@ -2,15 +2,10 @@ package linkfit.dto;
 
 import linkfit.entity.User;
 
-public class UserRegisterRequest extends RegisterRequest<User> {
-
-    private String local;
-
-    public String getLocal() {
-        return local;
-    }
+public record UserRegisterRequest(String email, String password, String name, String location) {
 
     public User toEntity() {
-        return new User(getEmail(), getPassword(), getName(), local);
+        return new User(email, password, name, location);
+
     }
 }

@@ -7,12 +7,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
 import java.time.LocalDateTime;
-import linkfit.dto.UserBodyInfoResponse;
+import linkfit.dto.BodyInfoResponse;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "BODY_INFO_TB")
+@SQLDelete(sql = "UPDATE BODY_INFO_TB SET deleted = true WHERE id=?")
+@SQLRestriction("deleted = false")
 public class BodyInfo {
 
     @Id
@@ -26,6 +29,8 @@ public class BodyInfo {
     private String inbodyImageUrl;
 
     private LocalDateTime createDate;
+
+    private final boolean deleted = Boolean.FALSE;
 
     protected BodyInfo() {
     }
@@ -52,8 +57,9 @@ public class BodyInfo {
         return createDate;
     }
 
-    public UserBodyInfoResponse toDto() {
-        return new UserBodyInfoResponse(
+    public BodyInfoResponse toDto() {
+        return new BodyInfoResponse(
+            getId(),
             getInbodyImageUrl(),
             getCreateDate()
         );

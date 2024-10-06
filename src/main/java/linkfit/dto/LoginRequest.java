@@ -1,15 +1,5 @@
 package linkfit.dto;
 
-public class LoginRequest {
+public record LoginRequest(String email, String password) {
 
-    private String email;
-    private String password;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }

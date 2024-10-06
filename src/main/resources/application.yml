@@ -20,7 +20,12 @@ spring:
     show-sql: true
     defer-datasource-initialization: true
 
+  sql:
+    init:
+      mode: always
 
+jwt:
+  expiration-time: 1800000
 
 cloud:
   aws:
@@ -28,6 +33,10 @@ cloud:
       access-key: ${AWS_ACCESS_KEY_ID}
       secret-key: ${AWS_SECRET_ACCESS_KEY}
     region:
-      statics: ap-northeast-2
+      static: ap-northeast-2
     s3:
       bucket: nurspace-bucket
+
+kakao:
+  api-key: ${KAKAO_API_KEY}
+  address-search-url: ${ADDRESS_SEARCH_URL}

@@ -1,44 +1,95 @@
 package linkfit.entity;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import linkfit.dto.UserProfileResponse;
 import linkfit.dto.UserProfileRequest;
+import linkfit.dto.UserProfileResponse;
+import linkfit.exception.PasswordMismatchException;
 
 @Entity
-@Table(name = "USER_TB", indexes = @Index(name = "idx_user_email", columnList = "email"))
-public class User extends Person {
+@Table(name = "USER_TB", indexes = @Index(name = "IDX_USER_EMAIL", columnList = "EMAIL"))
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
-    private String local;
+    private String email;
 
-    public String getLocal() {
-        return local;
-    }
+    @Column(nullable = false)
+    private String password;
 
-    public void setLocal(String local) {
-        this.local = local;
-    }
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String profileImageUrl;
+
+    @Column(nullable = false)
+    private String location;
 
     protected User() {
-        super();
     }
 
-    public User(String email, String password, String name, String local) {
-        super(email, password, name);
-        this.local = local;
+    public User(String email, String password, String name, String location) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.location = location;
     }
 
-    public User Update(UserProfileRequest request) {
-        User newUser = new User();
-        newUser.setName(request.name());
-        newUser.setLocal(request.local());
-        return newUser;
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void update(UserProfileRequest request) {
+        this.setName(request.name());
+        this.setLocation(request.location());
+    }
+
+    public void validatePassword(String inputPassword) {
+        if (!inputPassword.equals(this.password)) {
+            throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
+        }
     }
 
     public UserProfileResponse toDto() {
-        return new UserProfileResponse(getName(), getLocal(), getProfileImageUrl());
+        return new UserProfileResponse(getName(), getLocation(), getProfileImageUrl());
     }
 }
