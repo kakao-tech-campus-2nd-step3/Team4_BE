@@ -1,17 +1,20 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_BODYINFO;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PREFERENCE;
 
-import java.util.ArrayList;
 import java.util.List;
 import linkfit.dto.Coordinate;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
+import linkfit.entity.BodyInfo;
+import linkfit.entity.Gym;
 import linkfit.entity.Preference;
 import linkfit.entity.Sports;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
+import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.PreferenceRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,48 +26,51 @@ public class PreferenceService {
     private final TrainerService trainerService;
     private final DistanceCalculatorService distanceCalculatorService;
     private final SportsService sportsService;
+    private final BodyInfoRepository bodyInfoRepository;
 
     public PreferenceService(PreferenceRepository preferenceRepository, UserService userService,
         TrainerService trainerService, DistanceCalculatorService distanceCalculatorService,
-        SportsService sportsService) {
+        SportsService sportsService, BodyInfoRepository bodyInfoRepository) {
         this.preferenceRepository = preferenceRepository;
         this.userService = userService;
         this.trainerService = trainerService;
         this.distanceCalculatorService = distanceCalculatorService;
         this.sportsService = sportsService;
+        this.bodyInfoRepository = bodyInfoRepository;
     }
 
     public void registerPreference(String authorization, PreferenceRequest request) {
         User user = userService.getUser(authorization);
         Sports sports = sportsService.getSportsById(request.sportsId());
-        Preference preference = request.toEntity(user, sports);
+        BodyInfo bodyInfo = bodyInfoRepository.findTopByUserOrderByCreateDate(user)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+        Preference preference = request.toEntity(user, bodyInfo, sports);
         preferenceRepository.save(preference);
     }
-
 
     public List<PreferenceResponse> getAllPreference(String authorization) {
         Long trainerId = trainerService.identifyTrainer(authorization);
         Trainer trainer = trainerService.getTrainer(trainerId);
-        String gymLocation = trainer.getGym().getLocation();
         List<Preference> preferences = preferenceRepository.findAll();
-        List<PreferenceResponse> response = new ArrayList<>();
-        Coordinate gymCoordinates = distanceCalculatorService.getCoordinates(gymLocation);
-        for (Preference preference : preferences) {
-            processPreference(preference, gymCoordinates, response);
-        }
-        return response;
+        validDistance(preferences, trainer.getGym());
+        return preferences.stream()
+            .map(Preference::toDto)
+            .toList();
     }
 
-    private void processPreference(Preference preference, Coordinate gymCoordinates,
-        List<PreferenceResponse> response) {
+    private void validDistance(List<Preference> preferences, Gym gym) {
+        String gymLocation = gym.getLocation();
+        Coordinate gymCoordinates = distanceCalculatorService.getCoordinates(gymLocation);
+        preferences.removeIf(preference -> !isWithinDistance(preference, gymCoordinates));
+    }
+
+    private boolean isWithinDistance(Preference preference, Coordinate gymCoordinates) {
         User user = preference.getUser();
         String userLocation = user.getLocation();
         Coordinate userCoordinates = distanceCalculatorService.getCoordinates(userLocation);
         double distance = distanceCalculatorService.calculateHaversineDistance(gymCoordinates,
             userCoordinates);
-        if (preference.getRange() >= distance) {
-            response.add(preference.toDto(userService.getRecentBodyInfo(user.getId())));
-        }
+        return preference.getRange() >= distance;
     }
 
     public void deletePreference(String authorization) {
