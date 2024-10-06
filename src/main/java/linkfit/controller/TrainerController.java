@@ -27,7 +27,7 @@ public class TrainerController {
     }
 
     @GetMapping("/career")
-    public ResponseEntity<List<CareerResponse>> getMyCareer(
+    public ResponseEntity<List<CareerResponse>> getCareer(
         @RequestHeader("Authorization") String authorization) {
         List<CareerResponse> list = trainerService.getCareers(authorization);
         return ResponseEntity.status(HttpStatus.OK)
@@ -35,7 +35,7 @@ public class TrainerController {
     }
 
     @PostMapping("/career")
-    public ResponseEntity<Void> addMyCareer(
+    public ResponseEntity<Void> addCareer(
         @RequestHeader("Authorization") String authorization,
         @RequestBody CareerRequest request) {
         trainerService.addCareer(authorization, request);
@@ -53,7 +53,7 @@ public class TrainerController {
     }
 
     @GetMapping("/{trainerId}/careers")
-    public ResponseEntity<List<CareerResponse>> getTrainerCareer(
+    public ResponseEntity<List<CareerResponse>> getAllCareerByTrainer(
         @PathVariable Long trainerId) {
         List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
