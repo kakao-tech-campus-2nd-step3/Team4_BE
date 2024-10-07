@@ -18,7 +18,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "PREFERENCE_TB")
-@SQLDelete(sql = "UPDATE preference_tb SET is_matching = false WHERE id = ?")
+@SQLDelete(sql = "UPDATE preference_tb SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted = false")
 public class Preference {
 
@@ -48,8 +48,6 @@ public class Preference {
     private String goal;
 
     @Column(nullable = false)
-    private boolean isMatching = Boolean.TRUE;
-
     private boolean deleted = Boolean.FALSE;
 
     public Preference(User user, BodyInfo bodyInfo, Sports sports, TrainerGender gender, int range, String goal) {
