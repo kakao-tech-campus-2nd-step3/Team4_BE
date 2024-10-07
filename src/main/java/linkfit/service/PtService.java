@@ -7,11 +7,10 @@ import static linkfit.exception.GlobalExceptionHandler.NOT_OWNER;
 
 import java.util.List;
 import linkfit.dto.PtSuggestionRequest;
-import linkfit.dto.PtSuggestionResponse;
-import linkfit.dto.PtSuggestionUpdateRequest;
-import linkfit.dto.PtTrainerResponse;
-import linkfit.dto.PtUserResponse;
-import linkfit.dto.TrainerPtResponse;
+import linkfit.dto.ReceivePtSuggestResponse;
+import linkfit.dto.SendPtSuggestResponse;
+import linkfit.dto.ProgressPtDetailResponse;
+import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
@@ -19,10 +18,12 @@ import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
+import linkfit.repository.PreferenceRepository;
 import linkfit.repository.PtRepository;
 import linkfit.repository.ScheduleRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
+import linkfit.status.PtStatus;
 import linkfit.util.JwtUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,28 +36,29 @@ public class PtService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final TrainerRepository trainerRepository;
+    private final PreferenceRepository preferenceRepository;
 
     public PtService(
         PtRepository ptRepository,
         ScheduleRepository scheduleRepository,
         UserRepository userRepository,
         JwtUtil jwtUtil,
-        TrainerRepository trainerRepository) {
+        TrainerRepository trainerRepository, PreferenceRepository preferenceRepository) {
         this.ptRepository = ptRepository;
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.trainerRepository = trainerRepository;
+        this.preferenceRepository = preferenceRepository;
     }
 
-    public List<TrainerPtResponse> getAllPt(
+    public List<ProgressPtListResponse> getTrainerProgressPt(
         String authorization,
         Pageable pageable) {
         Trainer trainer = getTrainer(authorization);
         return ptRepository.findAllByTrainer(trainer, pageable)
             .stream()
-            .map(Pt::getUser)
-            .map(TrainerPtResponse::new)
+            .map(Pt::toProgressDto)
             .toList();
     }
 
@@ -69,7 +71,7 @@ public class PtService {
         return new UserPtResponse(pt, schedules);
     }
 
-    public void suggestPt(
+    public void sendSuggestion(
         String authorization,
         PtSuggestionRequest ptSuggestionRequest) {
         Trainer trainer = getTrainer(authorization);
@@ -84,48 +86,52 @@ public class PtService {
         ptRepository.save(suggestion);
     }
 
-    public List<PtSuggestionResponse> getAllPtSuggestion(
+    public List<SendPtSuggestResponse> getAllSendSuggestion(
         String authorization,
         Pageable pageable) {
         Trainer trainer = getTrainer(authorization);
         return ptRepository.findAllByTrainer(trainer, pageable).stream()
-            .map(Pt::toDto)
+            .map(Pt::toSendDto)
             .toList();
     }
 
-    public void recallPtSuggestion(String authorization, Long ptId) {
+    public List<ReceivePtSuggestResponse> getAllReceiveSuggestion(String authorization,
+        Pageable pageable) {
+        User user = getUser(authorization);
+        return ptRepository.findAllByUserAndStatus(user, PtStatus.WAITING, pageable).stream()
+            .map(Pt::toReceiveDto)
+            .toList();
+    }
+
+    public void approvalSuggestion(String authorization, Long ptId) {
+        User user = getUser(authorization);
+        Pt suggestion = findSuggestion(ptId);
+        if (!suggestion.getUser().equals(user)) {
+            throw new PermissionException(NOT_OWNER);
+        }
+        suggestion.approval();
+        preferenceRepository.deleteByUser(user);
+        ptRepository.save(suggestion);
+    }
+
+    public void recallSuggestion(String authorization, Long ptId) {
         Trainer trainer = getTrainer(authorization);
         Pt suggestion = findSuggestion(ptId);
         if (!suggestion.getTrainer().equals(trainer)) {
             throw new PermissionException(NOT_OWNER);
         }
-        ptRepository.deleteById(ptId);
+        suggestion.recall();
+        ptRepository.save(suggestion);
     }
 
-    public void updatePtSuggestion(
-        String authorization,
-        Long ptId,
-        PtSuggestionUpdateRequest ptSuggestionUpdateRequest) {
+    public void refuseSuggestion(String authorization, Long ptId) {
         User user = getUser(authorization);
-        int status = ptSuggestionUpdateRequest.status();
         Pt suggestion = findSuggestion(ptId);
         if (!suggestion.getUser().equals(user)) {
             throw new PermissionException(NOT_OWNER);
         }
-        ptRepository.save(updateStatus(suggestion, status));
-    }
-
-    private Pt updateStatus(Pt pt, int status) {
-        if (status != 1 && status != 3) {
-            throw new IllegalArgumentException();
-        }
-        if (status == 1) {
-            pt.refuse();
-        }
-        if (status == 3) {
-            pt.accept();
-        }
-        return pt;
+        suggestion.refuse();
+        ptRepository.save(suggestion);
     }
 
     private Pt findSuggestion(Long ptId) {
@@ -133,22 +139,16 @@ public class PtService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
     }
 
-    public PtTrainerResponse getPtTrainerProfile(String authorization, Long ptId) {
-        User user = getUser(authorization);
-        Pt pt = findSuggestion(ptId);
-        if (!pt.getUser().equals(user)) {
-            throw new PermissionException(NOT_OWNER);
-        }
-        return new PtTrainerResponse(pt.getTrainer());
-    }
-
-    public PtUserResponse getPtUserProfile(String authorization, Long ptId) {
+    public ProgressPtDetailResponse getProgressUserDetails(String authorization, Long ptId) {
         Trainer trainer = getTrainer(authorization);
         Pt pt = findSuggestion(ptId);
         if (!pt.getTrainer().equals(trainer)) {
             throw new PermissionException(NOT_OWNER);
         }
-        return new PtUserResponse(pt.getUser());
+        User user = pt.getUser();
+        List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
+        return new ProgressPtDetailResponse(user.getId(), user.getName(), user.getProfileImageUrl(),
+            schedules);
     }
 
     private Trainer getTrainer(String authorization) {

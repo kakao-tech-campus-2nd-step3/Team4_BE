@@ -27,7 +27,7 @@ public class TrainerController {
     }
 
     @GetMapping("/career")
-    public ResponseEntity<List<CareerResponse>> getMyCareer(
+    public ResponseEntity<List<CareerResponse>> getCareer(
         @RequestHeader("Authorization") String authorization) {
         List<CareerResponse> list = trainerService.getCareers(authorization);
         return ResponseEntity.status(HttpStatus.OK)
@@ -35,7 +35,7 @@ public class TrainerController {
     }
 
     @PostMapping("/career")
-    public ResponseEntity<Void> addMyCareer(
+    public ResponseEntity<Void> addCareer(
         @RequestHeader("Authorization") String authorization,
         @RequestBody CareerRequest request) {
         trainerService.addCareer(authorization, request);
@@ -46,15 +46,15 @@ public class TrainerController {
     @DeleteMapping("/{careerId}")
     public ResponseEntity<Void> deleteCareer(
         @RequestHeader("Authorization") String authorization,
-        @PathVariable("careerId") Long careerId) {
+        @PathVariable Long careerId) {
         trainerService.deleteCareer(authorization, careerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
     }
 
-    @GetMapping("/career/{trainerId}")
-    public ResponseEntity<List<CareerResponse>> getTrainerCareer(
-        @PathVariable("trainerId") Long trainerId) {
+    @GetMapping("/{trainerId}/careers")
+    public ResponseEntity<List<CareerResponse>> getAllCareerByTrainer(
+        @PathVariable Long trainerId) {
         List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
@@ -62,7 +62,7 @@ public class TrainerController {
 
     @GetMapping("/{trainerId}")
     public ResponseEntity<TrainerProfileResponse> getTrainerProfile(
-        @PathVariable("trainerId") Long trainerId) {
+        @PathVariable Long trainerId) {
         TrainerProfileResponse responseBody = trainerService.getProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);

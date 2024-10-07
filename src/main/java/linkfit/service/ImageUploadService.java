@@ -4,9 +4,12 @@ import static linkfit.exception.GlobalExceptionHandler.FAILED_UPLOAD_IMAGE;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_IMAGE;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import java.io.IOException;
 import java.util.UUID;
+
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import linkfit.config.properties.AwsProperties;
 import linkfit.exception.ImageUploadException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -42,14 +45,33 @@ public class ImageUploadService {
     private String uploadFile(MultipartFile file) {
         try {
             String key = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(file.getContentType());
-            metadata.setContentLength(file.getSize());
-            amazonS3.putObject(awsProperties.s3().bucket(), key, file.getInputStream(), metadata);
-            return String.format("https://%s.s3.%s.amazonaws.com/%s", awsProperties.s3().bucket(),
-                awsProperties.region(), key);
+            ObjectMetadata metadata = createObjectMetadata(file);
+
+            amazonS3.putObject(new PutObjectRequest(
+                    awsProperties.s3().bucket(),
+                    key,
+                    file.getInputStream(),
+                    metadata
+            ));
+
+            return String.format("https://%s.s3.%s.amazonaws.com/%s",
+                    awsProperties.s3().bucket(),
+                    awsProperties.region(),
+                    key);
         } catch (IOException e) {
             throw new ImageUploadException(FAILED_UPLOAD_IMAGE);
         }
+    }
+
+    private ObjectMetadata createObjectMetadata(MultipartFile file) {
+        ObjectMetadata metadata = new ObjectMetadata();
+        String contentType = file.getContentType();
+
+        if (contentType == null || contentType.isBlank()) {
+            contentType = "multipart/form-data";
+        }
+        metadata.setContentType(contentType);
+        metadata.setContentLength(file.getSize());
+        return metadata;
     }
 }

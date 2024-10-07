@@ -88,6 +88,9 @@ public class Trainer {
     }
 
     public TrainerProfileResponse toDto() {
+        if(gym == null) {
+            return new TrainerProfileResponse(name, gender, profileImageUrl, null);
+        }
         return new TrainerProfileResponse(name, gender, profileImageUrl, gym.getName());
     }
 }
