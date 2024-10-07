@@ -32,7 +32,7 @@ public class DistanceCalculatorService {
                 kakaoProperties.addressSearchUrl())
             .queryParam("query", address);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(),
+        ResponseEntity<String> response = restTemplate.exchange(builder.build(false).toUriString(),
             HttpMethod.GET, entity, String.class);
         return response.getBody();
     }

@@ -55,6 +55,7 @@ public class PreferenceService {
         Long trainerId = trainerService.identifyTrainer(authorization);
         Trainer trainer = trainerService.getTrainer(trainerId);
         List<Preference> preferences = preferenceRepository.findAll();
+
         validGender(preferences, trainer.getGender());
         validDistance(preferences, trainer.getGym());
         return preferences.stream()
@@ -63,7 +64,7 @@ public class PreferenceService {
     }
 
     private void validGender(List<Preference> preferences, TrainerGender gender) {
-        preferences.removeIf(preference -> preference.isInvalidTrainerGender(gender));
+        preferences.removeIf(preference -> !preference.isInvalidTrainerGender(gender));
     }
 
     private void validDistance(List<Preference> preferences, Gym gym) {

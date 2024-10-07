@@ -43,4 +43,4 @@ cloud:
 
 kakao:
   api-key: ${KAKAO_API_KEY}
-  address-search-url: ${ADDRESS_SEARCH_URL}
+  address-search-url: https://dapi.kakao.com/v2/local/search/address.json

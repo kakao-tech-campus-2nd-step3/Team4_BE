@@ -2,6 +2,8 @@ package linkfit.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,7 +19,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Table(name = "PREFERENCE_TB")
 @SQLDelete(sql = "UPDATE preference_tb SET is_matching = false WHERE id = ?")
-@SQLRestriction("deleted = true")
+@SQLRestriction("deleted = false")
 public class Preference {
 
     @Id
@@ -36,6 +38,7 @@ public class Preference {
     @JoinColumn(nullable = false)
     private Sports sports;
 
+    @Enumerated(EnumType.STRING)
     private TrainerGender gender;
 
     @Column(nullable = false)
@@ -46,6 +49,8 @@ public class Preference {
 
     @Column(nullable = false)
     private boolean isMatching = Boolean.TRUE;
+
+    private boolean deleted = Boolean.FALSE;
 
     public Preference(User user, BodyInfo bodyInfo, Sports sports, TrainerGender gender, int range, String goal) {
         this.user = user;
