@@ -81,7 +81,7 @@ public class ScheduleService {
         Schedule schedule = findSchedule(scheduleId);
         isRelatedSchedule(schedule, ptId);
         isTrainerOwner(authorization, schedule);
-        if (schedule.getStatus() == 1) {
+        if (schedule.getIsCompleted()) {
             throw new PermissionException(ALREADY_COMPLETED_SCHEDULE);
         }
         scheduleRepository.delete(schedule);
