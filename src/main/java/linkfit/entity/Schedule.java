@@ -25,24 +25,22 @@ public class Schedule {
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime startTime;
+    private LocalDateTime atTime;
 
-    private int status = 0;
+    private boolean isCompleted = Boolean.FALSE;
 
     protected Schedule() {
     }
 
-    public Schedule(Pt pt, LocalDateTime startTime) {
+    public Schedule(Pt pt, LocalDateTime atTime) {
         this.pt = pt;
-        this.startTime = startTime;
-        this.status = 0;
+        this.atTime = atTime;
     }
 
-    public Schedule(Pt pt, LocalDateTime startTime, String content) {
+    public Schedule(Pt pt, LocalDateTime atTime, String content) {
         this.pt = pt;
-        this.startTime = startTime;
+        this.atTime = atTime;
         this.content = content;
-        this.status = 0;
     }
 
     public Long getId() {
@@ -57,15 +55,15 @@ public class Schedule {
         return content;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+    public LocalDateTime getAtTime() {
+        return atTime;
     }
 
-    public int getStatus() {
-        return status;
+    public boolean getIsCompleted() {
+        return isCompleted;
     }
 
     public void complete() {
-        this.status = 1;
+        this.isCompleted = Boolean.TRUE;
     }
 }

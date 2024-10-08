@@ -45,7 +45,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping("/info")
+    @PostMapping("/bodyInfo")
     public ResponseEntity<Void> registerBodyInfo(
         @RequestHeader("Authorization") String authorization,
         @RequestPart(value = "inbodyImage") MultipartFile inbodyImage) {
@@ -53,7 +53,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/info")
+    @GetMapping("/bodyInfo")
     public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(
         @RequestHeader("Authorization") String authorization,
         Pageable pageable) {
@@ -63,11 +63,10 @@ public class UserController {
             .body(responseBody);
     }
 
-    @DeleteMapping("/info/{infoId}")
+    @DeleteMapping("/bodyInfo/{bodyInfoId}")
     public ResponseEntity<Void> deleteBodyInfo(@RequestHeader("Authorization") String authorization,
-        @PathVariable("infoId") Long infoId) {
-        userService.deleteBodyInfo(authorization, infoId);
-
+        @PathVariable Long bodyInfoId) {
+        userService.deleteBodyInfo(authorization, bodyInfoId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
