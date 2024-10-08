@@ -1,5 +1,6 @@
 package linkfit.service;
 
+import static linkfit.exception.GlobalExceptionHandler.ALREADY_PROCESSING_PT;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PT;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_USER;
@@ -65,8 +66,8 @@ public class PtService {
     public UserPtResponse getMyPt(
         String authorization) {
         User user = getUser(authorization);
-        Pt pt = ptRepository.findByUser(user)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
+        Pt pt = ptRepository.findByUserAndStatus(user, PtStatus.APPROVAL)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
         List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
         return new UserPtResponse(pt, schedules);
     }
@@ -105,10 +106,20 @@ public class PtService {
 
     public void approvalSuggestion(String authorization, Long ptId) {
         User user = getUser(authorization);
+        List<Pt> ptList = ptRepository.findByUser(user);
         Pt suggestion = findSuggestion(ptId);
         if (!suggestion.getUser().equals(user)) {
             throw new PermissionException(NOT_OWNER);
         }
+
+        if (isProcessingPT(user)) {
+            throw new PermissionException(ALREADY_PROCESSING_PT);
+        }
+
+        ptList.forEach(pt->{
+            pt.refuse();
+            ptRepository.save(pt);
+        });
         suggestion.approval();
         preferenceRepository.deleteByUser(user);
         ptRepository.save(suggestion);
@@ -161,5 +172,9 @@ public class PtService {
         Long id = jwtUtil.parseToken(authorization);
         return userRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
+    }
+
+    private boolean isProcessingPT(User user) {
+        return ptRepository.findByUserAndStatus(user, PtStatus.APPROVAL).isPresent();
     }
 }

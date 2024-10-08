@@ -76,7 +76,7 @@ public class ReviewService {
     }
 
     private void reviewPermission(User user) {
-        Pt pt = ptRepository.findByUser(user)
+        Pt pt = ptRepository.findByUserAndStatus(user,PtStatus.COMPLETE)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
         if (pt.getStatus() == PtStatus.COMPLETE) {
             throw new PermissionException(REVIEW_PERMISSION_DENIED);

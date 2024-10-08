@@ -1,5 +1,6 @@
 package linkfit.repository;
 
+import java.util.List;
 import java.util.Optional;
 import linkfit.entity.Pt;
 import linkfit.entity.Trainer;
@@ -15,7 +16,9 @@ public interface PtRepository extends JpaRepository<Pt, Long> {
 
     Page<Pt> findAllByTrainer(Trainer trainer, Pageable pageable);
 
-    Optional<Pt> findByUser(User user);
+    List<Pt> findByUser(User user);
+
+    Optional<Pt> findByUserAndStatus(User user, PtStatus status);
 
     Page<Pt> findAllByUserAndStatus(User user, PtStatus status, Pageable pageable);
 }

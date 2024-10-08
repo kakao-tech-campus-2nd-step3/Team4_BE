@@ -41,6 +41,8 @@ public class GlobalExceptionHandler {
     public static final String ALREADY_COMPLETED_SCHEDULE = "Cannot delete an already completed schedule";
     public static final String UNRELATED_SCHEDULE = "Not a schedule related to your request";
 
+    public static final String ALREADY_PROCESSING_PT = "Cannot proceed with more than one PT";
+
     @ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<String> handleImageUploadException(ImageUploadException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
