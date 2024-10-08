@@ -27,10 +27,6 @@ public class Schedule {
     @Column(nullable = false)
     private LocalDateTime startTime;
 
-    // 0: 예정된 스케쥴, 1: 완료된 스케쥴
-    @Column(nullable = false)
-    private LocalDateTime atDate;
-
     private int status = 0;
 
     protected Schedule() {
@@ -38,7 +34,6 @@ public class Schedule {
 
     public Schedule(Pt pt, LocalDateTime startTime) {
         this.pt = pt;
-        this.atDate = atDate;
         this.startTime = startTime;
         this.status = 0;
     }
