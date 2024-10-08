@@ -57,7 +57,7 @@ public class PtService {
         String authorization,
         Pageable pageable) {
         Trainer trainer = getTrainer(authorization);
-        return ptRepository.findAllByTrainer(trainer, pageable)
+        return ptRepository.findAllByTrainerAndStatus(trainer, PtStatus.APPROVAL, pageable)
             .stream()
             .map(Pt::toProgressDto)
             .toList();
