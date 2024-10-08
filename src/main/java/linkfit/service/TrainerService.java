@@ -87,7 +87,7 @@ public class TrainerService {
 
     public Long identifyTrainer(String authorization) {
         Long trainerId =  jwtUtil.parseToken(authorization);
-        if(trainerRepository.existsById(trainerId))
+        if(!trainerRepository.existsById(trainerId))
             throw new PermissionException(UNREGISTERED_TRAINER);
         return trainerId;
     }
