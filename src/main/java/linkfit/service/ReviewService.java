@@ -2,9 +2,11 @@ package linkfit.service;
 
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PT;
 import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_REVIEW;
+import static linkfit.exception.GlobalExceptionHandler.NOT_OWNER;
 import static linkfit.exception.GlobalExceptionHandler.REVIEW_PERMISSION_DENIED;
 
 import java.util.List;
+import java.util.Objects;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
 import linkfit.entity.Pt;
@@ -64,22 +66,23 @@ public class ReviewService {
         Long userId = jwtUtil.parseToken(authorization);
         User user = userRepository.getReferenceById(userId);
         Trainer trainer = trainerRepository.getReferenceById(trainerId);
-        reviewPermission(user);
+        permissionReview(user);
         Review review = new Review(user, trainer, request.content(), request.score());
         reviewRepository.save(review);
     }
 
     public void deleteReview(String authorization, Long reviewId) {
+        Long userId = jwtUtil.parseToken(authorization);
         Review review = reviewRepository.findById(reviewId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_REVIEW));
+        if (!Objects.equals(review.getUser().getId(), userId)) {
+            throw new PermissionException(NOT_OWNER);
+        }
         reviewRepository.delete(review);
     }
 
-    private void reviewPermission(User user) {
-        Pt pt = ptRepository.findByUserAndStatus(user,PtStatus.COMPLETE)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
-        if (pt.getStatus() == PtStatus.COMPLETE) {
-            throw new PermissionException(REVIEW_PERMISSION_DENIED);
-        }
+    private void permissionReview(User user) {
+        ptRepository.findByUserAndStatus(user, PtStatus.COMPLETE)
+            .orElseThrow(() -> new PermissionException(REVIEW_PERMISSION_DENIED));
     }
 }
