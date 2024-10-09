@@ -1,6 +1,8 @@
 package linkfit.controller;
 
 import jakarta.validation.Valid;
+import linkfit.annotation.LoginTrainer;
+import linkfit.annotation.LoginUser;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
 import linkfit.service.ScheduleService;
@@ -33,24 +35,24 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<Void> registerSchedule(
-        @RequestHeader("Authorization") String authorization,
+        @LoginTrainer Long trainerId,
         @PathVariable Long ptId, @Valid @RequestBody ScheduleRequest scheduleRequest) {
-        scheduleService.registerSchedule(authorization, ptId, scheduleRequest);
+        scheduleService.registerSchedule(trainerId, ptId, scheduleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{scheduleId}")
     public ResponseEntity<Void> completeSchedule(
-        @RequestHeader("Authorization") String authorization,
+        @LoginUser Long userId,
         @PathVariable Long ptId, @PathVariable Long scheduleId) {
-        scheduleService.completeSchedule(authorization, ptId, scheduleId);
+        scheduleService.completeSchedule(userId, ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity<Void> deleteSchedule(@LoginTrainer Long trainerId,
         @PathVariable Long ptId, @PathVariable Long scheduleId) {
-        scheduleService.deleteSchedule(authorization, ptId, scheduleId);
+        scheduleService.deleteSchedule(trainerId, ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

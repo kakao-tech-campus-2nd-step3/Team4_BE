@@ -40,8 +40,8 @@ public class PreferenceService {
         this.bodyInfoRepository = bodyInfoRepository;
     }
 
-    public void registerPreference(String authorization, PreferenceRequest request) {
-        User user = userService.getUser(authorization);
+    public void registerPreference(Long userId, PreferenceRequest request) {
+        User user = userService.getUser(userId);
         Sports sports = sportsService.getSportsById(request.sportsId());
         BodyInfo bodyInfo = bodyInfoRepository.findTopByUserOrderByCreateDate(user)
             .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
@@ -49,8 +49,8 @@ public class PreferenceService {
         preferenceRepository.save(preference);
     }
 
-    public List<PreferenceResponse> getAllMatchingPossible(String authorization) {
-        Long trainerId = trainerService.identifyTrainer(authorization);
+    public List<PreferenceResponse> getAllMatchingPossible(Long trainerId) {
+        trainerService.identifyTrainer(trainerId);
         Trainer trainer = trainerService.getTrainer(trainerId);
         List<Preference> preferences = preferenceRepository.findAll();
 
@@ -80,8 +80,8 @@ public class PreferenceService {
         return preference.getRange() >= distance;
     }
 
-    public void deletePreference(Long preferenceId, String authorization) {
-        User user = userService.getUser(authorization);
+    public void deletePreference(Long preferenceId, Long userId) {
+        User user = userService.getUser(userId);
         Preference preference = preferenceRepository.findById(preferenceId)
             .orElseThrow(() -> new NotFoundException("not.found.preference"));
         if (!user.equals(preference.getUser())) {

@@ -26,15 +26,13 @@ public class ReviewService {
     private final TrainerRepository trainerRepository;
     private final UserRepository userRepository;
     private final PtRepository ptRepository;
-    private final JwtUtil jwtUtil;
 
     public ReviewService(ReviewRepository reviewRepository, TrainerRepository trainerRepository,
-        UserRepository userRepository, PtRepository ptRepository, JwtUtil jwtUtil) {
+        UserRepository userRepository, PtRepository ptRepository) {
         this.reviewRepository = reviewRepository;
         this.trainerRepository = trainerRepository;
         this.userRepository = userRepository;
         this.ptRepository = ptRepository;
-        this.jwtUtil = jwtUtil;
     }
 
     public List<ReviewResponse> getAllReviewsByTrainerId(Long trainerId) {
@@ -44,21 +42,18 @@ public class ReviewService {
             .toList();
     }
 
-    public List<ReviewResponse> getMyReviewsByUser(String authorization) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public List<ReviewResponse> getMyReviewsByUser(Long userId) {
         List<Review> reviews = reviewRepository.findAllByUserId(userId);
         return reviews.stream()
             .map(Review::toDto)
             .toList();
     }
 
-    public List<ReviewResponse> getMyReviewsByTrainer(String authorization) {
-        Long trainerId = jwtUtil.parseToken(authorization);
+    public List<ReviewResponse> getMyReviewsByTrainer(Long trainerId) {
         return getAllReviewsByTrainerId(trainerId);
     }
 
-    public void addReview(String authorization, ReviewRequest request, Long trainerId) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public void addReview(Long userId, ReviewRequest request, Long trainerId) {
         User user = userRepository.getReferenceById(userId);
         Trainer trainer = trainerRepository.getReferenceById(trainerId);
         permissionReview(user);
@@ -66,8 +61,7 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public void deleteReview(String authorization, Long reviewId) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public void deleteReview(Long userId, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
             .orElseThrow(() -> new NotFoundException("not.found.review"));
         if (!Objects.equals(review.getUser().getId(), userId)) {

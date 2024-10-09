@@ -1,6 +1,7 @@
 package linkfit.controller;
 
 import java.util.List;
+import linkfit.annotation.LoginUser;
 import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
@@ -31,42 +32,42 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<UserProfileResponse> getProfile(
-        @RequestHeader("Authorization") String authorization) {
-        UserProfileResponse response = userService.getProfile(authorization);
+        @LoginUser Long userId) {
+        UserProfileResponse response = userService.getProfile(userId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/profile")
     public ResponseEntity<Void> updateProfile(
-        @RequestHeader("Authorization") String authorization,
+        @LoginUser Long userId,
         @RequestPart("user") UserProfileRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
-        userService.updateProfile(authorization, request, profileImage);
+        userService.updateProfile(userId, request, profileImage);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping("/bodyInfo")
     public ResponseEntity<Void> registerBodyInfo(
-        @RequestHeader("Authorization") String authorization,
+        @LoginUser Long userId,
         @RequestPart(value = "inbodyImage") MultipartFile inbodyImage) {
-        userService.registerBodyInfo(authorization, inbodyImage);
+        userService.registerBodyInfo(userId, inbodyImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/bodyInfo")
     public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(
-        @RequestHeader("Authorization") String authorization,
+        @LoginUser Long userId,
         Pageable pageable) {
-        List<BodyInfoResponse> responseBody = userService.getAllBodyInfo(authorization,
+        List<BodyInfoResponse> responseBody = userService.getAllBodyInfo(userId,
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
     @DeleteMapping("/bodyInfo/{bodyInfoId}")
-    public ResponseEntity<Void> deleteBodyInfo(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity<Void> deleteBodyInfo(@LoginUser Long userId,
         @PathVariable Long bodyInfoId) {
-        userService.deleteBodyInfo(authorization, bodyInfoId);
+        userService.deleteBodyInfo(userId, bodyInfoId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

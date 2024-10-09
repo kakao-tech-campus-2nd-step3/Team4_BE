@@ -1,6 +1,8 @@
 package linkfit.controller;
 
 import java.util.List;
+import linkfit.annotation.LoginTrainer;
+import linkfit.annotation.LoginUser;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
 import linkfit.service.ReviewService;
@@ -34,32 +36,32 @@ public class ReviewController {
 
     @GetMapping("/user")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(
-        @RequestHeader("Authorization") String authorization) {
-        List<ReviewResponse> list = reviewService.getMyReviewsByUser(authorization);
+        @LoginUser Long userId) {
+        List<ReviewResponse> list = reviewService.getMyReviewsByUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @GetMapping("/trainer")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(
-        @RequestHeader("Authorization") String authorization) {
-        List<ReviewResponse> list = reviewService.getMyReviewsByTrainer(authorization);
+        @LoginTrainer Long trainerId) {
+        List<ReviewResponse> list = reviewService.getMyReviewsByTrainer(trainerId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @PostMapping("/{trainerId}")
-    public ResponseEntity<Void> addReview(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity<Void> addReview(@LoginUser Long userId,
         @RequestBody
         ReviewRequest request, @PathVariable("trainerId") Long trainerId) {
-        reviewService.addReview(authorization, request, trainerId);
+        reviewService.addReview(userId, request, trainerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReviewById(
-        @RequestHeader("Authorization") String authorization,
+        @LoginTrainer Long userId,
         @PathVariable("reviewId") Long reviewId) {
-        reviewService.deleteReview(authorization, reviewId);
+        reviewService.deleteReview(userId, reviewId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
