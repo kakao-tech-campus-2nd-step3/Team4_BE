@@ -1,17 +1,15 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.FAILED_UPLOAD_IMAGE;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_IMAGE;
-
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import java.io.IOException;
 import java.util.UUID;
 
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import linkfit.config.properties.AwsProperties;
 import linkfit.exception.ImageUploadException;
+
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +35,7 @@ public class ImageUploadService {
 
     public String saveImage(MultipartFile image) {
         if (image == null) {
-            throw new ImageUploadException(NOT_FOUND_IMAGE);
+            throw new ImageUploadException("not.found.image");
         }
         return uploadFile(image);
     }
@@ -48,18 +46,18 @@ public class ImageUploadService {
             ObjectMetadata metadata = createObjectMetadata(file);
 
             amazonS3.putObject(new PutObjectRequest(
-                    awsProperties.s3().bucket(),
-                    key,
-                    file.getInputStream(),
-                    metadata
+                awsProperties.s3().bucket(),
+                key,
+                file.getInputStream(),
+                metadata
             ));
 
             return String.format("https://%s.s3.%s.amazonaws.com/%s",
-                    awsProperties.s3().bucket(),
-                    awsProperties.region(),
-                    key);
+                awsProperties.s3().bucket(),
+                awsProperties.region(),
+                key);
         } catch (IOException e) {
-            throw new ImageUploadException(FAILED_UPLOAD_IMAGE);
+            throw new ImageUploadException("failed.upload.image");
         }
     }
 

@@ -1,14 +1,14 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_CAREER;
-
 import java.util.List;
+
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.entity.Career;
 import linkfit.entity.Trainer;
 import linkfit.exception.NotFoundException;
 import linkfit.repository.CareerRepository;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,13 +38,13 @@ public class CareerService {
 
     public void deleteCareer(Long careerId) {
         if (careerRepository.existsById(careerId)) {
-            throw new NotFoundException(NOT_FOUND_CAREER);
+            throw new NotFoundException("not.found.career");
         }
         careerRepository.deleteById(careerId);
     }
 
     public Career getCareer(Long careerId) {
         return careerRepository.findById(careerId).
-            orElseThrow(() -> new NotFoundException(NOT_FOUND_CAREER));
+            orElseThrow(() -> new NotFoundException("not.found.career"));
     }
 }

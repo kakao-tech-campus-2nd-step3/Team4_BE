@@ -1,11 +1,8 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_BODYINFO;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_USER;
-
 import java.util.List;
 import java.util.Objects;
+
 import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.UserProfileRequest;
@@ -15,9 +12,12 @@ import linkfit.entity.BodyInfo;
 import linkfit.entity.User;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PasswordMismatchException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
+
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,11 +32,8 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
 
-    public UserService(
-        UserRepository userRepository,
-        BodyInfoRepository bodyInfoRepository,
-        JwtUtil jwtUtil,
-        ImageUploadService imageUploadService) {
+    public UserService(UserRepository userRepository, BodyInfoRepository bodyInfoRepository,
+        JwtUtil jwtUtil, ImageUploadService imageUploadService) {
         this.userRepository = userRepository;
         this.bodyInfoRepository = bodyInfoRepository;
         this.jwtUtil = jwtUtil;
@@ -46,7 +43,7 @@ public class UserService {
     @Transactional
     public void register(UserRegisterRequest request, MultipartFile profileImage) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new DuplicateException(DUPLICATE_EMAIL);
+            throw new DuplicateException("duplicate.email");
         }
         User user = request.toEntity();
         String imageUrl = imageUploadService.uploadProfileImage(profileImage);
@@ -56,7 +53,7 @@ public class UserService {
 
     public String login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
+            .orElseThrow(() -> new NotFoundException("not.found.user"));
         user.validatePassword(request.password());
         return jwtUtil.generateToken(user.getId(), user.getEmail());
     }
@@ -94,23 +91,23 @@ public class UserService {
     public User getUser(String authorization) {
         Long userId = jwtUtil.parseToken(authorization);
         return userRepository.findById(userId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
+            .orElseThrow(() -> new NotFoundException("not.found.user"));
     }
 
     public BodyInfo getUserBodyInfo(Long userId) {
         return bodyInfoRepository.findByUserId(userId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
     }
 
     public BodyInfo getRecentBodyInfo(Long userId) {
         return bodyInfoRepository.findFirstByUserIdOrderByCreateDateDesc(userId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
     }
 
     public void deleteBodyInfo(String authorization, Long infoId) {
         User user = getUser(authorization);
         BodyInfo bodyInfo = bodyInfoRepository.findById(infoId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
 
         if (Objects.equals(user.getId(), bodyInfo.getUser().getId())) {
             bodyInfoRepository.delete(bodyInfo);

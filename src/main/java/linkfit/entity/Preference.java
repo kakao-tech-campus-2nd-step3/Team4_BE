@@ -13,8 +13,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import linkfit.dto.PreferenceResponse;
 import linkfit.status.TrainerGender;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "PREFERENCE_TB")

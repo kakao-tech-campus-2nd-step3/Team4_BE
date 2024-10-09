@@ -1,7 +1,5 @@
 package linkfit.entity;
 
-import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.exception.PasswordMismatchException;
 import linkfit.status.TrainerGender;
@@ -83,7 +82,7 @@ public class Trainer {
 
     public void validatePassword(String inputPassword) {
         if (!inputPassword.equals(this.password)) {
-            throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
+            throw new PasswordMismatchException("not.match.password");
         }
     }
 

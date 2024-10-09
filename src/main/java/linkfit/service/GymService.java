@@ -1,13 +1,10 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.GYM_ADMIN_PERMISSION_DENIED;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_GYM;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_RELATION;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
 import static linkfit.status.GymStatus.APPROVAL;
 import static linkfit.status.GymStatus.WAITING;
 
 import java.util.List;
+
 import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
@@ -26,6 +23,7 @@ import linkfit.repository.GymImageRepository;
 import linkfit.repository.GymRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.util.JwtUtil;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -87,7 +85,7 @@ public class GymService {
 
     public Gym getGymById(Long id) {
         return gymRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_GYM));
+            .orElseThrow(() -> new NotFoundException("not.found.gym"));
     }
 
     public GymTrainersResponse getGymTrainers(Long gymId, Pageable pageable) {
@@ -123,7 +121,7 @@ public class GymService {
     private Trainer getTrainer(String authorization) {
         Long trainerId = jwtUtil.parseToken(authorization);
         return trainerRepository.findById(trainerId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
+            .orElseThrow(() -> new NotFoundException("not.found.trainer"));
     }
 
     public void updateGym(Long gymId, String authorization,
@@ -137,9 +135,9 @@ public class GymService {
 
     private void validPermission(Gym gym, Trainer trainer) {
         GymAdminRelation gymAdminRelation = gymAdminRelationRepository.findByGym(gym)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_RELATION));
+            .orElseThrow(() -> new NotFoundException("not.found.relation"));
         if (!trainer.equals(gymAdminRelation.getTrainer())) {
-            throw new PermissionException(GYM_ADMIN_PERMISSION_DENIED);
+            throw new PermissionException("gym.admin.permission.denied");
         }
     }
 

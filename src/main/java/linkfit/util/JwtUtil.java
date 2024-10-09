@@ -1,14 +1,14 @@
 package linkfit.util;
 
-import static linkfit.exception.GlobalExceptionHandler.INVALID_TOKEN;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
+import java.util.Locale;
 import javax.crypto.SecretKey;
 import linkfit.exception.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,14 +18,17 @@ public class JwtUtil {
     private final long expirationTime;
     private final String masterToken;
     private final Long masterId;
+    private final MessageSource messageSource;
 
     public JwtUtil(@Value("${jwt.expiration-time}") long expirationTime,
-                   @Value("${jwt.master-token}") String masterToken,
-                   @Value("${jwt.master-id}") Long masterId) {
+        @Value("${jwt.master-token}") String masterToken,
+        @Value("${jwt.master-id}") Long masterId,
+        MessageSource messageSource) {
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         this.expirationTime = expirationTime;
         this.masterToken = masterToken;
         this.masterId = masterId;
+        this.messageSource = messageSource;
     }
 
     public String generateToken(Long id, String email) {
@@ -54,7 +57,8 @@ public class JwtUtil {
                 .getPayload()
                 .get("id", Long.class);
         } catch (Exception e) {
-            throw new InvalidTokenException(INVALID_TOKEN);
+            throw new InvalidTokenException(
+                messageSource.getMessage("invalid.token", null, Locale.getDefault()));
         }
     }
 

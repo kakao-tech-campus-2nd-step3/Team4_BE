@@ -1,10 +1,7 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_BODYINFO;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PREFERENCE;
-import static linkfit.exception.GlobalExceptionHandler.NOT_OWNER;
-
 import java.util.List;
+
 import linkfit.dto.Coordinate;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
@@ -19,6 +16,7 @@ import linkfit.exception.PermissionException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.PreferenceRepository;
 import linkfit.status.TrainerGender;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,7 +44,7 @@ public class PreferenceService {
         User user = userService.getUser(authorization);
         Sports sports = sportsService.getSportsById(request.sportsId());
         BodyInfo bodyInfo = bodyInfoRepository.findTopByUserOrderByCreateDate(user)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
+            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
         Preference preference = request.toEntity(user, bodyInfo, sports);
         preferenceRepository.save(preference);
     }
@@ -85,9 +83,9 @@ public class PreferenceService {
     public void deletePreference(Long preferenceId, String authorization) {
         User user = userService.getUser(authorization);
         Preference preference = preferenceRepository.findById(preferenceId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFERENCE));
-        if(!user.equals(preference.getUser())) {
-            throw new PermissionException(NOT_OWNER);
+            .orElseThrow(() -> new NotFoundException("not.found.preference"));
+        if (!user.equals(preference.getUser())) {
+            throw new PermissionException("not.owner");
         }
         preferenceRepository.delete(preference);
     }
