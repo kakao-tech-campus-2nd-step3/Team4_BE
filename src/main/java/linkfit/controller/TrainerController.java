@@ -37,7 +37,7 @@ public class TrainerController {
     @PostMapping("/career")
     public ResponseEntity<Void> addCareer(
         @RequestHeader("Authorization") String authorization,
-        @RequestBody CareerRequest request) {
+        @RequestBody List<CareerRequest> request) {
         trainerService.addCareer(authorization, request);
         return ResponseEntity.status(HttpStatus.CREATED)
             .build();

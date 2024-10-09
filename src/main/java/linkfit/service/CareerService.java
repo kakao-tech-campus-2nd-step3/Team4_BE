@@ -27,13 +27,17 @@ public class CareerService {
             .toList();
     }
 
-    public void addCareer(Trainer trainer, CareerRequest req) {
-        Career career = new Career(trainer, req.career());
-        careerRepository.save(career);
+    public void addCareer(Trainer trainer, List<CareerRequest> request) {
+
+        request.forEach(c -> {
+            Career career = new Career(trainer, c.career());
+            careerRepository.save(career);
+        });
+
     }
 
     public void deleteCareer(Long careerId) {
-        if(careerRepository.existsById(careerId)) {
+        if (careerRepository.existsById(careerId)) {
             throw new NotFoundException(NOT_FOUND_CAREER);
         }
         careerRepository.deleteById(careerId);
@@ -41,6 +45,6 @@ public class CareerService {
 
     public Career getCareer(Long careerId) {
         return careerRepository.findById(careerId).
-        orElseThrow(() -> new NotFoundException(NOT_FOUND_CAREER));
+            orElseThrow(() -> new NotFoundException(NOT_FOUND_CAREER));
     }
 }

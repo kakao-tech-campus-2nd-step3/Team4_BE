@@ -79,7 +79,7 @@ public class TrainerService {
             throw new PermissionException(CARRER_PERMISSION_DENIED);
     }
 
-    public void addCareer(String authorization, CareerRequest request) {
+    public void addCareer(String authorization, List<CareerRequest> request) {
         Long trainerId = identifyTrainer(authorization);
         Trainer trainer = getTrainer(trainerId);
         careerService.addCareer(trainer, request);
