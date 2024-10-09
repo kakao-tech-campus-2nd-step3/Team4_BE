@@ -22,7 +22,7 @@
       <th>Action</th>
     </tr>
     </thead>
-    <tbody th:each="gym : ${gymList}">
+    <tbody th:each="gym : ${gymList.gyms()}">
     <tr>
       <td>
         <span th:text="${gym.id}"/>

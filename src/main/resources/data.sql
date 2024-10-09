@@ -1,5 +1,5 @@
 INSERT INTO GYM_TB(location, name, status)
-VALUES ('강원특별자치도 춘천시 강원대학길 1', '백령스포츠센터', 'WAITING'),
+VALUES ('강원특별자치도 춘천시 강원대학길 1', '백령스포츠센터', 'APPROVAL'),
        ('강원특별자치도 춘천시 춘천로 204', '파리휘트니스', 'WAITING');
 
 INSERT INTO USER_TB(email, password, name, profile_image_url, location)

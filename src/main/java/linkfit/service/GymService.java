@@ -99,8 +99,8 @@ public class GymService {
     public List<GymLocationResponse> getGymLocations() {
         List<Gym> gymList = gymRepository.findAll();
         return gymList.stream()
-            .map(gym -> new GymLocationResponse(gym.getId(),
-                gym.getLocation()))  // Assuming GymLocationResponse has these fields
+            .map(gym -> new GymLocationResponse(
+                gym.getId(), gym.getLocation()))
             .toList();
     }
 
