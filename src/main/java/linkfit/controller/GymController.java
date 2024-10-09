@@ -6,6 +6,7 @@ import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
 import linkfit.dto.GymRegisterRequest;
+import linkfit.dto.GymSearchRequest;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
 import linkfit.service.GymService;
@@ -41,9 +42,9 @@ public class GymController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<GymSearchResponse> searchGymByKeyword(@RequestBody String keyword,
-        Pageable pageable) {
-        GymSearchResponse responseBody = gymService.findAllByKeyword(keyword, pageable);
+    public ResponseEntity<GymSearchResponse> searchGymByKeyword(
+        @RequestBody GymSearchRequest request, Pageable pageable) {
+        GymSearchResponse responseBody = gymService.findAllByKeyword(request.keyword(), pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
