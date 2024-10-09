@@ -3,6 +3,7 @@ package linkfit.resolver;
 
 import java.util.Objects;
 import linkfit.annotation.LoginUser;
+import linkfit.exception.InvalidTokenException;
 import linkfit.exception.PermissionException;
 import linkfit.util.JwtUtil;
 import org.springframework.core.MethodParameter;
@@ -31,8 +32,12 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     public Long resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
         NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String token = webRequest.getHeader("Authorization");
-        if(token == null){
+        if (token == null) {
             throw new PermissionException("null.token");
+        }
+
+        if (!jwtUtil.isValidToken(token)) {
+            throw new InvalidTokenException("invalid.token");
         }
         return jwtUtil.parseToken(Objects.requireNonNull(token));
 

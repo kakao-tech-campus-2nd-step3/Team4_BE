@@ -1,8 +1,12 @@
 package linkfit.util;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import java.util.Date;
 import java.util.Locale;
 import javax.crypto.SecretKey;
@@ -50,16 +54,39 @@ public class JwtUtil {
             return masterId;
         }
         try {
-            return Jwts.parser()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getEncoded()))
-                .build()
-                .parseSignedClaims(processedToken)
-                .getPayload()
-                .get("id", Long.class);
+            isValidToken(processedToken);
+            return extractAllClaims(token).get("id", Long.class);
         } catch (Exception e) {
             throw new InvalidTokenException(
                 messageSource.getMessage("invalid.token", null, Locale.getDefault()));
         }
+
+    }
+
+    private Claims extractAllClaims(String token) throws ExpiredJwtException, SignatureException {
+        return Jwts.parser()
+            .setSigningKey(Keys.hmacShaKeyFor(secretKey.getEncoded()))
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
+
+    public boolean isValidToken(String token) {
+        String processedToken = token.replace("Bearer ", "");
+        if (isMasterToken(processedToken)) {
+            return true;
+        }
+        try {
+            Claims claims = extractAllClaims(processedToken);
+            return !isTokenExpired(processedToken);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean isTokenExpired(String token) {
+        final Date expiration = extractAllClaims(token).getExpiration();
+        return expiration.before(new Date());
     }
 
     private boolean isMasterToken(String token) {
