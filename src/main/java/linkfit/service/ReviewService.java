@@ -49,21 +49,18 @@ public class ReviewService {
             .toList();
     }
 
-    public List<ReviewResponse> getMyReviewsByUser(String authorization) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public List<ReviewResponse> getMyReviewsByUser(Long userId) {
         List<Review> reviews = reviewRepository.findAllByUserId(userId);
         return reviews.stream()
             .map(Review::toDto)
             .toList();
     }
 
-    public List<ReviewResponse> getMyReviewsByTrainer(String authorization) {
-        Long trainerId = jwtUtil.parseToken(authorization);
+    public List<ReviewResponse> getMyReviewsByTrainer(Long trainerId) {
         return getAllReviewsByTrainerId(trainerId);
     }
 
-    public void addReview(String authorization, ReviewRequest request, Long trainerId) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public void addReview(Long userId, ReviewRequest request, Long trainerId) {
         User user = userRepository.getReferenceById(userId);
         Trainer trainer = trainerRepository.getReferenceById(trainerId);
         permissionReview(user);
@@ -71,8 +68,7 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public void deleteReview(String authorization, Long reviewId) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public void deleteReview(Long userId, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_REVIEW));
         if (!Objects.equals(review.getUser().getId(), userId)) {

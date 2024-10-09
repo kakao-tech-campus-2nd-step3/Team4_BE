@@ -1,6 +1,8 @@
 package linkfit.controller;
 
 import java.util.List;
+import linkfit.annotation.LoginTrainer;
+import linkfit.annotation.LoginUser;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
 import linkfit.service.PreferenceService;
@@ -27,25 +29,24 @@ public class PreferenceController {
 
     @PostMapping
     public ResponseEntity<Void> registerPreference(
-        @RequestHeader("Authorization") String authorization,
+        @LoginUser Long userId,
         @RequestBody PreferenceRequest request) {
-
-        preferenceService.registerPreference(authorization, request);
+        preferenceService.registerPreference(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
     public ResponseEntity<List<PreferenceResponse>> getAllMatchingPossible(
-        @RequestHeader("Authorization") String authorization) {
-        List<PreferenceResponse> preferences = preferenceService.getAllMatchingPossible(authorization);
+        @LoginTrainer Long trainerId) {
+        List<PreferenceResponse> preferences = preferenceService.getAllMatchingPossible(trainerId);
         return ResponseEntity.status(HttpStatus.OK).body(preferences);
     }
 
     @DeleteMapping("/{preferenceId}")
     public ResponseEntity<Void> deletePreference(
         @PathVariable Long preferenceId,
-        @RequestHeader("Authorization") String authorization) {
-        preferenceService.deletePreference(preferenceId, authorization);
+        @LoginUser Long userId) {
+        preferenceService.deletePreference(preferenceId, userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

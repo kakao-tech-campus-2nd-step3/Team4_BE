@@ -52,11 +52,11 @@ public class ScheduleService {
     }
 
     public void registerSchedule(
-        String authorization,
+        Long trainerId,
         Long ptId,
         ScheduleRequest scheduleRequest) {
         Pt pt = findPt(ptId);
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
         if (!pt.getTrainer().equals(trainer)) {
             throw new PermissionException(NOT_OWNER);
         }
@@ -69,18 +69,18 @@ public class ScheduleService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
     }
 
-    public void completeSchedule(String authorization, Long ptId, Long scheduleId) {
+    public void completeSchedule(Long userId, Long ptId, Long scheduleId) {
         Schedule schedule = findSchedule(scheduleId);
         isRelatedSchedule(schedule, ptId);
-        isUserOwner(authorization, schedule);
+        isUserOwner(userId, schedule);
         schedule.complete();
         scheduleRepository.save(schedule);
     }
 
-    public void deleteSchedule(String authorization, Long ptId, Long scheduleId) {
+    public void deleteSchedule(Long trainerId, Long ptId, Long scheduleId) {
         Schedule schedule = findSchedule(scheduleId);
         isRelatedSchedule(schedule, ptId);
-        isTrainerOwner(authorization, schedule);
+        isTrainerOwner(trainerId, schedule);
         if (schedule.getIsCompleted()) {
             throw new PermissionException(ALREADY_COMPLETED_SCHEDULE);
         }
@@ -98,27 +98,25 @@ public class ScheduleService {
         }
     }
 
-    private Trainer getTrainer(String authorization) {
-        Long id = jwtUtil.parseToken(authorization);
-        return trainerRepository.findById(id)
+    private Trainer getTrainer(Long trainerId) {
+        return trainerRepository.findById(trainerId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
     }
 
-    private User getUser(String authorization) {
-        Long id = jwtUtil.parseToken(authorization);
-        return userRepository.findById(id)
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
     }
 
-    private void isTrainerOwner(String authorization, Schedule schedule) {
-        Trainer trainer = getTrainer(authorization);
+    private void isTrainerOwner(Long trainerId, Schedule schedule) {
+        Trainer trainer = getTrainer(trainerId);
         if (!trainer.equals(schedule.getPt().getTrainer())) {
             throw new PermissionException(NOT_OWNER);
         }
     }
 
-    private void isUserOwner(String authorization, Schedule schedule) {
-        User user = getUser(authorization);
+    private void isUserOwner(Long userId, Schedule schedule) {
+        User user = getUser(userId);
         if (!user.equals(schedule.getPt().getUser())) {
             throw new PermissionException(NOT_OWNER);
         }

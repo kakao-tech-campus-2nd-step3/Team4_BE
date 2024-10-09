@@ -2,6 +2,7 @@ package linkfit.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import linkfit.annotation.LoginTrainer;
 import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
@@ -66,18 +67,18 @@ public class GymController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> sendGymRegistrationRequest(
-        @RequestHeader("Authorization") String authorization,
+        @LoginTrainer Long trainerId,
         @Valid @RequestBody GymRegisterRequest gymRegisterRequest) {
-        gymService.sendGymRegistrationRequest(authorization, gymRegisterRequest);
+        gymService.sendGymRegistrationRequest(trainerId, gymRegisterRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{gymId}")
     public ResponseEntity<Void> updateGymInfo(@PathVariable Long gymId,
-        @RequestHeader("Authorization") String authorization,
+        @LoginTrainer Long trainerId,
         @RequestPart("description") GymDescriptionRequest gymDescriptionRequest,
         @RequestPart(value = "images", required = false) List<MultipartFile> gymImages) {
-        gymService.updateGym(gymId, authorization, gymDescriptionRequest, gymImages);
+        gymService.updateGym(gymId, trainerId, gymDescriptionRequest, gymImages);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

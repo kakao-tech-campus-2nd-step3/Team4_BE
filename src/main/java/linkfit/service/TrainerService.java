@@ -60,14 +60,12 @@ public class TrainerService {
         return jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
     }
 
-    public List<CareerResponse> getCareers(String authorization) {
-        Long trainerId = identifyTrainer(authorization);
+    public List<CareerResponse> getCareers(Long trainerId) {
         Trainer trainer = getTrainer(trainerId);
         return careerService.getAllCareerByTrainer(trainer);
     }
 
-    public void deleteCareer(String authorization, Long careerId) {
-        Long trainerId = identifyTrainer(authorization);
+    public void deleteCareer(Long trainerId, Long careerId) {
         Trainer trainer = getTrainer(trainerId);
         Career career = careerService.getCareer(careerId);
         validOwner(trainer, career);
@@ -79,17 +77,14 @@ public class TrainerService {
             throw new PermissionException(CARRER_PERMISSION_DENIED);
     }
 
-    public void addCareer(String authorization, List<CareerRequest> request) {
-        Long trainerId = identifyTrainer(authorization);
+    public void addCareer(Long trainerId, List<CareerRequest> request) {
         Trainer trainer = getTrainer(trainerId);
         careerService.addCareer(trainer, request);
     }
 
-    public Long identifyTrainer(String authorization) {
-        Long trainerId =  jwtUtil.parseToken(authorization);
+    public void identifyTrainer(Long trainerId) {
         if(!trainerRepository.existsById(trainerId))
             throw new PermissionException(UNREGISTERED_TRAINER);
-        return trainerId;
     }
 
     public Trainer getTrainer(Long trainerId) {
@@ -107,8 +102,7 @@ public class TrainerService {
         return trainer.toDto();
     }
 
-    public TrainerProfileResponse getMyProfile(String authorization) {
-        Long trainerId = identifyTrainer(authorization);
+    public TrainerProfileResponse getMyProfile(Long trainerId) {
         return getProfile(trainerId);
     }
 }

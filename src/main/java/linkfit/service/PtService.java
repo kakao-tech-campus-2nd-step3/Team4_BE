@@ -54,9 +54,9 @@ public class PtService {
     }
 
     public List<ProgressPtListResponse> getTrainerProgressPt(
-        String authorization,
+        Long trainerId,
         Pageable pageable) {
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
         return ptRepository.findAllByTrainerAndStatus(trainer, PtStatus.APPROVAL, pageable)
             .stream()
             .map(Pt::toProgressDto)
@@ -64,8 +64,8 @@ public class PtService {
     }
 
     public UserPtResponse getMyPt(
-        String authorization) {
-        User user = getUser(authorization);
+        Long userId) {
+        User user = getUser(userId);
         Pt pt = ptRepository.findByUserAndStatus(user, PtStatus.APPROVAL)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
         List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
@@ -73,9 +73,9 @@ public class PtService {
     }
 
     public void sendSuggestion(
-        String authorization,
+        Long trainerId,
         PtSuggestionRequest ptSuggestionRequest) {
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
         User user = userRepository.findById(ptSuggestionRequest.userId())
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
         Pt suggestion = new Pt(
@@ -88,24 +88,24 @@ public class PtService {
     }
 
     public List<SendPtSuggestResponse> getAllSendSuggestion(
-        String authorization,
+        Long trainerId,
         Pageable pageable) {
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
         return ptRepository.findAllByTrainer(trainer, pageable).stream()
             .map(Pt::toSendDto)
             .toList();
     }
 
-    public List<ReceivePtSuggestResponse> getAllReceiveSuggestion(String authorization,
+    public List<ReceivePtSuggestResponse> getAllReceiveSuggestion(Long userId,
         Pageable pageable) {
-        User user = getUser(authorization);
+        User user = getUser(userId);
         return ptRepository.findAllByUserAndStatus(user, PtStatus.WAITING, pageable).stream()
             .map(Pt::toReceiveDto)
             .toList();
     }
 
-    public void approvalSuggestion(String authorization, Long ptId) {
-        User user = getUser(authorization);
+    public void approvalSuggestion(Long userId, Long ptId) {
+        User user = getUser(userId);
         List<Pt> ptList = ptRepository.findByUser(user);
         Pt suggestion = findSuggestion(ptId);
         if (!suggestion.getUser().equals(user)) {
@@ -125,8 +125,8 @@ public class PtService {
         ptRepository.save(suggestion);
     }
 
-    public void recallSuggestion(String authorization, Long ptId) {
-        Trainer trainer = getTrainer(authorization);
+    public void recallSuggestion(Long trainerId, Long ptId) {
+        Trainer trainer = getTrainer(trainerId);
         Pt suggestion = findSuggestion(ptId);
         if (!suggestion.getTrainer().equals(trainer)) {
             throw new PermissionException(NOT_OWNER);
@@ -135,8 +135,8 @@ public class PtService {
         ptRepository.save(suggestion);
     }
 
-    public void refuseSuggestion(String authorization, Long ptId) {
-        User user = getUser(authorization);
+    public void refuseSuggestion(Long userId, Long ptId) {
+        User user = getUser(userId);
         Pt suggestion = findSuggestion(ptId);
         if (!suggestion.getUser().equals(user)) {
             throw new PermissionException(NOT_OWNER);
@@ -150,8 +150,8 @@ public class PtService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
     }
 
-    public ProgressPtDetailResponse getProgressUserDetails(String authorization, Long ptId) {
-        Trainer trainer = getTrainer(authorization);
+    public ProgressPtDetailResponse getProgressUserDetails(Long trainerId, Long ptId) {
+        Trainer trainer = getTrainer(trainerId);
         Pt pt = findSuggestion(ptId);
         if (!pt.getTrainer().equals(trainer)) {
             throw new PermissionException(NOT_OWNER);
@@ -162,15 +162,13 @@ public class PtService {
             schedules);
     }
 
-    private Trainer getTrainer(String authorization) {
-        Long id = jwtUtil.parseToken(authorization);
-        return trainerRepository.findById(id)
+    private Trainer getTrainer(Long trainerId) {
+        return trainerRepository.findById(trainerId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
     }
 
-    private User getUser(String authorization) {
-        Long id = jwtUtil.parseToken(authorization);
-        return userRepository.findById(id)
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
     }
 

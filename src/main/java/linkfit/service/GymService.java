@@ -104,9 +104,9 @@ public class GymService {
             .toList();
     }
 
-    public void sendGymRegistrationRequest(String authorization,
+    public void sendGymRegistrationRequest(Long trainerId,
         GymRegisterRequest gymRegisterRequest) {
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
         Gym gym = gymRegisterRequest.toEntity();
         gymRepository.save(gym);
         GymAdminRelation gymAdminRelation = new GymAdminRelation(gym, trainer);
@@ -120,15 +120,14 @@ public class GymService {
             .toList();
     }
 
-    private Trainer getTrainer(String authorization) {
-        Long trainerId = jwtUtil.parseToken(authorization);
+    private Trainer getTrainer(Long trainerId) {
         return trainerRepository.findById(trainerId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
     }
 
-    public void updateGym(Long gymId, String authorization,
+    public void updateGym(Long gymId, Long trainerId,
         GymDescriptionRequest gymDescriptionRequest, List<MultipartFile> gymImages) {
-        Trainer trainer = getTrainer(authorization);
+        Trainer trainer = getTrainer(trainerId);
         Gym gym = getGymById(gymId);
         validPermission(gym, trainer);
         updateDescription(gym, gymDescriptionRequest.description());

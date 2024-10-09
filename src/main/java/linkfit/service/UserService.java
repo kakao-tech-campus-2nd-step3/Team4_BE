@@ -61,38 +61,37 @@ public class UserService {
         return jwtUtil.generateToken(user.getId(), user.getEmail());
     }
 
-    public UserProfileResponse getProfile(String authorization) {
-        User user = getUser(authorization);
+    public UserProfileResponse getProfile(Long userId) {
+        User user = getUser(userId);
         return user.toDto();
     }
 
-    public void updateProfile(String authorization, UserProfileRequest request,
+    public void updateProfile(Long userId, UserProfileRequest request,
         MultipartFile profileImage) {
-        User user = getUser(authorization);
+        User user = getUser(userId);
         String imageUrl = imageUploadService.uploadProfileImage(profileImage);
         user.setProfileImageUrl(imageUrl);
         user.update(request);
         userRepository.save(user);
     }
 
-    public void registerBodyInfo(String authorization, MultipartFile profileImage) {
-        User user = getUser(authorization);
+    public void registerBodyInfo(Long userId, MultipartFile profileImage) {
+        User user = getUser(userId);
         String imageUrl = imageUploadService.saveImage(profileImage);
         BodyInfo bodyInfo = new BodyInfo(user, imageUrl);
         bodyInfoRepository.save(bodyInfo);
 
     }
 
-    public List<BodyInfoResponse> getAllBodyInfo(String authorization, Pageable pageable) {
-        User user = getUser(authorization);
+    public List<BodyInfoResponse> getAllBodyInfo(Long userId, Pageable pageable) {
+        User user = getUser(userId);
         Page<BodyInfo> bodyInfos = bodyInfoRepository.findAllByUserId(user.getId(), pageable);
         return bodyInfos.stream()
             .map(BodyInfo::toDto)
             .toList();
     }
 
-    public User getUser(String authorization) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public User getUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
     }
@@ -107,8 +106,8 @@ public class UserService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
     }
 
-    public void deleteBodyInfo(String authorization, Long infoId) {
-        User user = getUser(authorization);
+    public void deleteBodyInfo(Long userId, Long infoId) {
+        User user = getUser(userId);
         BodyInfo bodyInfo = bodyInfoRepository.findById(infoId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND_BODYINFO));
 

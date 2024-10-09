@@ -32,6 +32,8 @@ public class GlobalExceptionHandler {
 
     public static final String UNREGISTERED_TRAINER = "This is an unregistered trainer.";
     public static final String INVALID_TOKEN = "Invalid or Expired token";
+
+    public static final String NULL_TOKEN = "Token must be not null";
     public static final String NOT_OWNER = "You can only control your own data";
 
     public static final String REVIEW_PERMISSION_DENIED = "You can only create a review after completing the pt.";
