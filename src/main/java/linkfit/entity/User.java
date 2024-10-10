@@ -29,7 +29,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg'")
     private String profileImageUrl;
 
     @Column(nullable = false)
