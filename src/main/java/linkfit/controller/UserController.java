@@ -67,7 +67,7 @@ public class UserController implements UserControllerDocs {
 
     @DeleteMapping("/bodyInfo/{bodyInfoId}")
     public ResponseEntity<Void> deleteBodyInfo(@LoginUser Long userId,
-        @PathVariable Long bodyInfoId) {
+        @PathVariable("bodyInfoId") Long bodyInfoId) {
         userService.deleteBodyInfo(userId, bodyInfoId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
