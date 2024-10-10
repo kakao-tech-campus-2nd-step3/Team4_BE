@@ -36,9 +36,8 @@ public class CareerService {
     }
 
     public void deleteCareer(Long careerId) {
-        if (careerRepository.existsById(careerId)) {
-            throw new NotFoundException("not.found.career");
-        }
+        careerRepository.findById(careerId)
+                .orElseThrow(() -> new NotFoundException("not.found.career"));
         careerRepository.deleteById(careerId);
     }
 
