@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.annotation.LoginTrainer;
 import linkfit.annotation.LoginUser;
+import linkfit.controller.Swagger.PtControllerDocs;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/pt")
-public class PtController {
+public class PtController implements PtControllerDocs {
 
     private final PtService ptService;
 
