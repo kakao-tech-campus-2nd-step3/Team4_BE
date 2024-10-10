@@ -3,14 +3,16 @@ package linkfit.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+
 import java.util.Date;
 import java.util.Locale;
 import javax.crypto.SecretKey;
+
 import linkfit.exception.InvalidTokenException;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,10 @@ public class JwtUtil {
     private final String masterToken;
     private final Long masterId;
     private final MessageSource messageSource;
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer ";
+    private static final String ID = "id";
 
     public JwtUtil(@Value("${jwt.expiration-time}") long expirationTime,
         @Value("${jwt.master-token}") String masterToken,
@@ -41,7 +47,7 @@ public class JwtUtil {
 
         return Jwts.builder()
             .setSubject(email)
-            .claim("id", id)
+            .claim(ID, id)
             .setIssuedAt(now)
             .setExpiration(expiryDate)
             .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -49,13 +55,13 @@ public class JwtUtil {
     }
 
     public Long parseToken(String token) {
-        String processedToken = token.replace("Bearer ", "");
+        String processedToken = token.replace(BEARER_PREFIX, "");
         if (isMasterToken(processedToken)) {
             return masterId;
         }
         try {
             isValidToken(processedToken);
-            return extractAllClaims(token).get("id", Long.class);
+            return extractAllClaims(token).get(ID, Long.class);
         } catch (Exception e) {
             throw new InvalidTokenException(
                 messageSource.getMessage("invalid.token", null, Locale.getDefault()));
@@ -72,7 +78,7 @@ public class JwtUtil {
     }
 
     public boolean isValidToken(String token) {
-        String processedToken = token.replace("Bearer ", "");
+        String processedToken = token.replace(BEARER_PREFIX, "");
         if (isMasterToken(processedToken)) {
             return true;
         }
