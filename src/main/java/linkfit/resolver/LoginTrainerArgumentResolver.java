@@ -1,6 +1,7 @@
 package linkfit.resolver;
 
 import static linkfit.util.JwtUtil.AUTHORIZATION_HEADER;
+import static linkfit.util.JwtUtil.BEARER_PREFIX;
 
 import java.util.Objects;
 import linkfit.annotation.LoginTrainer;
@@ -35,7 +36,9 @@ public class LoginTrainerArgumentResolver implements HandlerMethodArgumentResolv
         if (token == null) {
             throw new PermissionException("null.token");
         }
-        if (!jwtUtil.isValidToken(token)) {
+
+        String processedToken = token.replace(BEARER_PREFIX, "");
+        if (!jwtUtil.isValidToken(processedToken)) {
             throw new InvalidTokenException("invalid.token");
         }
         return jwtUtil.parseToken(Objects.requireNonNull(token));

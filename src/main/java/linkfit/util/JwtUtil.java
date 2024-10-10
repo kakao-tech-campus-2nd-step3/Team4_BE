@@ -27,7 +27,7 @@ public class JwtUtil {
     private final MessageSource messageSource;
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer ";
+    public static final String BEARER_PREFIX = "Bearer ";
     private static final String ID = "id";
 
     public JwtUtil(@Value("${jwt.expiration-time}") long expirationTime,
@@ -60,8 +60,7 @@ public class JwtUtil {
             return masterId;
         }
         try {
-            isValidToken(processedToken);
-            return extractAllClaims(token).get(ID, Long.class);
+            return extractAllClaims(processedToken).get(ID, Long.class);
         } catch (Exception e) {
             throw new InvalidTokenException(
                 messageSource.getMessage("invalid.token", null, Locale.getDefault()));
@@ -71,10 +70,10 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) throws ExpiredJwtException, SignatureException {
         return Jwts.parser()
-            .setSigningKey(Keys.hmacShaKeyFor(secretKey.getEncoded()))
+            .setSigningKey(secretKey)
             .build()
             .parseSignedClaims(token)
-            .getPayload();
+            .getBody();
     }
 
     public boolean isValidToken(String token) {
