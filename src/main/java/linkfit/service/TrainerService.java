@@ -41,8 +41,10 @@ public class TrainerService {
             throw new DuplicateException("duplicate.email");
         }
         Trainer trainer = request.toEntity();
-        String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-        trainer.setProfileImageUrl(imageUrl);
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
+            trainer.setProfileImageUrl(imageUrl);
+        }
         trainerRepository.save(trainer);
     }
 

@@ -27,9 +27,6 @@ public class ImageUploadService {
     }
 
     public String uploadProfileImage(MultipartFile profileImage) {
-        if (profileImage == null) {
-            return "https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg";
-        }
         return uploadFile(profileImage);
     }
 

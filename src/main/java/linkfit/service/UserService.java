@@ -46,8 +46,10 @@ public class UserService {
             throw new DuplicateException("duplicate.email");
         }
         User user = request.toEntity();
-        String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-        user.setProfileImageUrl(imageUrl);
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
+            user.setProfileImageUrl(imageUrl);
+        }
         userRepository.save(user);
     }
 
@@ -66,8 +68,10 @@ public class UserService {
     public void updateProfile(Long userId, UserProfileRequest request,
         MultipartFile profileImage) {
         User user = getUser(userId);
-        String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-        user.setProfileImageUrl(imageUrl);
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
+            user.setProfileImageUrl(imageUrl);
+        }
         user.update(request);
         userRepository.save(user);
     }
