@@ -2,6 +2,7 @@ package linkfit.controller;
 
 import java.util.List;
 import linkfit.annotation.LoginTrainer;
+import linkfit.controller.Swagger.TrainerControllerDocs;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.TrainerProfileResponse;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/trainers")
-public class TrainerController {
+public class TrainerController implements TrainerControllerDocs {
 
     private final TrainerService trainerService;
 
