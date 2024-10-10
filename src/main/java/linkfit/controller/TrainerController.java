@@ -52,14 +52,14 @@ public class TrainerController implements TrainerControllerDocs {
 
     @GetMapping("/{trainerId}/careers")
     public ResponseEntity<List<CareerResponse>> getAllCareerByTrainer(
-        @PathVariable Long trainerId) {
+        @PathVariable("trainerId") Long trainerId) {
         List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @GetMapping("/{trainerId}")
-    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable Long trainerId) {
+    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable("trainerId") Long trainerId) {
         TrainerProfileResponse responseBody = trainerService.getProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
