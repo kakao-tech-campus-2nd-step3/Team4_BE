@@ -44,7 +44,7 @@ public class TrainerController implements TrainerControllerDocs {
 
     @DeleteMapping("/{careerId}")
     public ResponseEntity<Void> deleteCareer(@LoginTrainer Long trainerId,
-        @PathVariable Long careerId) {
+        @PathVariable("careerId") Long careerId) {
         trainerService.deleteCareer(trainerId, careerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
