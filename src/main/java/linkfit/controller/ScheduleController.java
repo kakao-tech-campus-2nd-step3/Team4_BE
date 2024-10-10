@@ -3,6 +3,7 @@ package linkfit.controller;
 import jakarta.validation.Valid;
 import linkfit.annotation.LoginTrainer;
 import linkfit.annotation.LoginUser;
+import linkfit.controller.Swagger.ScheduleControllerDocs;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
 import linkfit.service.ScheduleService;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/pt/{ptId}/schedule")
-public class ScheduleController {
+public class ScheduleController implements ScheduleControllerDocs {
 
     private final ScheduleService scheduleService;
 
