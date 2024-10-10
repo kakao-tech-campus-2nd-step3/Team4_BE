@@ -16,6 +16,7 @@ import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.UserPtResponse;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public interface PtControllerDocs {
         @ApiResponse(responseCode = "200", description = "PT 진행중인 유저 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<List<ProgressPtListResponse>> getTrainerProgressPt(
-        @Parameter(hidden = true) @LoginTrainer Long trainerId, Pageable pageable);
+        @Parameter(hidden = true) @LoginTrainer Long trainerId, @ParameterObject Pageable pageable);
 
     @Operation(summary = "트레이너) 보낸 PT 제안 목록 ", description = "트레이너가 유저에게 제안한 PT 목록 조회", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
@@ -38,7 +39,7 @@ public interface PtControllerDocs {
         @ApiResponse(responseCode = "200", description = "제안목록 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<List<SendPtSuggestResponse>> getAllSendSuggestion(
-        @Parameter(hidden = true) @LoginTrainer Long trainerId, Pageable pageable);
+        @Parameter(hidden = true) @LoginTrainer Long trainerId, @ParameterObject Pageable pageable);
 
     @Operation(summary = "일반회원) 받은 제안 목록", description = "거절한 제안을 제외한 받은 제안 목록 조회", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
@@ -46,7 +47,7 @@ public interface PtControllerDocs {
         @ApiResponse(responseCode = "200", description = "받은 제안 목록 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<List<ReceivePtSuggestResponse>> getAllReceiveSuggestion(
-        @Parameter(hidden = true) @LoginUser Long userId, Pageable pageable);
+        @Parameter(hidden = true) @LoginUser Long userId, @ParameterObject Pageable pageable);
 
     @Operation(summary = "일반유저) 진행중인 PT 상세 조회", description = "진행중인 PT의 상세정보 조회", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
