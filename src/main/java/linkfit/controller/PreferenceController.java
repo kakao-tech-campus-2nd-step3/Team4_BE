@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +27,7 @@ public class PreferenceController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerPreference(
-        @LoginUser Long userId,
+    public ResponseEntity<Void> registerPreference(@LoginUser Long userId,
         @RequestBody PreferenceRequest request) {
         preferenceService.registerPreference(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -43,8 +41,7 @@ public class PreferenceController {
     }
 
     @DeleteMapping("/{preferenceId}")
-    public ResponseEntity<Void> deletePreference(
-        @PathVariable Long preferenceId,
+    public ResponseEntity<Void> deletePreference(@PathVariable Long preferenceId,
         @LoginUser Long userId) {
         preferenceService.deletePreference(preferenceId, userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

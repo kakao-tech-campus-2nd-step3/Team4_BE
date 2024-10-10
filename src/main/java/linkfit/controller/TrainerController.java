@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,16 +27,14 @@ public class TrainerController {
     }
 
     @GetMapping("/career")
-    public ResponseEntity<List<CareerResponse>> getCareer(
-        @LoginTrainer Long trainerId) {
+    public ResponseEntity<List<CareerResponse>> getCareer(@LoginTrainer Long trainerId) {
         List<CareerResponse> list = trainerService.getCareers(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @PostMapping("/career")
-    public ResponseEntity<Void> addCareer(
-        @LoginTrainer Long trainerId,
+    public ResponseEntity<Void> addCareer(@LoginTrainer Long trainerId,
         @RequestBody List<CareerRequest> request) {
         trainerService.addCareer(trainerId, request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -45,8 +42,7 @@ public class TrainerController {
     }
 
     @DeleteMapping("/{careerId}")
-    public ResponseEntity<Void> deleteCareer(
-        @LoginTrainer Long trainerId,
+    public ResponseEntity<Void> deleteCareer(@LoginTrainer Long trainerId,
         @PathVariable Long careerId) {
         trainerService.deleteCareer(trainerId, careerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
@@ -62,19 +58,16 @@ public class TrainerController {
     }
 
     @GetMapping("/{trainerId}")
-    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(
-        @PathVariable Long trainerId) {
+    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable Long trainerId) {
         TrainerProfileResponse responseBody = trainerService.getProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<TrainerProfileResponse> getMyProfile(
-        @LoginTrainer Long trainerId) {
+    public ResponseEntity<TrainerProfileResponse> getMyProfile(@LoginTrainer Long trainerId) {
         TrainerProfileResponse responseBody = trainerService.getMyProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
-
 }

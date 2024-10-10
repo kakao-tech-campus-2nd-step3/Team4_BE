@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,8 +65,7 @@ public class GymController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> sendGymRegistrationRequest(
-        @LoginTrainer Long trainerId,
+    public ResponseEntity<Void> sendGymRegistrationRequest(@LoginTrainer Long trainerId,
         @Valid @RequestBody GymRegisterRequest gymRegisterRequest) {
         gymService.sendGymRegistrationRequest(trainerId, gymRegisterRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
