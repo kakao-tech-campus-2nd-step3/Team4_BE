@@ -2,19 +2,20 @@ package linkfit.controller;
 
 import java.util.List;
 import linkfit.annotation.LoginUser;
+import linkfit.controller.Swagger.UserControllerDocs;
 import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.service.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
+public class UserController implements UserControllerDocs {
 
     private final UserService userService;
 
@@ -31,13 +32,13 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserProfileResponse> getProfile(
-        @LoginUser Long userId) {
+    public ResponseEntity<UserProfileResponse> getProfile(@LoginUser Long userId) {
         UserProfileResponse response = userService.getProfile(userId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping("/profile")
+
+    @PutMapping(value = "/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateProfile(
         @LoginUser Long userId,
         @RequestPart("user") UserProfileRequest request,
@@ -46,7 +47,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping("/bodyInfo")
+
+    @PostMapping(value = "/bodyInfo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> registerBodyInfo(
         @LoginUser Long userId,
         @RequestPart(value = "inbodyImage") MultipartFile inbodyImage) {
@@ -55,8 +57,7 @@ public class UserController {
     }
 
     @GetMapping("/bodyInfo")
-    public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(
-        @LoginUser Long userId,
+    public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(@LoginUser Long userId,
         Pageable pageable) {
         List<BodyInfoResponse> responseBody = userService.getAllBodyInfo(userId,
             pageable);

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.annotation.LoginTrainer;
 import linkfit.annotation.LoginUser;
+import linkfit.controller.Swagger.PtControllerDocs;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
@@ -20,13 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/pt")
-public class PtController {
+public class PtController implements PtControllerDocs {
 
     private final PtService ptService;
 
@@ -62,8 +62,7 @@ public class PtController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<UserPtResponse> getMyPt(
-        @LoginUser Long userId) {
+    public ResponseEntity<UserPtResponse> getMyPt(@LoginUser Long userId) {
         UserPtResponse responseBody = ptService.getMyPt(userId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
@@ -78,24 +77,23 @@ public class PtController {
     }
 
     @PutMapping("/{ptId}")
-    public ResponseEntity<Void> approvalSuggestion(
-        @LoginUser Long userId, @PathVariable Long ptId) {
+    public ResponseEntity<Void> approvalSuggestion(@LoginUser Long userId,
+        @PathVariable Long ptId) {
         ptService.approvalSuggestion(userId, ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
     }
 
     @DeleteMapping("/{ptId}/trainer")
-    public ResponseEntity<Void> recallSuggestion(
-        @LoginTrainer Long trainerId, @PathVariable Long ptId) {
+    public ResponseEntity<Void> recallSuggestion(@LoginTrainer Long trainerId,
+        @PathVariable Long ptId) {
         ptService.recallSuggestion(trainerId, ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();
     }
 
     @DeleteMapping("/{ptId}/user")
-    public ResponseEntity<Void> refuseSuggestion(
-        @LoginUser Long userId, @PathVariable Long ptId) {
+    public ResponseEntity<Void> refuseSuggestion(@LoginUser Long userId, @PathVariable Long ptId) {
         ptService.refuseSuggestion(userId, ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .build();

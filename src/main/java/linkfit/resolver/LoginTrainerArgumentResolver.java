@@ -1,5 +1,7 @@
 package linkfit.resolver;
 
+import static linkfit.util.JwtUtil.AUTHORIZATION_HEADER;
+
 import java.util.Objects;
 import linkfit.annotation.LoginTrainer;
 import linkfit.exception.InvalidTokenException;
@@ -17,7 +19,6 @@ public class LoginTrainerArgumentResolver implements HandlerMethodArgumentResolv
 
     private final JwtUtil jwtUtil;
 
-
     public LoginTrainerArgumentResolver(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
@@ -30,15 +31,13 @@ public class LoginTrainerArgumentResolver implements HandlerMethodArgumentResolv
     @Override
     public Long resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
         NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        String token = webRequest.getHeader("Authorization");
+        String token = webRequest.getHeader(AUTHORIZATION_HEADER);
         if (token == null) {
             throw new PermissionException("null.token");
         }
-
         if (!jwtUtil.isValidToken(token)) {
             throw new InvalidTokenException("invalid.token");
         }
         return jwtUtil.parseToken(Objects.requireNonNull(token));
-
     }
 }
