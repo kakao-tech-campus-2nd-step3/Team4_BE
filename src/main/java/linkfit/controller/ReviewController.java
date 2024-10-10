@@ -3,6 +3,7 @@ package linkfit.controller;
 import java.util.List;
 import linkfit.annotation.LoginTrainer;
 import linkfit.annotation.LoginUser;
+import linkfit.controller.Swagger.ReviewControllerDocs;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
 import linkfit.service.ReviewService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/reviews")
-public class ReviewController {
+public class ReviewController implements ReviewControllerDocs {
 
     private final ReviewService reviewService;
 

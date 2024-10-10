@@ -3,6 +3,7 @@ package linkfit.controller;
 import java.util.List;
 import linkfit.annotation.LoginTrainer;
 import linkfit.annotation.LoginUser;
+import linkfit.controller.Swagger.PreferenceControllerDocs;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
 import linkfit.service.PreferenceService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/preferences")
-public class PreferenceController {
+public class PreferenceController implements PreferenceControllerDocs {
 
     private final PreferenceService preferenceService;
 

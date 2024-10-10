@@ -3,6 +3,7 @@ package linkfit.controller;
 import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.annotation.LoginTrainer;
+import linkfit.controller.Swagger.GymControllerDocs;
 import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
@@ -26,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/gyms")
-public class GymController {
+public class GymController implements GymControllerDocs {
 
     private final GymService gymService;
 
