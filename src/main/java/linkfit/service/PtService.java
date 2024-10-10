@@ -20,7 +20,6 @@ import linkfit.repository.ScheduleRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.status.PtStatus;
-import linkfit.util.JwtUtil;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

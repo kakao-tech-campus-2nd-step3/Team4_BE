@@ -5,7 +5,6 @@ import linkfit.annotation.LoginTrainer;
 import linkfit.exception.InvalidTokenException;
 import linkfit.exception.PermissionException;
 import linkfit.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;

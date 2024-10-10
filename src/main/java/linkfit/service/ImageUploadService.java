@@ -18,58 +18,51 @@ import org.springframework.web.multipart.MultipartFile;
 @EnableConfigurationProperties(AwsProperties.class)
 public class ImageUploadService {
 
-    private final AmazonS3 amazonS3;
-    private final AwsProperties awsProperties;
+	private final AmazonS3 amazonS3;
+	private final AwsProperties awsProperties;
 
-    public ImageUploadService(AmazonS3 amazonS3, AwsProperties awsProperties) {
-        this.amazonS3 = amazonS3;
-        this.awsProperties = awsProperties;
-    }
+	public ImageUploadService(AmazonS3 amazonS3, AwsProperties awsProperties) {
+		this.amazonS3 = amazonS3;
+		this.awsProperties = awsProperties;
+	}
 
-    public String uploadProfileImage(MultipartFile profileImage) {
-        if (profileImage == null) {
-            return "https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg";
-        }
-        return uploadFile(profileImage);
-    }
+	public String uploadProfileImage(MultipartFile profileImage) {
+		if (profileImage == null) {
+			return "https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg";
+		}
+		return uploadFile(profileImage);
+	}
 
-    public String saveImage(MultipartFile image) {
-        if (image == null) {
-            throw new ImageUploadException("not.found.image");
-        }
-        return uploadFile(image);
-    }
+	public String saveImage(MultipartFile image) {
+		if (image == null) {
+			throw new ImageUploadException("not.found.image");
+		}
+		return uploadFile(image);
+	}
 
-    private String uploadFile(MultipartFile file) {
-        try {
-            String key = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            ObjectMetadata metadata = createObjectMetadata(file);
+	private String uploadFile(MultipartFile file) {
+		try {
+			String key = UUID.randomUUID() + "_" + file.getOriginalFilename();
+			ObjectMetadata metadata = createObjectMetadata(file);
 
-            amazonS3.putObject(new PutObjectRequest(
-                awsProperties.s3().bucket(),
-                key,
-                file.getInputStream(),
-                metadata
-            ));
+			amazonS3.putObject(new PutObjectRequest(awsProperties.s3().bucket(), key, file.getInputStream(), metadata));
 
-            return String.format("https://%s.s3.%s.amazonaws.com/%s",
-                awsProperties.s3().bucket(),
-                awsProperties.region(),
-                key);
-        } catch (IOException e) {
-            throw new ImageUploadException("failed.upload.image");
-        }
-    }
+			return String.format("https://%s.s3.%s.amazonaws.com/%s", awsProperties.s3().bucket(),
+					awsProperties.region(), key);
+		} catch (IOException e) {
+			throw new ImageUploadException("failed.upload.image");
+		}
+	}
 
-    private ObjectMetadata createObjectMetadata(MultipartFile file) {
-        ObjectMetadata metadata = new ObjectMetadata();
-        String contentType = file.getContentType();
+	private ObjectMetadata createObjectMetadata(MultipartFile file) {
+		ObjectMetadata metadata = new ObjectMetadata();
+		String contentType = file.getContentType();
 
-        if (contentType == null || contentType.isBlank()) {
-            contentType = "multipart/form-data";
-        }
-        metadata.setContentType(contentType);
-        metadata.setContentLength(file.getSize());
-        return metadata;
-    }
+		if (contentType == null || contentType.isBlank()) {
+			contentType = "multipart/form-data";
+		}
+		metadata.setContentType(contentType);
+		metadata.setContentLength(file.getSize());
+		return metadata;
+	}
 }

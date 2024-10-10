@@ -12,12 +12,10 @@ import linkfit.entity.BodyInfo;
 import linkfit.entity.User;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
-import linkfit.exception.PasswordMismatchException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
 
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
