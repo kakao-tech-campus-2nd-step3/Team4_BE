@@ -30,24 +30,27 @@ public class ReviewController implements ReviewControllerDocs {
     @GetMapping("/{trainerId}")
     public ResponseEntity<List<ReviewResponse>> getTrainerReviews(@PathVariable Long trainerId) {
         List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(trainerId);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(list);
     }
 
     @GetMapping("/user")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(@LoginUser Long userId) {
         List<ReviewResponse> list = reviewService.getMyReviewsByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(list);
     }
 
     @GetMapping("/trainer")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(@LoginTrainer Long trainerId) {
         List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(trainerId);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(list);
     }
 
     @PostMapping("/{trainerId}")
     public ResponseEntity<Void> addReview(@LoginUser Long userId,
-        @RequestBody ReviewRequest request, @PathVariable("trainerId") Long trainerId) {
+        @RequestBody ReviewRequest request, @PathVariable Long trainerId) {
         reviewService.addReview(userId, request, trainerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -55,7 +58,7 @@ public class ReviewController implements ReviewControllerDocs {
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReviewById(@LoginTrainer Long userId,
-        @PathVariable("reviewId") Long reviewId) {
+        @PathVariable Long reviewId) {
         reviewService.deleteReview(userId, reviewId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

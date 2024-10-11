@@ -34,7 +34,8 @@ public class UserController implements UserControllerDocs {
     @GetMapping("/profile")
     public ResponseEntity<UserProfileResponse> getProfile(@LoginUser Long userId) {
         UserProfileResponse response = userService.getProfile(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(response);
     }
 
     @PutMapping(value = "/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -65,7 +66,7 @@ public class UserController implements UserControllerDocs {
 
     @DeleteMapping("/bodyInfo/{bodyInfoId}")
     public ResponseEntity<Void> deleteBodyInfo(@LoginUser Long userId,
-        @PathVariable("bodyInfoId") Long bodyInfoId) {
+        @PathVariable Long bodyInfoId) {
         userService.deleteBodyInfo(userId, bodyInfoId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -72,31 +72,27 @@ public class PtController implements PtControllerDocs {
     public ResponseEntity<Void> sendSuggestion(@LoginTrainer Long trainerId,
         @Valid @RequestBody PtSuggestionRequest ptSuggestionRequest) {
         ptService.sendSuggestion(trainerId, ptSuggestionRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{ptId}")
     public ResponseEntity<Void> approvalSuggestion(@LoginUser Long userId,
         @PathVariable Long ptId) {
         ptService.approvalSuggestion(userId, ptId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{ptId}/trainer")
     public ResponseEntity<Void> recallSuggestion(@LoginTrainer Long trainerId,
         @PathVariable Long ptId) {
         ptService.recallSuggestion(trainerId, ptId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{ptId}/user")
     public ResponseEntity<Void> refuseSuggestion(@LoginUser Long userId, @PathVariable Long ptId) {
         ptService.refuseSuggestion(userId, ptId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/{ptId}/trainer")

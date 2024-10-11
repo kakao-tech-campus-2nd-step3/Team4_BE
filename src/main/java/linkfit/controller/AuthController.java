@@ -7,7 +7,6 @@ import linkfit.dto.UserRegisterRequest;
 import linkfit.service.TrainerService;
 import linkfit.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,7 @@ public class AuthController implements AuthControllerDocs {
         this.trainerService = trainerService;
     }
 
-    @PostMapping(value = "/user/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/user/register")
     public ResponseEntity<Void> registerUser(
         @RequestPart("user") UserRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
@@ -39,10 +38,11 @@ public class AuthController implements AuthControllerDocs {
     @PostMapping("/user/login")
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest request) {
         String token = userService.login(request);
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(token);
     }
 
-    @PostMapping(value = "/trainer/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/trainer/register")
     public ResponseEntity<Void> registerTrainer(
         @RequestPart("trainer") TrainerRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
@@ -53,6 +53,7 @@ public class AuthController implements AuthControllerDocs {
     @PostMapping("/trainer/login")
     public ResponseEntity<String> loginTrainer(@RequestBody LoginRequest request) {
         String token = trainerService.login(request);
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(token);
     }
 }

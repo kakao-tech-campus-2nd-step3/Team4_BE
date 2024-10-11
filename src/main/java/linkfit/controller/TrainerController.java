@@ -38,28 +38,26 @@ public class TrainerController implements TrainerControllerDocs {
     public ResponseEntity<Void> addCareer(@LoginTrainer Long trainerId,
         @RequestBody List<CareerRequest> request) {
         trainerService.addCareer(trainerId, request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{careerId}")
     public ResponseEntity<Void> deleteCareer(@LoginTrainer Long trainerId,
-        @PathVariable("careerId") Long careerId) {
+        @PathVariable Long careerId) {
         trainerService.deleteCareer(trainerId, careerId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/{trainerId}/careers")
     public ResponseEntity<List<CareerResponse>> getAllCareerByTrainer(
-        @PathVariable("trainerId") Long trainerId) {
+        @PathVariable Long trainerId) {
         List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @GetMapping("/{trainerId}")
-    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable("trainerId") Long trainerId) {
+    public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable Long trainerId) {
         TrainerProfileResponse responseBody = trainerService.getProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);

@@ -38,7 +38,8 @@ public class PreferenceController implements PreferenceControllerDocs {
     public ResponseEntity<List<PreferenceResponse>> getAllMatchingPossible(
         @LoginTrainer Long trainerId) {
         List<PreferenceResponse> preferences = preferenceService.getAllMatchingPossible(trainerId);
-        return ResponseEntity.status(HttpStatus.OK).body(preferences);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(preferences);
     }
 
     @DeleteMapping("/{preferenceId}")
