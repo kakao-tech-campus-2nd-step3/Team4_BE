@@ -43,10 +43,14 @@ public class PreferenceService {
     public void registerPreference(Long userId, PreferenceRequest request) {
         User user = userService.getUser(userId);
         Sports sports = sportsService.getSportsById(request.sportsId());
-        BodyInfo bodyInfo = bodyInfoRepository.findTopByUserOrderByCreateDate(user)
-            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
+        BodyInfo bodyInfo = getLastBodyInfo(user);
         Preference preference = request.toEntity(user, bodyInfo, sports);
         preferenceRepository.save(preference);
+    }
+
+    private BodyInfo getLastBodyInfo(User user) {
+        return bodyInfoRepository.findTopByUserOrderByCreateDate(user)
+            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
     }
 
     public List<PreferenceResponse> getAllMatchingPossible(Long trainerId) {
