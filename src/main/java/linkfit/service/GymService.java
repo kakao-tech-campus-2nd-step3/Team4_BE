@@ -77,7 +77,7 @@ public class GymService {
     public GymDetailResponse getGymDetails(Long gymId) {
         Gym gym = getGymById(gymId);
         List<GymImage> images = gymImageRepository.findAllByGym(gym);
-        return new GymDetailResponse(gym, images);
+        return gym.toDetailDTO(images);
     }
 
     public Gym getGymById(Long id) {

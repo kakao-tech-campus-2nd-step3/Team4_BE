@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.List;
+import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymRegisterWaitingResponse;
 import linkfit.status.GymStatus;
 
@@ -63,6 +65,11 @@ public class Gym {
 
     public GymRegisterWaitingResponse toDTO() {
         return new GymRegisterWaitingResponse(id, name, location);
+    }
+
+    public GymDetailResponse toDetailDTO(List<GymImage> images) {
+        return new GymDetailResponse(id, name, location, description,
+            images.stream().map(GymImage::getImageUrl).toList());
     }
 
     public void approval() {
