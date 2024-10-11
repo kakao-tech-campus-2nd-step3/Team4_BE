@@ -64,8 +64,8 @@ public class GymService {
     public void deleteGym(Long gymId) {
         Gym gym = getGymById(gymId);
         gym.refuse();
-        gymRepository.save(gym);
         gymAdminRelationRepository.deleteByGym(gym);
+        gymRepository.save(gym);
     }
 
     public GymSearchResponse findAllByKeyword(String keyword, Pageable pageable) {
