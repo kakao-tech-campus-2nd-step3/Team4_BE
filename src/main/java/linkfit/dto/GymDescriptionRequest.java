@@ -1,5 +1,7 @@
 package linkfit.dto;
 
-public record GymDescriptionRequest(String description) {
+import jakarta.validation.constraints.NotBlank;
+
+public record GymDescriptionRequest(@NotBlank String description) {
 
 }

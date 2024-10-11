@@ -1,6 +1,7 @@
 package linkfit.entity;
 
 import static linkfit.status.PtStatus.APPROVAL;
+import static linkfit.status.PtStatus.RECALL;
 import static linkfit.status.PtStatus.REFUSE;
 import static linkfit.status.PtStatus.WAITING;
 
@@ -17,7 +18,9 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
-import linkfit.dto.PtSuggestionResponse;
+import linkfit.dto.ProgressPtListResponse;
+import linkfit.dto.ReceivePtSuggestResponse;
+import linkfit.dto.SendPtSuggestResponse;
 import linkfit.status.PtStatus;
 
 @Entity
@@ -108,16 +111,30 @@ public class Pt {
         return status;
     }
 
-    public PtSuggestionResponse toDto() {
-        return new PtSuggestionResponse(id, user, totalCount, price, status);
+    public SendPtSuggestResponse toSendDto() {
+        return new SendPtSuggestResponse(id, user.getName(), user.getProfileImageUrl(), totalCount,
+            price, status);
+    }
+
+    public ReceivePtSuggestResponse toReceiveDto() {
+        return new ReceivePtSuggestResponse(id, trainer.getId(), trainer.getName(),
+            trainer.getProfileImageUrl(), trainer.getGym().getName(), totalCount, price);
+    }
+
+    public ProgressPtListResponse toProgressDto() {
+        return new ProgressPtListResponse(id, user.getId(), user.getName(), user.getProfileImageUrl());
     }
 
     public void refuse() {
         this.status = REFUSE;
     }
 
-    public void accept() {
+    public void approval() {
         this.status = APPROVAL;
         this.startDate = LocalDateTime.now();
+    }
+
+    public void recall() {
+        this.status = RECALL;
     }
 }

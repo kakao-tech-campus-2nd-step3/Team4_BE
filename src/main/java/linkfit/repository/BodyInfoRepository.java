@@ -1,7 +1,9 @@
 package linkfit.repository;
 
+import java.util.List;
 import java.util.Optional;
 import linkfit.entity.BodyInfo;
+import linkfit.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +17,6 @@ public interface BodyInfoRepository extends JpaRepository<BodyInfo, Long> {
     Optional<BodyInfo> findByUserId(Long userId);
 
     Optional<BodyInfo> findFirstByUserIdOrderByCreateDateDesc(Long userId);
+
+    Optional<BodyInfo> findTopByUserOrderByCreateDate(User user);
 }

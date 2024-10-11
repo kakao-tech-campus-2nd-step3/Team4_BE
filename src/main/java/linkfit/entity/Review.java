@@ -51,6 +51,7 @@ public class Review {
         this.trainer = trainer;
         this.content = content;
         this.score = score;
+        this.createdDate = LocalDateTime.now();
     }
 
     public Long getId() {

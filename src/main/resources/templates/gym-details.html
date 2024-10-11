@@ -40,7 +40,7 @@
     <th>Gender</th>
   </tr>
   </thead>
-  <tbody th:each="trainer : ${trainerList}">
+  <tbody th:each="trainer : ${trainerList.trainers()}">
   <tr>
     <td>
       <span th:text="${trainer.id}"/>

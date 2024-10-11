@@ -1,5 +1,6 @@
 package linkfit.controller;
 
+import linkfit.controller.Swagger.AuthControllerDocs;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TrainerRegisterRequest;
 import linkfit.dto.UserRegisterRequest;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
     private final UserService userService;
     private final TrainerService trainerService;
@@ -26,7 +27,7 @@ public class AuthController {
         this.trainerService = trainerService;
     }
 
-    @PostMapping("/user/register")
+    @PostMapping(value = "/user/register")
     public ResponseEntity<Void> registerUser(
         @RequestPart("user") UserRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
@@ -37,10 +38,11 @@ public class AuthController {
     @PostMapping("/user/login")
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest request) {
         String token = userService.login(request);
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(token);
     }
 
-    @PostMapping("/trainer/register")
+    @PostMapping(value = "/trainer/register")
     public ResponseEntity<Void> registerTrainer(
         @RequestPart("trainer") TrainerRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
@@ -51,6 +53,7 @@ public class AuthController {
     @PostMapping("/trainer/login")
     public ResponseEntity<String> loginTrainer(@RequestBody LoginRequest request) {
         String token = trainerService.login(request);
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(token);
     }
 }
