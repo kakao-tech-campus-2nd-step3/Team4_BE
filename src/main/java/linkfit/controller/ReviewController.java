@@ -35,13 +35,13 @@ public class ReviewController implements ReviewControllerDocs {
 
     @GetMapping("/user")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(@LoginUser Long userId) {
-        List<ReviewResponse> list = reviewService.getMyReviewsByUser(userId);
+        List<ReviewResponse> list = reviewService.getMyReviewsByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @GetMapping("/trainer")
     public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(@LoginTrainer Long trainerId) {
-        List<ReviewResponse> list = reviewService.getMyReviewsByTrainer(trainerId);
+        List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 

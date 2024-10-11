@@ -41,15 +41,11 @@ public class ReviewService {
             .toList();
     }
 
-    public List<ReviewResponse> getMyReviewsByUser(Long userId) {
+    public List<ReviewResponse> getMyReviewsByUserId(Long userId) {
         List<Review> reviews = reviewRepository.findAllByUserId(userId);
         return reviews.stream()
             .map(Review::toDto)
             .toList();
-    }
-
-    public List<ReviewResponse> getMyReviewsByTrainer(Long trainerId) {
-        return getAllReviewsByTrainerId(trainerId);
     }
 
     public void addReview(Long userId, ReviewRequest request, Long trainerId) {

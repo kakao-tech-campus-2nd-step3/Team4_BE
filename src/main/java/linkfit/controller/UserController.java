@@ -37,7 +37,6 @@ public class UserController implements UserControllerDocs {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-
     @PutMapping(value = "/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateProfile(
         @LoginUser Long userId,
@@ -46,7 +45,6 @@ public class UserController implements UserControllerDocs {
         userService.updateProfile(userId, request, profileImage);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 
     @PostMapping(value = "/bodyInfo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> registerBodyInfo(
