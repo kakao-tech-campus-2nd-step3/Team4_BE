@@ -61,10 +61,8 @@ public class PtService {
 
     public void sendSuggestion(Long trainerId, PtSuggestionRequest ptSuggestionRequest) {
         Trainer trainer = getTrainer(trainerId);
-        User user = userRepository.findById(ptSuggestionRequest.userId())
-            .orElseThrow(() -> new NotFoundException("not.found.user"));
-        Pt suggestion = new Pt(user, trainer, ptSuggestionRequest.totalCount(),
-            ptSuggestionRequest.price());
+        User user = getUser(ptSuggestionRequest.userId());
+        Pt suggestion = new Pt(user, trainer, ptSuggestionRequest);
         ptRepository.save(suggestion);
     }
 

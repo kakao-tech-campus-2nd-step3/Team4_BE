@@ -19,6 +19,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import linkfit.dto.ProgressPtListResponse;
+import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.status.PtStatus;
@@ -56,31 +57,11 @@ public class Pt {
     protected Pt() {
     }
 
-    public Pt(User user, Trainer trainer, int totalCount, int price) {
+    public Pt(User user, Trainer trainer, PtSuggestionRequest ptSuggestionRequest) {
         this.user = user;
         this.trainer = trainer;
-        this.totalCount = totalCount;
-        this.price = price;
-    }
-
-    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, PtStatus status) {
-        this.id = id;
-        this.user = user;
-        this.trainer = trainer;
-        this.totalCount = totalCount;
-        this.price = price;
-        this.status = status;
-    }
-
-    public Pt(Long id, User user, Trainer trainer, int totalCount, int price, PtStatus status,
-        LocalDateTime startDate) {
-        this.id = id;
-        this.user = user;
-        this.trainer = trainer;
-        this.totalCount = totalCount;
-        this.price = price;
-        this.status = status;
-        this.startDate = startDate;
+        this.totalCount = ptSuggestionRequest.totalCount();
+        this.price = ptSuggestionRequest.price();
     }
 
     public Long getId() {
@@ -97,14 +78,6 @@ public class Pt {
 
     public int getTotalCount() {
         return totalCount;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate;
     }
 
     public PtStatus getStatus() {
