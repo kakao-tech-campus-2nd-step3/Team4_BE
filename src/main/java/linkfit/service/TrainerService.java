@@ -78,13 +78,6 @@ public class TrainerService {
         careerService.addCareer(trainer, request);
     }
 
-
-    public void identifyTrainer(Long trainerId) {
-        if (!trainerRepository.existsById(trainerId)) {
-            throw new PermissionException("unregistered.trainer");
-        }
-    }
-
     public Trainer getTrainer(Long trainerId) {
         return trainerRepository.findById(trainerId)
             .orElseThrow(() -> new NotFoundException("not.found.trainer"));

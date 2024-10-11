@@ -54,7 +54,6 @@ public class PreferenceService {
     }
 
     public List<PreferenceResponse> getAllMatchingPossible(Long trainerId) {
-        trainerService.identifyTrainer(trainerId);
         Trainer trainer = trainerService.getTrainer(trainerId);
         List<Preference> preferences = preferenceRepository.findAll();
 
