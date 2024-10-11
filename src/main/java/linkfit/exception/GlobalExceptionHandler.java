@@ -75,9 +75,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException e) {
         StringBuilder errors = new StringBuilder();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
+        e.getBindingResult().getFieldErrors().forEach(error ->
             errors.append(error.getField())
                 .append(":\t")
                 .append(error.getDefaultMessage())
