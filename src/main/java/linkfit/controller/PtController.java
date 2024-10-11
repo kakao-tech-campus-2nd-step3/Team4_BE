@@ -2,12 +2,14 @@ package linkfit.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import linkfit.annotation.LoginTrainer;
+import linkfit.annotation.LoginUser;
+import linkfit.controller.Swagger.PtControllerDocs;
 import linkfit.dto.PtSuggestionRequest;
-import linkfit.dto.PtSuggestionResponse;
-import linkfit.dto.PtSuggestionUpdateRequest;
-import linkfit.dto.PtTrainerResponse;
-import linkfit.dto.PtUserResponse;
-import linkfit.dto.TrainerPtResponse;
+import linkfit.dto.ReceivePtSuggestResponse;
+import linkfit.dto.SendPtSuggestResponse;
+import linkfit.dto.ProgressPtDetailResponse;
+import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
 import org.springframework.data.domain.Pageable;
@@ -19,13 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/pt")
-public class PtController {
+public class PtController implements PtControllerDocs {
 
     private final PtService ptService;
 
@@ -34,74 +35,71 @@ public class PtController {
     }
 
     @GetMapping("/trainer")
-    public ResponseEntity<List<TrainerPtResponse>> getAllPt(
-        @RequestHeader("Authorization") String authorization,
-        Pageable pageable) {
-        List<TrainerPtResponse> responseBody = ptService.getAllPt(authorization, pageable);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(responseBody);
-    }
-
-    @GetMapping("/trainer/suggest")
-    public ResponseEntity<List<PtSuggestionResponse>> getAllPtSuggestion(
-        @RequestHeader("Authorization") String authorization,
-        Pageable pageable) {
-        List<PtSuggestionResponse> responseBody = ptService.getAllPtSuggestion(authorization,
+    public ResponseEntity<List<ProgressPtListResponse>> getTrainerProgressPt(
+        @LoginTrainer Long trainerId, Pageable pageable) {
+        List<ProgressPtListResponse> responseBody = ptService.getTrainerProgressPt(trainerId,
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
+    @GetMapping("/suggests/trainer")
+    public ResponseEntity<List<SendPtSuggestResponse>> getAllSendSuggestion(
+        @LoginTrainer Long trainerId, Pageable pageable) {
+        List<SendPtSuggestResponse> responseBody = ptService.getAllSendSuggestion(trainerId,
+            pageable);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
+    }
+
+    @GetMapping("/suggests/user")
+    public ResponseEntity<List<ReceivePtSuggestResponse>> getAllReceiveSuggestion(
+        @LoginUser Long userId, Pageable pageable) {
+        List<ReceivePtSuggestResponse> responseBody = ptService.getAllReceiveSuggestion(
+            userId, pageable);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(responseBody);
+    }
+
     @GetMapping("/user")
-    public ResponseEntity<UserPtResponse> getMyPt(
-        @RequestHeader("Authorization") String authorization) {
-        UserPtResponse responseBody = ptService.getMyPt(authorization);
+    public ResponseEntity<UserPtResponse> getMyPt(@LoginUser Long userId) {
+        UserPtResponse responseBody = ptService.getMyPt(userId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
     @PostMapping
-    public ResponseEntity<Void> suggestPt(
-        @RequestHeader("Authorization") String authorization,
+    public ResponseEntity<Void> sendSuggestion(@LoginTrainer Long trainerId,
         @Valid @RequestBody PtSuggestionRequest ptSuggestionRequest) {
-        ptService.suggestPt(authorization, ptSuggestionRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .build();
-    }
-
-    @DeleteMapping("/{ptId}")
-    public ResponseEntity<Void> recallPtSuggestion(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId) {
-        ptService.recallPtSuggestion(authorization, ptId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .build();
+        ptService.sendSuggestion(trainerId, ptSuggestionRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{ptId}")
-    public ResponseEntity<Void> updatePtSuggestion(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId,
-        @Valid @RequestBody PtSuggestionUpdateRequest ptSuggestionUpdateRequest) {
-        ptService.updatePtSuggestion(authorization, ptId, ptSuggestionUpdateRequest);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .build();
+    public ResponseEntity<Void> approvalSuggestion(@LoginUser Long userId,
+        @PathVariable Long ptId) {
+        ptService.approvalSuggestion(userId, ptId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{ptId}/user")
-    public ResponseEntity<PtTrainerResponse> getPtTrainerProfile(
-        @RequestHeader("Authorization") String authorization,
+    @DeleteMapping("/{ptId}/trainer")
+    public ResponseEntity<Void> recallSuggestion(@LoginTrainer Long trainerId,
         @PathVariable Long ptId) {
-        PtTrainerResponse responseBody = ptService.getPtTrainerProfile(authorization, ptId);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(responseBody);
+        ptService.recallSuggestion(trainerId, ptId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/{ptId}/user")
+    public ResponseEntity<Void> refuseSuggestion(@LoginUser Long userId, @PathVariable Long ptId) {
+        ptService.refuseSuggestion(userId, ptId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/{ptId}/trainer")
-    public ResponseEntity<PtUserResponse> getPtUserProfile(
-        @RequestHeader("Authorization") String authorization,
-        @PathVariable Long ptId) {
-        PtUserResponse responseBody = ptService.getPtUserProfile(authorization, ptId);
+    public ResponseEntity<ProgressPtDetailResponse> getProgressUserDetails(
+        @LoginTrainer Long trainerId, @PathVariable Long ptId) {
+        ProgressPtDetailResponse responseBody = ptService.getProgressUserDetails(trainerId,
+            ptId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }

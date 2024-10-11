@@ -1,20 +1,20 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.DUPLICATE_EMAIL;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_TRAINER;
-
 import java.util.List;
-import java.util.Objects;
+
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.dto.TrainerRegisterRequest;
+import linkfit.entity.Career;
 import linkfit.entity.Trainer;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PermissionException;
 import linkfit.repository.TrainerRepository;
 import linkfit.util.JwtUtil;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,50 +38,61 @@ public class TrainerService {
     @Transactional
     public void register(TrainerRegisterRequest request, MultipartFile profileImage) {
         if (trainerRepository.existsByEmail(request.email())) {
-            throw new DuplicateException(DUPLICATE_EMAIL);
+            throw new DuplicateException("duplicate.email");
         }
         Trainer trainer = request.toEntity();
-        String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-        trainer.setProfileImageUrl(imageUrl);
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
+            trainer.setProfileImageUrl(imageUrl);
+        }
         trainerRepository.save(trainer);
     }
 
     public String login(LoginRequest request) {
         Trainer trainer = trainerRepository.findByEmail(request.email())
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
+            .orElseThrow(() -> new NotFoundException("not.found.trainer"));
         trainer.validatePassword(request.password());
         return jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
     }
 
-    public List<CareerResponse> getCareers(String authorization) {
-        Trainer trainer = getMyInfo(authorization);
-        return careerService.getAllTrainerCareers(trainer.getId());
+    public List<CareerResponse> getCareers(Long trainerId) {
+        Trainer trainer = getTrainer(trainerId);
+        return careerService.getAllCareerByTrainer(trainer);
     }
 
-    public void deleteCareer(String authorization, Long careerId) {
-        Trainer trainer = getMyInfo(authorization);
-        if (Objects.equals(trainer.getId(), careerService.findTrainerIdByCareerId(careerId))) {
-            careerService.deleteCareer(careerId);
+    public void deleteCareer(Long trainerId, Long careerId) {
+        Trainer trainer = getTrainer(trainerId);
+        Career career = careerService.getCareer(careerId);
+        validOwner(trainer, career);
+        careerService.deleteCareer(careerId);
+    }
+
+    private void validOwner(Trainer trainer, Career career) {
+        if (career.getTrainer() != trainer) {
+            throw new PermissionException("career.permission.denied");
         }
     }
 
-    public void addCareer(String authorization, CareerRequest request) {
-        Trainer trainer = getMyInfo(authorization);
+    public void addCareer(Long trainerId, List<CareerRequest> request) {
+        Trainer trainer = getTrainer(trainerId);
         careerService.addCareer(trainer, request);
     }
 
-    public Trainer getMyInfo(String authorization) {
-        Long trainerId = jwtUtil.parseToken(authorization);
-        return getTrainer(trainerId);
+
+    public void identifyTrainer(Long trainerId) {
+        if (!trainerRepository.existsById(trainerId)) {
+            throw new PermissionException("unregistered.trainer");
+        }
     }
 
-    private Trainer getTrainer(Long trainerId) {
+    public Trainer getTrainer(Long trainerId) {
         return trainerRepository.findById(trainerId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_TRAINER));
+            .orElseThrow(() -> new NotFoundException("not.found.trainer"));
     }
 
     public List<CareerResponse> getCareersByTrainerId(Long trainerId) {
-        return careerService.getAllTrainerCareers(trainerId);
+        Trainer trainer = getTrainer(trainerId);
+        return careerService.getAllCareerByTrainer(trainer);
     }
 
     public TrainerProfileResponse getProfile(Long trainerId) {
@@ -89,8 +100,7 @@ public class TrainerService {
         return trainer.toDto();
     }
 
-    public TrainerProfileResponse getMyProfile(String authorization) {
-        Trainer trainer = getMyInfo(authorization);
-        return trainer.toDto();
+    public TrainerProfileResponse getMyProfile(Long trainerId) {
+        return getProfile(trainerId);
     }
 }

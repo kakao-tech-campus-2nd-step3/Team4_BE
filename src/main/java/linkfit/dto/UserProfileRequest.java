@@ -1,5 +1,7 @@
 package linkfit.dto;
 
-public record UserProfileRequest(String location, String name) {
+import jakarta.validation.constraints.NotBlank;
+
+public record UserProfileRequest(@NotBlank String location, @NotBlank String name) {
 
 }

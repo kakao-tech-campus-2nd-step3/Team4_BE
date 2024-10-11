@@ -1,6 +1,7 @@
 package linkfit.controller;
 
 import java.util.List;
+import linkfit.controller.Swagger.SportsControllerDocs;
 import linkfit.dto.SportsResponse;
 import linkfit.service.SportsService;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/sports")
-public class SportsController {
+public class SportsController implements SportsControllerDocs {
 
     private final SportsService sportsService;
 

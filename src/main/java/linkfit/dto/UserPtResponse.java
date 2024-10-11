@@ -8,7 +8,7 @@ public record UserPtResponse(Long trainerId, String trainerName, String gymName,
                              List<Schedule> schedules) {
 
     public UserPtResponse(Pt pt, List<Schedule> schedules) {
-        this(pt.getTrainer().getId(), pt.getTrainer().getName(), pt.getTrainer().getName(),
+        this(pt.getTrainer().getId(), pt.getTrainer().getName(), pt.getTrainer().getGym().getName(),
             pt.getTotalCount(), schedules);
     }
 }

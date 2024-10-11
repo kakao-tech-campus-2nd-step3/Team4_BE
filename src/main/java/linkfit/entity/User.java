@@ -1,17 +1,11 @@
 package linkfit.entity;
 
-import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.exception.PasswordMismatchException;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "USER_TB", indexes = @Index(name = "IDX_USER_EMAIL", columnList = "EMAIL"))
@@ -36,6 +30,12 @@ public class User {
     @Column(nullable = false)
     private String location;
 
+    @Value("${defaultImageUrl}")
+    private String defaultImageUrl;
+
+    @Value("${defaultImageUrl}")
+    private String defaultProfileImageUrl;
+
     protected User() {
     }
 
@@ -44,6 +44,13 @@ public class User {
         this.password = password;
         this.name = name;
         this.location = location;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
+            this.profileImageUrl = defaultProfileImageUrl;
+        }
     }
 
     public Long getId() {
@@ -85,7 +92,7 @@ public class User {
 
     public void validatePassword(String inputPassword) {
         if (!inputPassword.equals(this.password)) {
-            throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
+            throw new PasswordMismatchException("not.match.password");
         }
     }
 

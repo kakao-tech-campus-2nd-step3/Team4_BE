@@ -2,6 +2,7 @@ package linkfit.service;
 
 import linkfit.config.properties.KakaoProperties;
 import linkfit.dto.Coordinate;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,7 +33,7 @@ public class DistanceCalculatorService {
                 kakaoProperties.addressSearchUrl())
             .queryParam("query", address);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(),
+        ResponseEntity<String> response = restTemplate.exchange(builder.build(false).toUriString(),
             HttpMethod.GET, entity, String.class);
         return response.getBody();
     }

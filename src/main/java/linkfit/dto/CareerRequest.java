@@ -1,5 +1,7 @@
 package linkfit.dto;
 
-public record CareerRequest(String career) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CareerRequest(@NotBlank String career) {
 
 }
