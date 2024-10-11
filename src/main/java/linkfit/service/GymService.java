@@ -94,13 +94,11 @@ public class GymService {
     public List<GymLocationResponse> getGymLocations() {
         List<Gym> gymList = gymRepository.findAll();
         return gymList.stream()
-            .map(gym -> new GymLocationResponse(
-                gym.getId(), gym.getLocation()))
+            .map(gym -> new GymLocationResponse(gym.getId(), gym.getLocation()))
             .toList();
     }
 
-    public void sendGymRegistrationRequest(Long trainerId,
-        GymRegisterRequest gymRegisterRequest) {
+    public void sendGymRegistrationRequest(Long trainerId, GymRegisterRequest gymRegisterRequest) {
         Trainer trainer = getTrainer(trainerId);
         Gym gym = gymRegisterRequest.toEntity();
         gymRepository.save(gym);
@@ -120,8 +118,8 @@ public class GymService {
             .orElseThrow(() -> new NotFoundException("not.found.trainer"));
     }
 
-    public void updateGym(Long gymId, Long trainerId,
-        GymDescriptionRequest gymDescriptionRequest, List<MultipartFile> gymImages) {
+    public void updateGym(Long gymId, Long trainerId, GymDescriptionRequest gymDescriptionRequest,
+        List<MultipartFile> gymImages) {
         Trainer trainer = getTrainer(trainerId);
         Gym gym = getGymById(gymId);
         validPermission(gym, trainer);
