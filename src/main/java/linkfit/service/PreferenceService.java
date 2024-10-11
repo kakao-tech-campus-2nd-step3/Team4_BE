@@ -56,7 +56,6 @@ public class PreferenceService {
     public List<PreferenceResponse> getAllMatchingPossible(Long trainerId) {
         Trainer trainer = trainerService.getTrainer(trainerId);
         List<Preference> preferences = preferenceRepository.findAll();
-
         validGender(preferences, trainer.getGender());
         validDistance(preferences, trainer.getGym());
         return preferences.stream()
