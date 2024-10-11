@@ -1,19 +1,11 @@
 package linkfit.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.exception.PasswordMismatchException;
 import linkfit.status.TrainerGender;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "TRAINER_TB", indexes = @Index(name = "IDX_TRAINER_EMAIL", columnList = "EMAIL"))
@@ -32,7 +24,7 @@ public class Trainer {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg'")
+    @Column(nullable = false)
     private String profileImageUrl;
 
     @ManyToOne
@@ -42,6 +34,9 @@ public class Trainer {
     @Column(nullable = false)
     private TrainerGender gender;
 
+    @Value("${defaultImageUrl}")
+    private String defaultProfileImageUrl;
+
     protected Trainer() {
     }
 
@@ -50,6 +45,13 @@ public class Trainer {
         this.password = password;
         this.name = name;
         this.gender = gender;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
+            this.profileImageUrl = defaultProfileImageUrl;
+        }
     }
 
     public Long getId() {

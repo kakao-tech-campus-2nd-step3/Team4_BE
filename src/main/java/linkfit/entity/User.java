@@ -1,16 +1,11 @@
 package linkfit.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.exception.PasswordMismatchException;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "USER_TB", indexes = @Index(name = "IDX_USER_EMAIL", columnList = "EMAIL"))
@@ -29,11 +24,17 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg'")
+    @Column(nullable = false)
     private String profileImageUrl;
 
     @Column(nullable = false)
     private String location;
+
+    @Value("${defaultImageUrl}")
+    private String defaultImageUrl;
+
+    @Value("${defaultImageUrl}")
+    private String defaultProfileImageUrl;
 
     protected User() {
     }
@@ -43,6 +44,13 @@ public class User {
         this.password = password;
         this.name = name;
         this.location = location;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
+            this.profileImageUrl = defaultProfileImageUrl;
+        }
     }
 
     public Long getId() {
