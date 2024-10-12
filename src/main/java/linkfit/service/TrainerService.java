@@ -90,14 +90,10 @@ public class TrainerService {
     }
 
     private void handleProfileImage(MultipartFile profileImage, Trainer trainer) {
-        if (isProfileImageValid(profileImage)) {
-            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
+        String imageUrl = imageUploadService.uploadProfileImage(profileImage);
+        if(imageUrl != null) {
             trainer.setProfileImageUrl(imageUrl);
         }
-    }
-
-    private boolean isProfileImageValid(MultipartFile profileImage) {
-        return profileImage != null && !profileImage.isEmpty();
     }
 
     private void validateEmailAlreadyExist(String email) {

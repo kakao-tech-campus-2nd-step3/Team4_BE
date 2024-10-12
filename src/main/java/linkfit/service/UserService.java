@@ -12,6 +12,7 @@ import linkfit.entity.BodyInfo;
 import linkfit.entity.User;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PermissionException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
@@ -40,37 +41,27 @@ public class UserService {
 
     @Transactional
     public void register(UserRegisterRequest request, MultipartFile profileImage) {
-        if (userRepository.existsByEmail(request.email())) {
-            throw new DuplicateException("duplicate.email");
-        }
+        validateEmailAlreadyExist(request.email());
         User user = request.toEntity();
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-            user.setProfileImageUrl(imageUrl);
-        }
+        handleProfileImage(profileImage, user);
         userRepository.save(user);
     }
 
     public String login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.email())
-            .orElseThrow(() -> new NotFoundException("not.found.user"));
+        User user = getUserByEmail(request.email());
         user.validatePassword(request.password());
         return jwtUtil.generateToken(user.getId(), user.getEmail());
     }
 
     public UserProfileResponse getProfile(Long userId) {
-        User user = getUser(userId);
-        return user.toDto();
+        return getUser(userId).toDto();
     }
 
     public void updateProfile(Long userId, UserProfileRequest request,
         MultipartFile profileImage) {
         User user = getUser(userId);
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-            user.setProfileImageUrl(imageUrl);
-        }
-        user.update(request);
+        user.updateInfo(request);
+        handleProfileImage(profileImage, user);
         userRepository.save(user);
     }
 
@@ -79,7 +70,6 @@ public class UserService {
         String imageUrl = imageUploadService.saveImage(profileImage);
         BodyInfo bodyInfo = new BodyInfo(user, imageUrl);
         bodyInfoRepository.save(bodyInfo);
-
     }
 
     public List<BodyInfoResponse> getAllBodyInfo(Long userId, Pageable pageable) {
@@ -95,24 +85,39 @@ public class UserService {
             .orElseThrow(() -> new NotFoundException("not.found.user"));
     }
 
-    public BodyInfo getUserBodyInfo(Long userId) {
-        return bodyInfoRepository.findByUserId(userId)
+    public BodyInfo getBodyInfo(Long id) {
+        return bodyInfoRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
     }
 
-    public BodyInfo getRecentBodyInfo(Long userId) {
-        return bodyInfoRepository.findFirstByUserIdOrderByCreateDateDesc(userId)
-            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
+    public void deleteBodyInfo(Long userId, Long bodyInfoId) {
+        BodyInfo bodyInfo = getBodyInfo(bodyInfoId);
+        validateBodyInfoOwnership(bodyInfo, userId);
+        bodyInfoRepository.delete(bodyInfo);
     }
 
-    public void deleteBodyInfo(Long userId, Long infoId) {
-        User user = getUser(userId);
-        BodyInfo bodyInfo = bodyInfoRepository.findById(infoId)
-            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
-
-        if (Objects.equals(user.getId(), bodyInfo.getUser().getId())) {
-            bodyInfoRepository.delete(bodyInfo);
+    private void validateBodyInfoOwnership(BodyInfo bodyInfo, Long userId) {
+        Long ownerId = bodyInfo.getUser().getId();
+        if(!Objects.equals(ownerId, userId)) {
+            throw new PermissionException("bodyinfo.permission.denied");
         }
+    }
 
+    private User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new NotFoundException("not.found.user"));
+    }
+
+    private void validateEmailAlreadyExist(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new DuplicateException("duplicate.email");
+        }
+    }
+
+    private void handleProfileImage(MultipartFile profileImage, User user) {
+        String imageUrl = imageUploadService.uploadProfileImage(profileImage);
+        if(imageUrl != null) {
+            user.setProfileImageUrl(imageUrl);
+        }
     }
 }
