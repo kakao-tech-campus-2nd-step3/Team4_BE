@@ -2,8 +2,7 @@ package linkfit.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import linkfit.annotation.LoginTrainer;
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.controller.Swagger.PtControllerDocs;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
@@ -36,7 +35,7 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/trainer")
     public ResponseEntity<List<ProgressPtListResponse>> getTrainerProgressPt(
-        @LoginTrainer Long trainerId, Pageable pageable) {
+        Long trainerId, Pageable pageable) {
         List<ProgressPtListResponse> responseBody = ptService.getTrainerProgressPt(trainerId,
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
@@ -45,7 +44,7 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/suggests/trainer")
     public ResponseEntity<List<SendPtSuggestResponse>> getAllSendSuggestion(
-        @LoginTrainer Long trainerId, Pageable pageable) {
+        Long trainerId, Pageable pageable) {
         List<SendPtSuggestResponse> responseBody = ptService.getAllSendSuggestion(trainerId,
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
@@ -54,7 +53,7 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/suggests/user")
     public ResponseEntity<List<ReceivePtSuggestResponse>> getAllReceiveSuggestion(
-        @LoginUser Long userId, Pageable pageable) {
+        @Login Long userId, Pageable pageable) {
         List<ReceivePtSuggestResponse> responseBody = ptService.getAllReceiveSuggestion(
             userId, pageable);
         return ResponseEntity.status(HttpStatus.OK)
@@ -62,42 +61,42 @@ public class PtController implements PtControllerDocs {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<UserPtResponse> getMyPt(@LoginUser Long userId) {
+    public ResponseEntity<UserPtResponse> getMyPt(@Login Long userId) {
         UserPtResponse responseBody = ptService.getMyPt(userId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
     @PostMapping
-    public ResponseEntity<Void> sendSuggestion(@LoginTrainer Long trainerId,
+    public ResponseEntity<Void> sendSuggestion(Long trainerId,
         @Valid @RequestBody PtSuggestionRequest ptSuggestionRequest) {
         ptService.sendSuggestion(trainerId, ptSuggestionRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{ptId}")
-    public ResponseEntity<Void> approvalSuggestion(@LoginUser Long userId,
+    public ResponseEntity<Void> approvalSuggestion(@Login Long userId,
         @PathVariable Long ptId) {
         ptService.approvalSuggestion(userId, ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{ptId}/trainer")
-    public ResponseEntity<Void> recallSuggestion(@LoginTrainer Long trainerId,
+    public ResponseEntity<Void> recallSuggestion(Long trainerId,
         @PathVariable Long ptId) {
         ptService.recallSuggestion(trainerId, ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{ptId}/user")
-    public ResponseEntity<Void> refuseSuggestion(@LoginUser Long userId, @PathVariable Long ptId) {
+    public ResponseEntity<Void> refuseSuggestion(@Login Long userId, @PathVariable Long ptId) {
         ptService.refuseSuggestion(userId, ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/{ptId}/trainer")
     public ResponseEntity<ProgressPtDetailResponse> getProgressUserDetails(
-        @LoginTrainer Long trainerId, @PathVariable Long ptId) {
+        Long trainerId, @PathVariable Long ptId) {
         ProgressPtDetailResponse responseBody = ptService.getProgressUserDetails(trainerId,
             ptId);
         return ResponseEntity.status(HttpStatus.OK)

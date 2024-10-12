@@ -31,8 +31,7 @@ public class JwtUtil {
     private static final String ID = "id";
 
     public JwtUtil(@Value("${jwt.expiration-time}") long expirationTime,
-        @Value("${jwt.master-token}") String masterToken,
-        @Value("${jwt.master-id}") Long masterId,
+        @Value("${jwt.master-token}") String masterToken, @Value("${jwt.master-id}") Long masterId,
         MessageSource messageSource) {
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         this.expirationTime = expirationTime;
@@ -65,7 +64,6 @@ public class JwtUtil {
             throw new InvalidTokenException(
                 messageSource.getMessage("invalid.token", null, Locale.getDefault()));
         }
-
     }
 
     private Claims extractAllClaims(String token) throws ExpiredJwtException, SignatureException {

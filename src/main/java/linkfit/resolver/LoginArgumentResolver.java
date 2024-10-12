@@ -3,11 +3,11 @@ package linkfit.resolver;
 import static linkfit.util.JwtUtil.AUTHORIZATION_HEADER;
 import static linkfit.util.JwtUtil.BEARER_PREFIX;
 
-import java.util.Objects;
-import linkfit.annotation.LoginTrainer;
+import linkfit.annotation.Login;
 import linkfit.exception.InvalidTokenException;
 import linkfit.exception.PermissionException;
 import linkfit.util.JwtUtil;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -16,17 +16,17 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
-public class LoginTrainerArgumentResolver implements HandlerMethodArgumentResolver {
+public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JwtUtil jwtUtil;
 
-    public LoginTrainerArgumentResolver(JwtUtil jwtUtil) {
+    public LoginArgumentResolver(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(LoginTrainer.class);
+        return parameter.hasParameterAnnotation(Login.class);
     }
 
     @Override
@@ -40,6 +40,6 @@ public class LoginTrainerArgumentResolver implements HandlerMethodArgumentResolv
         if (!jwtUtil.isValidToken(processedToken)) {
             throw new InvalidTokenException("invalid.token");
         }
-        return jwtUtil.parseToken(Objects.requireNonNull(token));
+        return jwtUtil.parseToken(processedToken);
     }
 }

@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 
@@ -24,7 +24,7 @@ public interface UserControllerDocs {
         @ApiResponse(responseCode = "200", description = "유저 프로필 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<UserProfileResponse> getProfile(
-        @Parameter(hidden = true) @LoginUser Long userId);
+        @Parameter(hidden = true) @Login Long userId);
 
     @Operation(summary = "유저 프로필 수정", description = "로그인한 유저의 자신의 프로필 수정.", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
@@ -32,7 +32,7 @@ public interface UserControllerDocs {
         @ApiResponse(responseCode = "201", description = "유저 프로필 수정 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<Void> updateProfile(
-        @Parameter(hidden = true) @LoginUser Long userId,
+        @Parameter(hidden = true) @Login Long userId,
         @RequestPart("user") UserProfileRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage);
 }

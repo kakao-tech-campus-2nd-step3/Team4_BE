@@ -2,7 +2,7 @@ package linkfit.controller;
 
 import java.util.List;
 
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.controller.Swagger.BodyInfoControllerDocs;
 import linkfit.dto.BodyInfoResponse;
 import linkfit.service.BodyInfoService;
@@ -32,14 +32,14 @@ public class BodyInfoController implements BodyInfoControllerDocs {
 
     @PostMapping(value = "/bodyInfo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> registerBodyInfo(
-        @LoginUser Long userId,
+        @Login Long userId,
         @RequestPart(value = "inbodyImage") MultipartFile inbodyImage) {
         bodyInfoService.registerBodyInfo(userId, inbodyImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/bodyInfo")
-    public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(@LoginUser Long userId,
+    public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(@Login Long userId,
         Pageable pageable) {
         List<BodyInfoResponse> responseBody = bodyInfoService.getAllBodyInfo(userId,
             pageable);
@@ -48,7 +48,7 @@ public class BodyInfoController implements BodyInfoControllerDocs {
     }
 
     @DeleteMapping("/bodyInfo/{bodyInfoId}")
-    public ResponseEntity<Void> deleteBodyInfo(@LoginUser Long userId,
+    public ResponseEntity<Void> deleteBodyInfo(@Login Long userId,
         @PathVariable Long bodyInfoId) {
         bodyInfoService.deleteBodyInfo(userId, bodyInfoId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import linkfit.annotation.LoginTrainer;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.TrainerProfileResponse;
@@ -24,7 +23,7 @@ public interface TrainerControllerDocs {
         @ApiResponse(responseCode = "200", description = "트레이너 경력 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<List<CareerResponse>> getCareer(
-        @Parameter(hidden = true) @LoginTrainer Long trainerId);
+        @Parameter(hidden = true) Long trainerId);
 
 
     @Operation(summary = "트레이너 경력 등록", description = "로그인한 트레이너의 자신의 경력 등록.", parameters = {
@@ -33,7 +32,7 @@ public interface TrainerControllerDocs {
         @ApiResponse(responseCode = "201", description = "트레이너 경력 등록 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<Void> addCareer(
-        @Parameter(hidden = true) @LoginTrainer Long trainerId,
+        @Parameter(hidden = true) Long trainerId,
         @RequestBody List<CareerRequest> request);
 
     @Operation(summary = "트레이너 경력 삭제", description = "로그인한 트레이너의 자신의 경력 삭제.", parameters = {
@@ -42,7 +41,7 @@ public interface TrainerControllerDocs {
         @ApiResponse(responseCode = "204", description = "트레이너 경력 삭제 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<Void> deleteCareer(
-        @Parameter(hidden = true) @LoginTrainer Long trainerId,
+        @Parameter(hidden = true) Long trainerId,
         @PathVariable Long careerId);
 
     @Operation(summary = "트레이너 경력 조회(일반회원)", description = "일반회원이 다른 트레이너의 경력 조회")
@@ -66,5 +65,5 @@ public interface TrainerControllerDocs {
         @ApiResponse(responseCode = "204", description = "트레이너 경력 삭제 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<TrainerProfileResponse> getMyProfile(
-        @Parameter(hidden = true) @LoginTrainer Long trainerId);
+        @Parameter(hidden = true) Long trainerId);
 }

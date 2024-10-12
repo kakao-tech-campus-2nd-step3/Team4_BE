@@ -1,7 +1,6 @@
 package linkfit.controller;
 
 import java.util.List;
-import linkfit.annotation.LoginTrainer;
 import linkfit.controller.Swagger.TrainerControllerDocs;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
@@ -28,21 +27,21 @@ public class TrainerController implements TrainerControllerDocs {
     }
 
     @GetMapping("/career")
-    public ResponseEntity<List<CareerResponse>> getCareer(@LoginTrainer Long trainerId) {
+    public ResponseEntity<List<CareerResponse>> getCareer(Long trainerId) {
         List<CareerResponse> list = trainerService.getCareers(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @PostMapping("/career")
-    public ResponseEntity<Void> addCareer(@LoginTrainer Long trainerId,
+    public ResponseEntity<Void> addCareer(Long trainerId,
         @RequestBody List<CareerRequest> request) {
         trainerService.addCareer(trainerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{careerId}")
-    public ResponseEntity<Void> deleteCareer(@LoginTrainer Long trainerId,
+    public ResponseEntity<Void> deleteCareer(Long trainerId,
         @PathVariable Long careerId) {
         trainerService.deleteCareer(trainerId, careerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -64,7 +63,7 @@ public class TrainerController implements TrainerControllerDocs {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<TrainerProfileResponse> getMyProfile(@LoginTrainer Long trainerId) {
+    public ResponseEntity<TrainerProfileResponse> getMyProfile(Long trainerId) {
         TrainerProfileResponse responseBody = trainerService.getMyProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
