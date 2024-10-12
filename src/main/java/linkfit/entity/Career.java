@@ -47,11 +47,7 @@ public class Career {
         return trainer;
     }
 
-    public String getCareer() {
-        return career;
-    }
-
     public CareerResponse toDto() {
-        return new CareerResponse(getId(), getCareer());
+        return new CareerResponse(id, career);
     }
 }

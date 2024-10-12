@@ -29,7 +29,7 @@ public class Gym {
     @Column(nullable = false)
     private String location;
 
-    private String description = null;
+    private String description;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)

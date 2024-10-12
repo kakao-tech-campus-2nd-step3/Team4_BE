@@ -53,15 +53,7 @@ public class BodyInfo {
         return inbodyImageUrl;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
     public BodyInfoResponse toDto() {
-        return new BodyInfoResponse(
-            getId(),
-            getInbodyImageUrl(),
-            getCreateDate()
-        );
+        return new BodyInfoResponse(id, inbodyImageUrl, createDate);
     }
 }
