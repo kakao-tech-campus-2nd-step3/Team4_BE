@@ -22,7 +22,6 @@ public class Sports {
 
     private String name;
 
-    // 논리 삭제를 위한 필드
     private final boolean deleted = Boolean.FALSE;
 
     protected Sports() {
@@ -30,15 +29,6 @@ public class Sports {
 
     public Sports(String name) {
         this.name = name;
-    }
-
-    public Sports(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {

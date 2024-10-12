@@ -55,31 +55,11 @@ public class Review {
         this.createdDate = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public User getUser() {
         return user;
     }
 
-    public Trainer getTrainer() {
-        return trainer;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
     public ReviewResponse toDto() {
-        return new ReviewResponse(getId(), getContent(), getCreatedDate(), getScore());
+        return new ReviewResponse(id, content, createdDate, score);
     }
 }

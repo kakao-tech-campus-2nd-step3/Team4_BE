@@ -80,10 +80,6 @@ public class Pt {
         return totalCount;
     }
 
-    public PtStatus getStatus() {
-        return status;
-    }
-
     public SendPtSuggestResponse toSendDto() {
         return new SendPtSuggestResponse(id, user.getName(), user.getProfileImageUrl(), totalCount,
             price, status);

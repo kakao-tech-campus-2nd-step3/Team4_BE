@@ -39,10 +39,6 @@ public class Career {
         this.career = career;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Trainer getTrainer() {
         return trainer;
     }

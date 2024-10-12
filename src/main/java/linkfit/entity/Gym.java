@@ -55,14 +55,6 @@ public class Gym {
         return location;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public GymStatus getStatus() {
-        return status;
-    }
-
     public GymRegisterWaitingResponse toDTO() {
         return new GymRegisterWaitingResponse(id, name, location);
     }
