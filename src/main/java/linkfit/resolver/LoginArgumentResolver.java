@@ -2,9 +2,9 @@ package linkfit.resolver;
 
 import static linkfit.util.JwtUtil.AUTHORIZATION_HEADER;
 import static linkfit.util.JwtUtil.BEARER_PREFIX;
+import static linkfit.util.JwtUtil.BEARER_PREFIX_LENGTH;
 
 import linkfit.annotation.Login;
-import linkfit.exception.InvalidTokenException;
 import linkfit.exception.PermissionException;
 import linkfit.util.JwtUtil;
 
@@ -33,13 +33,21 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     public Long resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
         NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String token = webRequest.getHeader(AUTHORIZATION_HEADER);
-        if (token == null) {
+        validateTokenPresence(token);
+        validateTokenPrefix(token);
+        String processedToken = token.substring(BEARER_PREFIX_LENGTH);
+        return jwtUtil.parseToken(processedToken);
+    }
+
+    private void validateTokenPresence(String token) {
+        if (token == null || token.isEmpty()) {
             throw new PermissionException("not.found.token");
         }
-        String processedToken = token.replace(BEARER_PREFIX, "");
-        if (!jwtUtil.isValidToken(processedToken)) {
-            throw new InvalidTokenException("invalid.token");
+    }
+
+    private void validateTokenPrefix(String token) {
+        if (!token.startsWith(BEARER_PREFIX)) {
+            throw new PermissionException("not.match.prefix");
         }
-        return jwtUtil.parseToken(processedToken);
     }
 }
