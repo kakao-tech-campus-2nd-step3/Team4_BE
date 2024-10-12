@@ -51,29 +51,30 @@ public class ReviewService {
     public void addReview(Long userId, ReviewRequest request, Long trainerId) {
         User user = userRepository.getReferenceById(userId);
         Trainer trainer = trainerRepository.getReferenceById(trainerId);
-        validCompletePt(user);
+        checkPTCompletion(user);
         Review review = new Review(user, trainer, request);
         reviewRepository.save(review);
     }
 
     public void deleteReview(Long userId, Long reviewId) {
-        Review review = getReview(reviewId);
-        checkReviewAuthor(review.getUser(), userId);
+        Review review = getReviewById(reviewId);
+        validateReviewAuthor(review, userId);
         reviewRepository.delete(review);
     }
 
-    private Review getReview(Long reviewId) {
+    private Review getReviewById(Long reviewId) {
         return reviewRepository.findById(reviewId)
             .orElseThrow(() -> new NotFoundException("not.found.review"));
     }
 
-    private void checkReviewAuthor(User author, Long userId) {
-        if (!Objects.equals(author.getId(), userId)) {
+    private void validateReviewAuthor(Review review, Long userId) {
+        Long authorId = review.getUser().getId();
+        if (!Objects.equals(authorId, userId)) {
             throw new PermissionException("not.owner");
         }
     }
 
-    private void validCompletePt(User user) {
+    private void checkPTCompletion(User user) {
         ptRepository.findByUserAndStatus(user, PtStatus.COMPLETE)
             .orElseThrow(() -> new PermissionException("review.permission.denied"));
     }
