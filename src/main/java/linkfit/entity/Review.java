@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -46,11 +47,11 @@ public class Review {
     protected Review() {
     }
 
-    public Review(User user, Trainer trainer, String content, int score) {
+    public Review(User user, Trainer trainer, ReviewRequest reviewRequest) {
         this.user = user;
         this.trainer = trainer;
-        this.content = content;
-        this.score = score;
+        this.content = reviewRequest.content();
+        this.score = reviewRequest.score();
         this.createdDate = LocalDateTime.now();
     }
 
