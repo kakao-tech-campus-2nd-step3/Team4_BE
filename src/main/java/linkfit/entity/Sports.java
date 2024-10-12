@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import linkfit.dto.SportsRequest;
 import linkfit.dto.SportsResponse;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -42,6 +43,10 @@ public class Sports {
 
     public String getName() {
         return name;
+    }
+
+    public void rename(SportsRequest request) {
+        this.name = request.name();
     }
 
     public SportsResponse toDto() {
