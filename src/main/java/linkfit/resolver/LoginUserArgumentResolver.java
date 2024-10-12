@@ -34,14 +34,12 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
         NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String token = webRequest.getHeader(AUTHORIZATION_HEADER);
         if (token == null) {
-            throw new PermissionException("null.token");
+            throw new PermissionException("not.found.token");
         }
-
         String processedToken = token.replace(BEARER_PREFIX, "");
         if (!jwtUtil.isValidToken(processedToken)) {
             throw new InvalidTokenException("invalid.token");
         }
-
         return jwtUtil.parseToken(processedToken);
     }
 }
