@@ -1,6 +1,5 @@
 package linkfit.service;
 
-import com.amazonaws.services.kms.model.NotFoundException;
 import java.util.List;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
@@ -8,6 +7,7 @@ import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
+import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.PtRepository;
 import linkfit.repository.ScheduleRepository;
