@@ -1,5 +1,5 @@
 package linkfit.dto;
 
-public record GymLocationResponse(Long gymId, String location) {
+public record GymLocationResponse(Long id, String location) {
 
 }

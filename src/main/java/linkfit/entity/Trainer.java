@@ -1,20 +1,11 @@
 package linkfit.entity;
 
-import static linkfit.exception.GlobalExceptionHandler.NOT_MATCH_PASSWORD;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.exception.PasswordMismatchException;
 import linkfit.status.TrainerGender;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "TRAINER_TB", indexes = @Index(name = "IDX_TRAINER_EMAIL", columnList = "EMAIL"))
@@ -43,6 +34,9 @@ public class Trainer {
     @Column(nullable = false)
     private TrainerGender gender;
 
+    @Value("${defaultImageUrl}")
+    private String defaultProfileImageUrl;
+
     protected Trainer() {
     }
 
@@ -51,6 +45,13 @@ public class Trainer {
         this.password = password;
         this.name = name;
         this.gender = gender;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
+            this.profileImageUrl = defaultProfileImageUrl;
+        }
     }
 
     public Long getId() {
@@ -83,11 +84,14 @@ public class Trainer {
 
     public void validatePassword(String inputPassword) {
         if (!inputPassword.equals(this.password)) {
-            throw new PasswordMismatchException(NOT_MATCH_PASSWORD);
+            throw new PasswordMismatchException("not.match.password");
         }
     }
 
     public TrainerProfileResponse toDto() {
+        if(gym == null) {
+            return new TrainerProfileResponse(name, gender, profileImageUrl, null);
+        }
         return new TrainerProfileResponse(name, gender, profileImageUrl, gym.getName());
     }
 }

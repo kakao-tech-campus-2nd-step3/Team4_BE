@@ -52,6 +52,6 @@ public class Career {
     }
 
     public CareerResponse toDto() {
-        return new CareerResponse(getId(), getTrainer().getId(), getCareer());
+        return new CareerResponse(getId(), getCareer());
     }
 }

@@ -1,13 +1,10 @@
 package linkfit.service;
 
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_PT;
-import static linkfit.exception.GlobalExceptionHandler.NOT_FOUND_REVIEW;
-import static linkfit.exception.GlobalExceptionHandler.REVIEW_PERMISSION_DENIED;
-
 import java.util.List;
+import java.util.Objects;
+
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
-import linkfit.entity.Pt;
 import linkfit.entity.Review;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
@@ -18,7 +15,7 @@ import linkfit.repository.ReviewRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.status.PtStatus;
-import linkfit.util.JwtUtil;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,17 +24,14 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final TrainerRepository trainerRepository;
     private final UserRepository userRepository;
-
     private final PtRepository ptRepository;
-    private final JwtUtil jwtUtil;
 
     public ReviewService(ReviewRepository reviewRepository, TrainerRepository trainerRepository,
-        UserRepository userRepository, PtRepository ptRepository, JwtUtil jwtUtil) {
+        UserRepository userRepository, PtRepository ptRepository) {
         this.reviewRepository = reviewRepository;
         this.trainerRepository = trainerRepository;
         this.userRepository = userRepository;
         this.ptRepository = ptRepository;
-        this.jwtUtil = jwtUtil;
     }
 
     public List<ReviewResponse> getAllReviewsByTrainerId(Long trainerId) {
@@ -47,39 +41,32 @@ public class ReviewService {
             .toList();
     }
 
-    public List<ReviewResponse> getMyReviewsByUser(String authorization) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public List<ReviewResponse> getMyReviewsByUserId(Long userId) {
         List<Review> reviews = reviewRepository.findAllByUserId(userId);
         return reviews.stream()
             .map(Review::toDto)
             .toList();
     }
 
-    public List<ReviewResponse> getMyReviewsByTrainer(String authorization) {
-        Long trainerId = jwtUtil.parseToken(authorization);
-        return getAllReviewsByTrainerId(trainerId);
-    }
-
-    public void addReview(String authorization, ReviewRequest request, Long trainerId) {
-        Long userId = jwtUtil.parseToken(authorization);
+    public void addReview(Long userId, ReviewRequest request, Long trainerId) {
         User user = userRepository.getReferenceById(userId);
         Trainer trainer = trainerRepository.getReferenceById(trainerId);
-        reviewPermission(user);
+        permissionReview(user);
         Review review = new Review(user, trainer, request.content(), request.score());
         reviewRepository.save(review);
     }
 
-    public void deleteReview(String authorization, Long reviewId) {
+    public void deleteReview(Long userId, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_REVIEW));
+            .orElseThrow(() -> new NotFoundException("not.found.review"));
+        if (!Objects.equals(review.getUser().getId(), userId)) {
+            throw new PermissionException("not.owner");
+        }
         reviewRepository.delete(review);
     }
 
-    private void reviewPermission(User user) {
-        Pt pt = ptRepository.findByUser(user)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_PT));
-        if (pt.getStatus() == PtStatus.COMPLETE) {
-            throw new PermissionException(REVIEW_PERMISSION_DENIED);
-        }
+    private void permissionReview(User user) {
+        ptRepository.findByUserAndStatus(user, PtStatus.COMPLETE)
+            .orElseThrow(() -> new PermissionException("review.permission.denied"));
     }
 }
