@@ -60,7 +60,7 @@ public class UserService {
     public String login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
             .orElseThrow(() -> new NotFoundException("not.found.user"));
-        if(!findUserWithAuthenticate(user, request.password())){
+        if(!userAuthenticate(user, request.password())){
             throw new PermissionException("not.match.password");
         }
         return jwtUtil.generateToken(user.getId(), user.getEmail());
@@ -124,7 +124,7 @@ public class UserService {
 
     }
 
-    private boolean findUserWithAuthenticate(User user, String rawPassword) {
+    private boolean userAuthenticate(User user, String rawPassword) {
        return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 }

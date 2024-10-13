@@ -15,6 +15,7 @@ import linkfit.exception.PermissionException;
 import linkfit.repository.TrainerRepository;
 import linkfit.util.JwtUtil;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,13 +27,15 @@ public class TrainerService {
     private final CareerService careerService;
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
+    private final PasswordEncoder passwordEncoder;
 
     public TrainerService(TrainerRepository trainerRepository, CareerService careerService,
-        JwtUtil jwtUtil, ImageUploadService imageUploadService) {
+        JwtUtil jwtUtil, ImageUploadService imageUploadService, PasswordEncoder passwordEncoder) {
         this.trainerRepository = trainerRepository;
         this.careerService = careerService;
         this.jwtUtil = jwtUtil;
         this.imageUploadService = imageUploadService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -40,7 +43,8 @@ public class TrainerService {
         if (trainerRepository.existsByEmail(request.email())) {
             throw new DuplicateException("duplicate.email");
         }
-        Trainer trainer = request.toEntity();
+        String encodedPassword = passwordEncoder.encode(request.password());
+        Trainer trainer = request.toEntity(encodedPassword);
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = imageUploadService.uploadProfileImage(profileImage);
             trainer.setProfileImageUrl(imageUrl);
@@ -51,7 +55,9 @@ public class TrainerService {
     public String login(LoginRequest request) {
         Trainer trainer = trainerRepository.findByEmail(request.email())
             .orElseThrow(() -> new NotFoundException("not.found.trainer"));
-        trainer.validatePassword(request.password());
+        if(!trainerAuthenticate(trainer,request.password())){
+            throw new PermissionException("not.found.trainer");
+        }
         return jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
     }
 
@@ -102,5 +108,9 @@ public class TrainerService {
 
     public TrainerProfileResponse getMyProfile(Long trainerId) {
         return getProfile(trainerId);
+    }
+
+    private boolean trainerAuthenticate(Trainer trainer, String rawPassword) {
+        return passwordEncoder.matches(rawPassword,trainer.getPassword());
     }
 }
