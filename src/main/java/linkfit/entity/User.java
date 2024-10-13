@@ -24,7 +24,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String profileImageUrl;
 
     @Column(nullable = false)
@@ -73,6 +73,10 @@ public class User {
         return profileImageUrl;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
@@ -88,12 +92,6 @@ public class User {
     public void update(UserProfileRequest request) {
         this.setName(request.name());
         this.setLocation(request.location());
-    }
-
-    public void validatePassword(String inputPassword) {
-        if (!inputPassword.equals(this.password)) {
-            throw new PasswordMismatchException("not.match.password");
-        }
     }
 
     public UserProfileResponse toDto() {

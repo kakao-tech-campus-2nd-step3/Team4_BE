@@ -12,12 +12,14 @@ import linkfit.entity.BodyInfo;
 import linkfit.entity.User;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
+import linkfit.exception.PermissionException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,13 +31,16 @@ public class UserService {
     private final BodyInfoRepository bodyInfoRepository;
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
+    private final PasswordEncoder passwordEncoder;
+
 
     public UserService(UserRepository userRepository, BodyInfoRepository bodyInfoRepository,
-        JwtUtil jwtUtil, ImageUploadService imageUploadService) {
+        JwtUtil jwtUtil, ImageUploadService imageUploadService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.bodyInfoRepository = bodyInfoRepository;
         this.jwtUtil = jwtUtil;
         this.imageUploadService = imageUploadService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -43,7 +48,8 @@ public class UserService {
         if (userRepository.existsByEmail(request.email())) {
             throw new DuplicateException("duplicate.email");
         }
-        User user = request.toEntity();
+        String encodedPassword = passwordEncoder.encode(request.password());
+        User user = request.toEntity(encodedPassword);
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = imageUploadService.uploadProfileImage(profileImage);
             user.setProfileImageUrl(imageUrl);
@@ -54,7 +60,9 @@ public class UserService {
     public String login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
             .orElseThrow(() -> new NotFoundException("not.found.user"));
-        user.validatePassword(request.password());
+        if(!findUserWithAuthenticate(user, request.password())){
+            throw new PermissionException("not.match.password");
+        }
         return jwtUtil.generateToken(user.getId(), user.getEmail());
     }
 
@@ -114,5 +122,9 @@ public class UserService {
             bodyInfoRepository.delete(bodyInfo);
         }
 
+    }
+
+    private boolean findUserWithAuthenticate(User user, String rawPassword) {
+       return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 }
