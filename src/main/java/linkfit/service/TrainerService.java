@@ -56,7 +56,7 @@ public class TrainerService {
         Trainer trainer = trainerRepository.findByEmail(request.email())
             .orElseThrow(() -> new NotFoundException("not.found.trainer"));
         if(!trainerAuthenticate(trainer,request.password())){
-            throw new PermissionException("not.found.trainer");
+            throw new PermissionException("not.match.password");
         }
         return jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
     }
