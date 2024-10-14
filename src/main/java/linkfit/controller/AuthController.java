@@ -2,6 +2,7 @@ package linkfit.controller;
 
 import linkfit.controller.Swagger.AuthControllerDocs;
 import linkfit.dto.LoginRequest;
+import linkfit.dto.TokenResponse;
 import linkfit.dto.TrainerRegisterRequest;
 import linkfit.dto.UserRegisterRequest;
 import linkfit.service.TrainerService;
@@ -36,8 +37,8 @@ public class AuthController implements AuthControllerDocs {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest request) {
-        String token = userService.login(request);
+    public ResponseEntity<TokenResponse> loginUser(@RequestBody LoginRequest request) {
+        TokenResponse token = userService.login(request);
         return ResponseEntity.status(HttpStatus.OK)
             .body(token);
     }
@@ -51,8 +52,8 @@ public class AuthController implements AuthControllerDocs {
     }
 
     @PostMapping("/trainer/login")
-    public ResponseEntity<String> loginTrainer(@RequestBody LoginRequest request) {
-        String token = trainerService.login(request);
+    public ResponseEntity<TokenResponse> loginTrainer(@RequestBody LoginRequest request) {
+        TokenResponse token = trainerService.login(request);
         return ResponseEntity.status(HttpStatus.OK)
             .body(token);
     }

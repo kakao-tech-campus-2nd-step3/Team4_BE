@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.LoginRequest;
+import linkfit.dto.TokenResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.dto.UserRegisterRequest;
@@ -51,11 +52,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public String login(LoginRequest request) {
+    public TokenResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
             .orElseThrow(() -> new NotFoundException("not.found.user"));
         user.validatePassword(request.password());
-        return jwtUtil.generateToken(user.getId(), user.getEmail());
+        String token = jwtUtil.generateToken(user.getId(), user.getEmail());
+        return new TokenResponse(token);
     }
 
     public UserProfileResponse getProfile(Long userId) {
