@@ -1,6 +1,7 @@
 package linkfit.controller;
 
 import java.util.List;
+import linkfit.annotation.Login;
 import linkfit.controller.Swagger.TrainerControllerDocs;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
@@ -26,35 +27,6 @@ public class TrainerController implements TrainerControllerDocs {
         this.trainerService = trainerService;
     }
 
-    @GetMapping("/career")
-    public ResponseEntity<List<CareerResponse>> getCareer(Long trainerId) {
-        List<CareerResponse> list = trainerService.getCareers(trainerId);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(list);
-    }
-
-    @PostMapping("/career")
-    public ResponseEntity<Void> addCareer(Long trainerId,
-        @RequestBody List<CareerRequest> request) {
-        trainerService.addCareer(trainerId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @DeleteMapping("/{careerId}")
-    public ResponseEntity<Void> deleteCareer(Long trainerId,
-        @PathVariable Long careerId) {
-        trainerService.deleteCareer(trainerId, careerId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @GetMapping("/{trainerId}/careers")
-    public ResponseEntity<List<CareerResponse>> getAllCareerByTrainer(
-        @PathVariable Long trainerId) {
-        List<CareerResponse> list = trainerService.getCareersByTrainerId(trainerId);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(list);
-    }
-
     @GetMapping("/{trainerId}")
     public ResponseEntity<TrainerProfileResponse> getTrainerProfile(@PathVariable Long trainerId) {
         TrainerProfileResponse responseBody = trainerService.getProfile(trainerId);
@@ -63,7 +35,7 @@ public class TrainerController implements TrainerControllerDocs {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<TrainerProfileResponse> getMyProfile(Long trainerId) {
+    public ResponseEntity<TrainerProfileResponse> getMyProfile(@Login Long trainerId) {
         TrainerProfileResponse responseBody = trainerService.getMyProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);

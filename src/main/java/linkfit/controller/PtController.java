@@ -35,7 +35,7 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/trainer")
     public ResponseEntity<List<ProgressPtListResponse>> getTrainerProgressPt(
-        Long trainerId, Pageable pageable) {
+        @Login Long trainerId, Pageable pageable) {
         List<ProgressPtListResponse> responseBody = ptService.getTrainerProgressPt(trainerId,
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
@@ -44,7 +44,7 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/suggests/trainer")
     public ResponseEntity<List<SendPtSuggestResponse>> getAllSendSuggestion(
-        Long trainerId, Pageable pageable) {
+        @Login Long trainerId, Pageable pageable) {
         List<SendPtSuggestResponse> responseBody = ptService.getAllSendSuggestion(trainerId,
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
@@ -68,7 +68,7 @@ public class PtController implements PtControllerDocs {
     }
 
     @PostMapping
-    public ResponseEntity<Void> sendSuggestion(Long trainerId,
+    public ResponseEntity<Void> sendSuggestion(@Login Long trainerId,
         @Valid @RequestBody PtSuggestionRequest ptSuggestionRequest) {
         ptService.sendSuggestion(trainerId, ptSuggestionRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -82,7 +82,7 @@ public class PtController implements PtControllerDocs {
     }
 
     @DeleteMapping("/{ptId}/trainer")
-    public ResponseEntity<Void> recallSuggestion(Long trainerId,
+    public ResponseEntity<Void> recallSuggestion(@Login Long trainerId,
         @PathVariable Long ptId) {
         ptService.recallSuggestion(trainerId, ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -96,7 +96,7 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/{ptId}/trainer")
     public ResponseEntity<ProgressPtDetailResponse> getProgressUserDetails(
-        Long trainerId, @PathVariable Long ptId) {
+        @Login Long trainerId, @PathVariable Long ptId) {
         ProgressPtDetailResponse responseBody = ptService.getProgressUserDetails(trainerId,
             ptId);
         return ResponseEntity.status(HttpStatus.OK)
