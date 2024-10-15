@@ -2,6 +2,7 @@ package linkfit.entity;
 
 import jakarta.persistence.*;
 
+import linkfit.component.DefaultImageProvider;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.exception.PasswordMismatchException;
@@ -30,11 +31,12 @@ public class User {
     @Column(nullable = false)
     private String location;
 
-    @Value("${defaultImageUrl}")
-    private String defaultImageUrl;
+    @Transient
+    private static DefaultImageProvider defaultImageProvider;
 
-    @Value("${defaultImageUrl}")
-    private String defaultProfileImageUrl;
+    public static void setDefaultImageProvider(DefaultImageProvider provider) {
+        defaultImageProvider = provider;
+    }
 
     protected User() {
     }
@@ -47,9 +49,9 @@ public class User {
     }
 
     @PrePersist
-    public void prePersist() {
+    private void setDefaultProfileImageUrl() {
         if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
-            this.profileImageUrl = defaultProfileImageUrl;
+            this.profileImageUrl = defaultImageProvider.getDefaultImageUrl();
         }
     }
 

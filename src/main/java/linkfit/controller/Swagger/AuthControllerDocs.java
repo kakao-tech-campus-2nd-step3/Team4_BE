@@ -22,8 +22,7 @@ public interface AuthControllerDocs {
         @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일"),
     })
     ResponseEntity<Void> registerUser(
-        @RequestPart("user") UserRegisterRequest request,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage);
+        @RequestPart("user") UserRegisterRequest request);
 
     @Operation(summary = "일반회원 로그인", description = "이메일, 비밀번호로 인증 후 토큰 발급.")
     @ApiResponses({
@@ -38,8 +37,7 @@ public interface AuthControllerDocs {
         @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일")
     })
     ResponseEntity<Void> registerTrainer(
-        @RequestPart("trainer") TrainerRegisterRequest request,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage);
+        @RequestPart("trainer") TrainerRegisterRequest request);
 
     @Operation(summary = "트레이너 로그인", description = "이메일, 비밀번호로 인증 후 토큰 발급.")
     @ApiResponses({

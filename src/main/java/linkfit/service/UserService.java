@@ -40,15 +40,11 @@ public class UserService {
     }
 
     @Transactional
-    public void register(UserRegisterRequest request, MultipartFile profileImage) {
+    public void register(UserRegisterRequest request) {
         if (userRepository.existsByEmail(request.email())) {
             throw new DuplicateException("duplicate.email");
         }
         User user = request.toEntity();
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-            user.setProfileImageUrl(imageUrl);
-        }
         userRepository.save(user);
     }
 

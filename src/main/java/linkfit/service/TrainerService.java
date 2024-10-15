@@ -37,15 +37,11 @@ public class TrainerService {
     }
 
     @Transactional
-    public void register(TrainerRegisterRequest request, MultipartFile profileImage) {
+    public void register(TrainerRegisterRequest request) {
         if (trainerRepository.existsByEmail(request.email())) {
             throw new DuplicateException("duplicate.email");
         }
         Trainer trainer = request.toEntity();
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-            trainer.setProfileImageUrl(imageUrl);
-        }
         trainerRepository.save(trainer);
     }
 

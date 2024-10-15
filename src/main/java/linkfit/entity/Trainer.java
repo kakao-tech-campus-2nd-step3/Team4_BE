@@ -2,10 +2,10 @@ package linkfit.entity;
 
 import jakarta.persistence.*;
 
+import linkfit.component.DefaultImageProvider;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.exception.PasswordMismatchException;
 import linkfit.status.TrainerGender;
-import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "TRAINER_TB", indexes = @Index(name = "IDX_TRAINER_EMAIL", columnList = "EMAIL"))
@@ -34,8 +34,12 @@ public class Trainer {
     @Column(nullable = false)
     private TrainerGender gender;
 
-    @Value("${defaultImageUrl}")
-    private String defaultProfileImageUrl;
+    @Transient
+    private static DefaultImageProvider defaultImageProvider;
+
+    public static void setDefaultImageProvider(DefaultImageProvider provider) {
+        defaultImageProvider = provider;
+    }
 
     protected Trainer() {
     }
@@ -48,9 +52,9 @@ public class Trainer {
     }
 
     @PrePersist
-    public void prePersist() {
+    private void setDefaultProfileImageUrl() {
         if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
-            this.profileImageUrl = defaultProfileImageUrl;
+            this.profileImageUrl = defaultImageProvider.getDefaultImageUrl();
         }
     }
 
