@@ -5,6 +5,7 @@ import java.util.List;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.LoginRequest;
+import linkfit.dto.TokenResponse;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.dto.TrainerRegisterRequest;
 import linkfit.entity.Career;
@@ -36,23 +37,20 @@ public class TrainerService {
     }
 
     @Transactional
-    public void register(TrainerRegisterRequest request, MultipartFile profileImage) {
+    public void register(TrainerRegisterRequest request) {
         if (trainerRepository.existsByEmail(request.email())) {
             throw new DuplicateException("duplicate.email");
         }
         Trainer trainer = request.toEntity();
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-            trainer.setProfileImageUrl(imageUrl);
-        }
         trainerRepository.save(trainer);
     }
 
-    public String login(LoginRequest request) {
+    public TokenResponse login(LoginRequest request) {
         Trainer trainer = trainerRepository.findByEmail(request.email())
             .orElseThrow(() -> new NotFoundException("not.found.trainer"));
         trainer.validatePassword(request.password());
-        return jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
+        String token = jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
+        return new TokenResponse(token);
     }
 
     public List<CareerResponse> getCareers(Long trainerId) {

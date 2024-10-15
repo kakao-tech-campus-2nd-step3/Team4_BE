@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.LoginRequest;
+import linkfit.dto.TokenResponse;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.dto.UserRegisterRequest;
@@ -39,23 +40,20 @@ public class UserService {
     }
 
     @Transactional
-    public void register(UserRegisterRequest request, MultipartFile profileImage) {
+    public void register(UserRegisterRequest request) {
         if (userRepository.existsByEmail(request.email())) {
             throw new DuplicateException("duplicate.email");
         }
         User user = request.toEntity();
-        if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-            user.setProfileImageUrl(imageUrl);
-        }
         userRepository.save(user);
     }
 
-    public String login(LoginRequest request) {
+    public TokenResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
             .orElseThrow(() -> new NotFoundException("not.found.user"));
         user.validatePassword(request.password());
-        return jwtUtil.generateToken(user.getId(), user.getEmail());
+        String token = jwtUtil.generateToken(user.getId(), user.getEmail());
+        return new TokenResponse(token);
     }
 
     public UserProfileResponse getProfile(Long userId) {

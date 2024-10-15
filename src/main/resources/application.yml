@@ -45,4 +45,4 @@ kakao:
   api-key: ${KAKAO_API_KEY}
   address-search-url: https://dapi.kakao.com/v2/local/search/address.json
 
-defaultImageUrl: https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg
+default-image-url: https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg
