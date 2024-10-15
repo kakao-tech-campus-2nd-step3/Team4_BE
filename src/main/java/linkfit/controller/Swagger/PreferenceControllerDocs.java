@@ -7,8 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import linkfit.annotation.LoginTrainer;
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public interface PreferenceControllerDocs {
         @ApiResponse(responseCode = "201", description = "선호 등록 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> registerPreference(
-        @Parameter(hidden = true) @LoginUser Long userId,
+        @Parameter(hidden = true) @Login Long userId,
         @RequestBody PreferenceRequest request);
 
     @Operation(summary = "매칭가능 회원 보기", description = "트레이너가 조건에 맞는 선호를 등록한(매칭 가능한) 회원을 조회", parameters = {
@@ -33,7 +32,7 @@ public interface PreferenceControllerDocs {
         @ApiResponse(responseCode = "200", description = "매칭가능 회원 목록 조회 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<List<PreferenceResponse>> getAllMatchingPossible(
-        @Parameter(hidden = true) @LoginTrainer Long trainerId);
+        @Parameter(hidden = true) Long trainerId);
 
     @Operation(summary = "선호 삭제", description = "등록된 선호를 삭제하고 제안을 받지 않는 상태로 전환", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
@@ -42,6 +41,6 @@ public interface PreferenceControllerDocs {
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> deletePreference(
         @PathVariable Long preferenceId,
-        @Parameter(hidden = true) @LoginUser Long userId);
+        @Parameter(hidden = true) @Login Long userId);
 
 }

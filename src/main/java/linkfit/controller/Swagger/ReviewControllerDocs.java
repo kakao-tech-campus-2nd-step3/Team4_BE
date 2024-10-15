@@ -7,8 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import linkfit.annotation.LoginTrainer;
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public interface ReviewControllerDocs {
         @ApiResponse(responseCode = "200", description = "리뷰 조회 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<List<ReviewResponse>> getMyReviewByUser(
-        @Parameter(hidden = true) @LoginUser Long userId);
+        @Parameter(hidden = true) @Login Long userId);
 
     @Operation(summary = "트레이너) 작성한 리뷰 조회", description = "트레이너의 자신이 받은 모든 리뷰 조회", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
@@ -39,7 +38,7 @@ public interface ReviewControllerDocs {
         @ApiResponse(responseCode = "200", description = "리뷰 조회 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(
-        @Parameter(hidden = true) @LoginTrainer Long trainerId);
+        @Parameter(hidden = true) Long trainerId);
 
     @Operation(summary = "리뷰 작성", description = "회원이 Trainer Id에 해당하는 트레이너에게 완료된 PT에 대해 리뷰 작성", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
@@ -56,7 +55,7 @@ public interface ReviewControllerDocs {
         @ApiResponse(responseCode = "204", description = "리뷰 삭제 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> deleteReviewById(
-        @Parameter(hidden = true) @LoginTrainer Long userId,
+        @Parameter(hidden = true) Long userId,
         @PathVariable("reviewId") Long reviewId);
 
 

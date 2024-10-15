@@ -2,10 +2,10 @@ package linkfit.service;
 
 import java.util.List;
 
+import java.util.Objects;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
 import linkfit.dto.LoginRequest;
-import linkfit.dto.TokenResponse;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.dto.TrainerRegisterRequest;
 import linkfit.entity.Career;
@@ -37,20 +37,17 @@ public class TrainerService {
     }
 
     @Transactional
-    public void register(TrainerRegisterRequest request) {
-        if (trainerRepository.existsByEmail(request.email())) {
-            throw new DuplicateException("duplicate.email");
-        }
+    public void register(TrainerRegisterRequest request, MultipartFile profileImage) {
+        validateEmailAlreadyExist(request.email());
         Trainer trainer = request.toEntity();
+        handleProfileImage(profileImage, trainer);
         trainerRepository.save(trainer);
     }
 
-    public TokenResponse login(LoginRequest request) {
-        Trainer trainer = trainerRepository.findByEmail(request.email())
-            .orElseThrow(() -> new NotFoundException("not.found.trainer"));
+    public String login(LoginRequest request) {
+        Trainer trainer = getTrainerByEmail(request.email());
         trainer.validatePassword(request.password());
-        String token = jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
-        return new TokenResponse(token);
+        return jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
     }
 
     public List<CareerResponse> getCareers(Long trainerId) {
@@ -59,28 +56,14 @@ public class TrainerService {
     }
 
     public void deleteCareer(Long trainerId, Long careerId) {
-        Trainer trainer = getTrainer(trainerId);
         Career career = careerService.getCareer(careerId);
-        validOwner(trainer, career);
+        validateCareerOwnership(career, trainerId);
         careerService.deleteCareer(careerId);
-    }
-
-    private void validOwner(Trainer trainer, Career career) {
-        if (career.getTrainer() != trainer) {
-            throw new PermissionException("career.permission.denied");
-        }
     }
 
     public void addCareer(Long trainerId, List<CareerRequest> request) {
         Trainer trainer = getTrainer(trainerId);
         careerService.addCareer(trainer, request);
-    }
-
-
-    public void identifyTrainer(Long trainerId) {
-        if (!trainerRepository.existsById(trainerId)) {
-            throw new PermissionException("unregistered.trainer");
-        }
     }
 
     public Trainer getTrainer(Long trainerId) {
@@ -94,11 +77,35 @@ public class TrainerService {
     }
 
     public TrainerProfileResponse getProfile(Long trainerId) {
-        Trainer trainer = getTrainer(trainerId);
-        return trainer.toDto();
+        return getTrainer(trainerId).toDto();
     }
 
     public TrainerProfileResponse getMyProfile(Long trainerId) {
         return getProfile(trainerId);
+    }
+
+    private Trainer getTrainerByEmail(String email) {
+        return trainerRepository.findByEmail(email)
+            .orElseThrow(() -> new NotFoundException("not.found.trainer"));
+    }
+
+    private void handleProfileImage(MultipartFile profileImage, Trainer trainer) {
+        String imageUrl = imageUploadService.uploadProfileImage(profileImage);
+        if(imageUrl != null) {
+            trainer.setProfileImageUrl(imageUrl);
+        }
+    }
+
+    private void validateEmailAlreadyExist(String email) {
+        if (trainerRepository.existsByEmail(email)) {
+            throw new DuplicateException("already.exist.email");
+        }
+    }
+
+    private void validateCareerOwnership(Career career, Long trainerId) {
+        Long ownerId = career.getTrainer().getId();
+        if (!Objects.equals(ownerId, trainerId)) {
+            throw new PermissionException("career.permission.denied");
+        }
     }
 }

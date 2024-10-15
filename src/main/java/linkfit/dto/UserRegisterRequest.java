@@ -10,6 +10,5 @@ public record UserRegisterRequest(
 
     public User toEntity() {
         return new User(email, password, name, location);
-
     }
 }

@@ -67,10 +67,6 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
@@ -83,13 +79,9 @@ public class User {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void update(UserProfileRequest request) {
-        this.setName(request.name());
-        this.setLocation(request.location());
+    public void updateInfo(UserProfileRequest request) {
+        name = request.name();
+        location = request.location();
     }
 
     public void validatePassword(String inputPassword) {
