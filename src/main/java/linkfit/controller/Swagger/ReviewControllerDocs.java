@@ -10,6 +10,7 @@ import java.util.List;
 import linkfit.annotation.Login;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
+import linkfit.dto.Token;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +31,7 @@ public interface ReviewControllerDocs {
         @ApiResponse(responseCode = "200", description = "리뷰 조회 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<List<ReviewResponse>> getMyReviewByUser(
-        @Parameter(hidden = true) @Login Long userId);
+        @Parameter(hidden = true) @Login Token token);
 
     @Operation(summary = "트레이너) 작성한 리뷰 조회", description = "트레이너의 자신이 받은 모든 리뷰 조회", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
@@ -45,7 +46,7 @@ public interface ReviewControllerDocs {
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "리뷰 작성 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
-    ResponseEntity<Void> addReview(@Parameter(hidden = true) Long userId,
+    ResponseEntity<Void> addReview(@Parameter(hidden = true) @Login Token token,
         @RequestBody
         ReviewRequest request, @PathVariable("trainerId") Long trainerId);
 

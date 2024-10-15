@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import linkfit.annotation.Login;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
+import linkfit.dto.Token;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public interface ScheduleControllerDocs {
         @ApiResponse(responseCode = "200", description = "스케줄 완료 처리 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     ResponseEntity<Void> completeSchedule(
-        @Parameter(hidden = true) @Login Long userId,
+        @Parameter(hidden = true) @Login Token token,
         @PathVariable Long ptId, @PathVariable Long scheduleId);
 
     @Operation(summary = "스케줄 삭제", description = "트레이너가 PT 스케줄 삭제", parameters = {

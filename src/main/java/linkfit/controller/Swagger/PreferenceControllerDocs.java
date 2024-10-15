@@ -10,6 +10,7 @@ import java.util.List;
 import linkfit.annotation.Login;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
+import linkfit.dto.Token;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public interface PreferenceControllerDocs {
         @ApiResponse(responseCode = "201", description = "선호 등록 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> registerPreference(
-        @Parameter(hidden = true) @Login Long userId,
+        @Parameter(hidden = true) @Login Token token,
         @RequestBody PreferenceRequest request);
 
     @Operation(summary = "매칭가능 회원 보기", description = "트레이너가 조건에 맞는 선호를 등록한(매칭 가능한) 회원을 조회", parameters = {
@@ -41,6 +42,6 @@ public interface PreferenceControllerDocs {
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> deletePreference(
         @PathVariable Long preferenceId,
-        @Parameter(hidden = true) @Login Long userId);
+        @Parameter(hidden = true) @Login Token token);
 
 }

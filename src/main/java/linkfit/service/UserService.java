@@ -35,7 +35,7 @@ public class UserService {
     public TokenResponse login(LoginRequest request) {
         User user = getUserByEmail(request.email());
         user.validatePassword(request.password());
-        return new TokenResponse(jwtUtil.generateToken(user.getId(), user.getEmail()));
+        return new TokenResponse(jwtUtil.generateToken("User", user.getId(), user.getEmail()));
     }
 
     public UserProfileResponse getProfile(Long userId) {

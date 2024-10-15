@@ -11,6 +11,7 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import linkfit.dto.Token;
 import linkfit.exception.InvalidTokenException;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -21,46 +22,45 @@ public class JwtUtil {
 
     private final SecretKey secretKey;
     private final long expirationTime;
-    private final String masterToken;
     private final Long masterId;
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
     public static final int BEARER_PREFIX_LENGTH = 7;
     private static final String ID = "id";
+    private static final String ROLE = "role";
 
     public JwtUtil(@Value("${jwt.expiration-time}") long expirationTime,
-        @Value("${jwt.master-token}") String masterToken,
-        @Value("${jwt.master-id}") Long masterId) {
+        @Value("${jwt.master.id}") Long masterId) {
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         this.expirationTime = expirationTime;
-        this.masterToken = masterToken;
         this.masterId = masterId;
     }
 
-    public String generateToken(Long id, String email) {
+    public String generateToken(String role, Long id, String email) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationTime);
 
         return Jwts.builder()
-            .setSubject(email)
             .claim(ID, id)
+            .claim(ROLE, role)
             .setIssuedAt(now)
             .setExpiration(expiryDate)
             .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact();
     }
 
-    public Long parseToken(String token) {
+    public Token parseToken(String token) {
         if (isMasterToken(token)) {
-            return masterId;
+            String role = getTokenRole(token);
+            return new Token(role, masterId);
         }
         try {
             Claims claims = extractAllClaims(token);
             if (isTokenExpired(claims.getExpiration())) {
                 throw new InvalidTokenException("token.expired");
             }
-            return claims.get(ID, Long.class);
+            return new Token(claims.get(ROLE, String.class), claims.get(ID, Long.class));
         } catch (ExpiredJwtException e) {
             throw new InvalidTokenException("token.expired");
         } catch (SignatureException e) {
@@ -83,6 +83,11 @@ public class JwtUtil {
     }
 
     private boolean isMasterToken(String token) {
-        return masterToken.equals(token);
+        return token.startsWith("mastertoken-");
+    }
+
+    private String getTokenRole(String token) {
+        String role = token.substring(12);
+        return role;
     }
 }

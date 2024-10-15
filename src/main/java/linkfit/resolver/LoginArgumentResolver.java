@@ -5,6 +5,7 @@ import static linkfit.util.JwtUtil.BEARER_PREFIX;
 import static linkfit.util.JwtUtil.BEARER_PREFIX_LENGTH;
 
 import linkfit.annotation.Login;
+import linkfit.dto.Token;
 import linkfit.exception.PermissionException;
 import linkfit.util.JwtUtil;
 
@@ -30,7 +31,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Long resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+    public Token resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
         NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String token = webRequest.getHeader(AUTHORIZATION_HEADER);
         validateTokenPresence(token);

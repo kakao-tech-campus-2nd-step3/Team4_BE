@@ -2,6 +2,7 @@ package linkfit.controller;
 
 import linkfit.annotation.Login;
 import linkfit.controller.Swagger.UserControllerDocs;
+import linkfit.dto.Token;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.service.UserService;
@@ -27,18 +28,18 @@ public class UserController implements UserControllerDocs {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserProfileResponse> getProfile(@Login Long userId) {
-        UserProfileResponse response = userService.getProfile(userId);
+    public ResponseEntity<UserProfileResponse> getProfile(@Login Token token) {
+        UserProfileResponse response = userService.getProfile(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(response);
     }
 
     @PutMapping(value = "/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateProfile(
-        @Login Long userId,
+        @Login Token token,
         @RequestPart("user") UserProfileRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
-        userService.updateProfile(userId, request, profileImage);
+        userService.updateProfile(token.id(), request, profileImage);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

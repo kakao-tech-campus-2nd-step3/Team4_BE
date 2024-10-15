@@ -5,6 +5,7 @@ import linkfit.annotation.Login;
 import linkfit.controller.Swagger.PreferenceControllerDocs;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
+import linkfit.dto.Token;
 import linkfit.service.PreferenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,9 @@ public class PreferenceController implements PreferenceControllerDocs {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerPreference(@Login Long userId,
+    public ResponseEntity<Void> registerPreference(@Login Token token,
         @RequestBody PreferenceRequest request) {
-        preferenceService.registerPreference(userId, request);
+        preferenceService.registerPreference(token.id(), request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -43,8 +44,8 @@ public class PreferenceController implements PreferenceControllerDocs {
 
     @DeleteMapping("/{preferenceId}")
     public ResponseEntity<Void> deletePreference(@PathVariable Long preferenceId,
-        @Login Long userId) {
-        preferenceService.deletePreference(preferenceId, userId);
+        @Login Token token) {
+        preferenceService.deletePreference(preferenceId, token.id());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

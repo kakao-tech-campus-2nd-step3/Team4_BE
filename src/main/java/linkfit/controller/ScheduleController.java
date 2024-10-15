@@ -5,6 +5,7 @@ import linkfit.annotation.Login;
 import linkfit.controller.Swagger.ScheduleControllerDocs;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
+import linkfit.dto.Token;
 import linkfit.service.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +41,9 @@ public class ScheduleController implements ScheduleControllerDocs {
     }
 
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<Void> completeSchedule(@Login Long userId, @PathVariable Long ptId,
+    public ResponseEntity<Void> completeSchedule(@Login Token token, @PathVariable Long ptId,
         @PathVariable Long scheduleId) {
-        scheduleService.completeSchedule(userId, ptId, scheduleId);
+        scheduleService.completeSchedule(token.id(), ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import linkfit.annotation.Login;
 import linkfit.controller.Swagger.BodyInfoControllerDocs;
 import linkfit.dto.BodyInfoResponse;
+import linkfit.dto.Token;
 import linkfit.service.BodyInfoService;
 
 import org.springframework.data.domain.Pageable;
@@ -32,25 +33,25 @@ public class BodyInfoController implements BodyInfoControllerDocs {
 
     @PostMapping(value = "/bodyInfo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> registerBodyInfo(
-        @Login Long userId,
+        @Login Token token,
         @RequestPart(value = "inbodyImage") MultipartFile inbodyImage) {
-        bodyInfoService.registerBodyInfo(userId, inbodyImage);
+        bodyInfoService.registerBodyInfo(token.id(), inbodyImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/bodyInfo")
-    public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(@Login Long userId,
+    public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(@Login Token token,
         Pageable pageable) {
-        List<BodyInfoResponse> responseBody = bodyInfoService.getAllBodyInfo(userId,
+        List<BodyInfoResponse> responseBody = bodyInfoService.getAllBodyInfo(token.id(),
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
     @DeleteMapping("/bodyInfo/{bodyInfoId}")
-    public ResponseEntity<Void> deleteBodyInfo(@Login Long userId,
+    public ResponseEntity<Void> deleteBodyInfo(@Login Token token,
         @PathVariable Long bodyInfoId) {
-        bodyInfoService.deleteBodyInfo(userId, bodyInfoId);
+        bodyInfoService.deleteBodyInfo(token.id(), bodyInfoId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

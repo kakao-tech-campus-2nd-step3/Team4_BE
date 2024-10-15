@@ -5,6 +5,7 @@ import linkfit.annotation.Login;
 import linkfit.controller.Swagger.ReviewControllerDocs;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
+import linkfit.dto.Token;
 import linkfit.service.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,8 @@ public class ReviewController implements ReviewControllerDocs {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(@Login Long userId) {
-        List<ReviewResponse> list = reviewService.getMyReviewsByUserId(userId);
+    public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(@Login Token token) {
+        List<ReviewResponse> list = reviewService.getMyReviewsByUserId(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
@@ -48,9 +49,9 @@ public class ReviewController implements ReviewControllerDocs {
     }
 
     @PostMapping("/{trainerId}")
-    public ResponseEntity<Void> addReview(@Login Long userId,
+    public ResponseEntity<Void> addReview(@Login Token token,
         @RequestBody ReviewRequest request, @PathVariable Long trainerId) {
-        reviewService.addReview(userId, request, trainerId);
+        reviewService.addReview(token.id(), request, trainerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

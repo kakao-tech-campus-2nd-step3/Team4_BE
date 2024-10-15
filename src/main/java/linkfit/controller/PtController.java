@@ -9,6 +9,7 @@ import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.ProgressPtDetailResponse;
 import linkfit.dto.ProgressPtListResponse;
+import linkfit.dto.Token;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
 import org.springframework.data.domain.Pageable;
@@ -53,16 +54,16 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/suggests/user")
     public ResponseEntity<List<ReceivePtSuggestResponse>> getAllReceiveSuggestion(
-        @Login Long userId, Pageable pageable) {
+        @Login Token token, Pageable pageable) {
         List<ReceivePtSuggestResponse> responseBody = ptService.getAllReceiveSuggestion(
-            userId, pageable);
+            token.id(), pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
     @GetMapping("/user")
-    public ResponseEntity<UserPtResponse> getMyPt(@Login Long userId) {
-        UserPtResponse responseBody = ptService.getMyPt(userId);
+    public ResponseEntity<UserPtResponse> getMyPt(@Login Token token) {
+        UserPtResponse responseBody = ptService.getMyPt(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
@@ -75,9 +76,9 @@ public class PtController implements PtControllerDocs {
     }
 
     @PutMapping("/{ptId}")
-    public ResponseEntity<Void> approvalSuggestion(@Login Long userId,
+    public ResponseEntity<Void> approvalSuggestion(@Login Token token,
         @PathVariable Long ptId) {
-        ptService.approvalSuggestion(userId, ptId);
+        ptService.approvalSuggestion(token.id(), ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -89,8 +90,8 @@ public class PtController implements PtControllerDocs {
     }
 
     @DeleteMapping("/{ptId}/user")
-    public ResponseEntity<Void> refuseSuggestion(@Login Long userId, @PathVariable Long ptId) {
-        ptService.refuseSuggestion(userId, ptId);
+    public ResponseEntity<Void> refuseSuggestion(@Login Token token, @PathVariable Long ptId) {
+        ptService.refuseSuggestion(token.id(), ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
