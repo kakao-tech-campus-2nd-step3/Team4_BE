@@ -5,6 +5,7 @@ import linkfit.annotation.Login;
 import linkfit.controller.Swagger.TrainerControllerDocs;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
+import linkfit.dto.Token;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.service.TrainerService;
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,8 @@ public class TrainerController implements TrainerControllerDocs {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<TrainerProfileResponse> getMyProfile(@Login Long trainerId) {
-        TrainerProfileResponse responseBody = trainerService.getProfile(trainerId);
+    public ResponseEntity<TrainerProfileResponse> getMyProfile(@Login Token token) {
+        TrainerProfileResponse responseBody = trainerService.getProfile(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }

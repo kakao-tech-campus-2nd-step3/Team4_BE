@@ -33,7 +33,7 @@ public interface PreferenceControllerDocs {
         @ApiResponse(responseCode = "200", description = "매칭가능 회원 목록 조회 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<List<PreferenceResponse>> getAllMatchingPossible(
-        @Parameter(hidden = true) Long trainerId);
+        @Parameter(hidden = true) Token token);
 
     @Operation(summary = "선호 삭제", description = "등록된 선호를 삭제하고 제안을 받지 않는 상태로 전환", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})

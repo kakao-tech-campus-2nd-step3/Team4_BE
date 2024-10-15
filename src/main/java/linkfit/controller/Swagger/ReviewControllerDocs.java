@@ -39,7 +39,7 @@ public interface ReviewControllerDocs {
         @ApiResponse(responseCode = "200", description = "리뷰 조회 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(
-        @Parameter(hidden = true) Long trainerId);
+        @Parameter(hidden = true) Token token);
 
     @Operation(summary = "리뷰 작성", description = "회원이 Trainer Id에 해당하는 트레이너에게 완료된 PT에 대해 리뷰 작성", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
@@ -56,7 +56,7 @@ public interface ReviewControllerDocs {
         @ApiResponse(responseCode = "204", description = "리뷰 삭제 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> deleteReviewById(
-        @Parameter(hidden = true) Long userId,
+        @Parameter(hidden = true) Token token,
         @PathVariable("reviewId") Long reviewId);
 
 

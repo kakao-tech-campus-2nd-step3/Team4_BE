@@ -5,6 +5,7 @@ import linkfit.annotation.Login;
 import linkfit.controller.Swagger.TrainerControllerDocs;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
+import linkfit.dto.Token;
 import linkfit.service.CareerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,23 +28,23 @@ public class CareerController implements TrainerControllerDocs {
     }
 
     @GetMapping
-    public ResponseEntity<List<CareerResponse>> getCareer(@Login Long trainerId) {
-        List<CareerResponse> list = careerService.getAllCareers(trainerId);
+    public ResponseEntity<List<CareerResponse>> getCareer(@Login Token token) {
+        List<CareerResponse> list = careerService.getAllCareers(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @PostMapping
-    public ResponseEntity<Void> addCareer(@Login Long trainerId,
+    public ResponseEntity<Void> addCareer(@Login Token token,
         @RequestBody List<CareerRequest> request) {
-        careerService.addCareer(trainerId, request);
+        careerService.addCareer(token.id(), request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{careerId}")
-    public ResponseEntity<Void> deleteCareer(@Login Long trainerId,
+    public ResponseEntity<Void> deleteCareer(@Login Token token,
         @PathVariable Long careerId) {
-        careerService.deleteCareer(trainerId, careerId);
+        careerService.deleteCareer(token.id(), careerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

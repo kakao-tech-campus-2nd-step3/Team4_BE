@@ -15,6 +15,7 @@ import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymSearchRequest;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
+import linkfit.dto.Token;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +58,7 @@ public interface GymControllerDocs {
         @ApiResponse(responseCode = "201", description = "헬스장 등록 요청 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> sendGymRegistrationRequest(
-        @Parameter(hidden = true) Long trainerId,
+        @Parameter(hidden = true) Token token,
         @Valid @RequestBody GymRegisterRequest gymRegisterRequest);
 
     @Operation(summary = "헬스장 정보 업데이트", description = "헬스장 ADMIN 권한을 가진 트레이너가 헬스장 정보 업데이트", parameters = {
@@ -66,7 +67,7 @@ public interface GymControllerDocs {
         @ApiResponse(responseCode = "200", description = "헬스장 정보 업데이트 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> updateGymInfo(@PathVariable Long gymId,
-        @Parameter(hidden = true) Long trainerId,
+        @Parameter(hidden = true) Token token,
         @RequestPart("description") GymDescriptionRequest gymDescriptionRequest,
         @RequestPart(value = "images", required = false) List<MultipartFile> gymImages);
 

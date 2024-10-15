@@ -11,6 +11,7 @@ import linkfit.dto.GymRegisterRequest;
 import linkfit.dto.GymSearchRequest;
 import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
+import linkfit.dto.Token;
 import linkfit.service.GymService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -66,18 +67,18 @@ public class GymController implements GymControllerDocs {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> sendGymRegistrationRequest(@Login Long trainerId,
+    public ResponseEntity<Void> sendGymRegistrationRequest(@Login Token token,
         @Valid @RequestBody GymRegisterRequest gymRegisterRequest) {
-        gymService.sendGymRegistrationRequest(trainerId, gymRegisterRequest);
+        gymService.sendGymRegistrationRequest(token.id(), gymRegisterRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{gymId}")
     public ResponseEntity<Void> updateGymInfo(@PathVariable Long gymId,
-        @Login Long trainerId,
+        @Login Token token,
         @RequestPart("description") GymDescriptionRequest gymDescriptionRequest,
         @RequestPart(value = "images", required = false) List<MultipartFile> gymImages) {
-        gymService.updateGym(gymId, trainerId, gymDescriptionRequest, gymImages);
+        gymService.updateGym(gymId, token.id(), gymDescriptionRequest, gymImages);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -36,8 +36,8 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/trainer")
     public ResponseEntity<List<ProgressPtListResponse>> getTrainerProgressPt(
-        @Login Long trainerId, Pageable pageable) {
-        List<ProgressPtListResponse> responseBody = ptService.getTrainerProgressPt(trainerId,
+        @Login Token token, Pageable pageable) {
+        List<ProgressPtListResponse> responseBody = ptService.getTrainerProgressPt(token.id(),
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
@@ -45,8 +45,8 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/suggests/trainer")
     public ResponseEntity<List<SendPtSuggestResponse>> getAllSendSuggestion(
-        @Login Long trainerId, Pageable pageable) {
-        List<SendPtSuggestResponse> responseBody = ptService.getAllSendSuggestion(trainerId,
+        @Login Token token, Pageable pageable) {
+        List<SendPtSuggestResponse> responseBody = ptService.getAllSendSuggestion(token.id(),
             pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
@@ -69,9 +69,9 @@ public class PtController implements PtControllerDocs {
     }
 
     @PostMapping
-    public ResponseEntity<Void> sendSuggestion(@Login Long trainerId,
+    public ResponseEntity<Void> sendSuggestion(@Login Token token,
         @Valid @RequestBody PtSuggestionRequest ptSuggestionRequest) {
-        ptService.sendSuggestion(trainerId, ptSuggestionRequest);
+        ptService.sendSuggestion(token.id(), ptSuggestionRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -83,9 +83,9 @@ public class PtController implements PtControllerDocs {
     }
 
     @DeleteMapping("/{ptId}/trainer")
-    public ResponseEntity<Void> recallSuggestion(@Login Long trainerId,
+    public ResponseEntity<Void> recallSuggestion(@Login Token token,
         @PathVariable Long ptId) {
-        ptService.recallSuggestion(trainerId, ptId);
+        ptService.recallSuggestion(token.id(), ptId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -97,8 +97,8 @@ public class PtController implements PtControllerDocs {
 
     @GetMapping("/{ptId}/trainer")
     public ResponseEntity<ProgressPtDetailResponse> getProgressUserDetails(
-        @Login Long trainerId, @PathVariable Long ptId) {
-        ProgressPtDetailResponse responseBody = ptService.getProgressUserDetails(trainerId,
+        @Login Token token, @PathVariable Long ptId) {
+        ProgressPtDetailResponse responseBody = ptService.getProgressUserDetails(token.id(),
             ptId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);

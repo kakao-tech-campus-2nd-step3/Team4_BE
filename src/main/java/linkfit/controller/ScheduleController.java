@@ -34,9 +34,9 @@ public class ScheduleController implements ScheduleControllerDocs {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerSchedule(@Login Long trainerId,
+    public ResponseEntity<Void> registerSchedule(@Login Token token,
         @PathVariable Long ptId, @Valid @RequestBody ScheduleRequest scheduleRequest) {
-        scheduleService.registerSchedule(trainerId, ptId, scheduleRequest);
+        scheduleService.registerSchedule(token.id(), ptId, scheduleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -48,9 +48,9 @@ public class ScheduleController implements ScheduleControllerDocs {
     }
 
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@Login Long trainerId,
+    public ResponseEntity<Void> deleteSchedule(@Login Token token,
         @PathVariable Long ptId, @PathVariable Long scheduleId) {
-        scheduleService.deleteSchedule(trainerId, ptId, scheduleId);
+        scheduleService.deleteSchedule(token.id(), ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

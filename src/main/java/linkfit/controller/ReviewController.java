@@ -42,8 +42,8 @@ public class ReviewController implements ReviewControllerDocs {
     }
 
     @GetMapping("/trainer")
-    public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(@Login Long trainerId) {
-        List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(trainerId);
+    public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(@Login Token token) {
+        List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
@@ -57,9 +57,9 @@ public class ReviewController implements ReviewControllerDocs {
 
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReviewById(@Login Long userId,
+    public ResponseEntity<Void> deleteReviewById(@Login Token token,
         @PathVariable Long reviewId) {
-        reviewService.deleteReview(userId, reviewId);
+        reviewService.deleteReview(token.id(), reviewId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

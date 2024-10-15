@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
+import linkfit.dto.Token;
 import linkfit.dto.TrainerProfileResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +35,7 @@ public interface TrainerControllerDocs {
         @ApiResponse(responseCode = "204", description = "트레이너 경력 삭제 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     default ResponseEntity<TrainerProfileResponse> getMyProfile(
-        @Parameter(hidden = true) Long trainerId) {
+        @Parameter(hidden = true) Token token) {
         return null;
     }
 
@@ -46,7 +47,7 @@ public interface TrainerControllerDocs {
         @ApiResponse(responseCode = "200", description = "트레이너 경력 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     default ResponseEntity<List<CareerResponse>> getCareer(
-        @Parameter(hidden = true) Long trainerId) {
+        @Parameter(hidden = true) Token token) {
         return null;
     }
 
@@ -56,7 +57,7 @@ public interface TrainerControllerDocs {
         @ApiResponse(responseCode = "201", description = "트레이너 경력 등록 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     default ResponseEntity<Void> addCareer(
-        @Parameter(hidden = true) Long trainerId,
+        @Parameter(hidden = true) Token token,
         @RequestBody List<CareerRequest> request) {
         return null;
     }
@@ -67,7 +68,7 @@ public interface TrainerControllerDocs {
         @ApiResponse(responseCode = "204", description = "트레이너 경력 삭제 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
     default ResponseEntity<Void> deleteCareer(
-        @Parameter(hidden = true) Long trainerId,
+        @Parameter(hidden = true) Token token,
         @PathVariable Long careerId) {
         return null;
     }

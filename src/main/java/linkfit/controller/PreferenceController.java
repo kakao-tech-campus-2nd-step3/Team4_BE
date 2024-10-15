@@ -36,8 +36,8 @@ public class PreferenceController implements PreferenceControllerDocs {
 
     @GetMapping
     public ResponseEntity<List<PreferenceResponse>> getAllMatchingPossible(
-        @Login Long trainerId) {
-        List<PreferenceResponse> preferences = preferenceService.getAllMatchingPossible(trainerId);
+        @Login Token token) {
+        List<PreferenceResponse> preferences = preferenceService.getAllMatchingPossible(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(preferences);
     }
