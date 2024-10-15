@@ -29,7 +29,7 @@ public class Gym {
     @Column(nullable = false)
     private String location;
 
-    private String description = null;
+    private String description;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
@@ -53,14 +53,6 @@ public class Gym {
 
     public String getLocation() {
         return location;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public GymStatus getStatus() {
-        return status;
     }
 
     public GymRegisterWaitingResponse toDTO() {

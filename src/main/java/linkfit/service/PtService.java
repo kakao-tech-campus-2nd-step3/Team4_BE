@@ -43,9 +43,7 @@ public class PtService {
         this.preferenceRepository = preferenceRepository;
     }
 
-    public List<ProgressPtListResponse> getTrainerProgressPt(
-        Long trainerId,
-        Pageable pageable) {
+    public List<ProgressPtListResponse> getTrainerProgressPt(Long trainerId, Pageable pageable) {
         Trainer trainer = getTrainer(trainerId);
         return ptRepository.findAllByTrainerAndStatus(trainer, PtStatus.APPROVAL, pageable)
             .stream()
@@ -53,8 +51,7 @@ public class PtService {
             .toList();
     }
 
-    public UserPtResponse getMyPt(
-        Long userId) {
+    public UserPtResponse getMyPt(Long userId) {
         User user = getUser(userId);
         Pt pt = ptRepository.findByUserAndStatus(user, PtStatus.APPROVAL)
             .orElseThrow(() -> new NotFoundException("not.found.pt"));
@@ -62,32 +59,21 @@ public class PtService {
         return new UserPtResponse(pt, schedules);
     }
 
-    public void sendSuggestion(
-        Long trainerId,
-        PtSuggestionRequest ptSuggestionRequest) {
+    public void sendSuggestion(Long trainerId, PtSuggestionRequest ptSuggestionRequest) {
         Trainer trainer = getTrainer(trainerId);
-        User user = userRepository.findById(ptSuggestionRequest.userId())
-            .orElseThrow(() -> new NotFoundException("not.found.user"));
-        Pt suggestion = new Pt(
-            user,
-            trainer,
-            ptSuggestionRequest.totalCount(),
-            ptSuggestionRequest.price()
-        );
+        User user = getUser(ptSuggestionRequest.userId());
+        Pt suggestion = new Pt(user, trainer, ptSuggestionRequest);
         ptRepository.save(suggestion);
     }
 
-    public List<SendPtSuggestResponse> getAllSendSuggestion(
-        Long trainerId,
-        Pageable pageable) {
+    public List<SendPtSuggestResponse> getAllSendSuggestion(Long trainerId, Pageable pageable) {
         Trainer trainer = getTrainer(trainerId);
         return ptRepository.findAllByTrainer(trainer, pageable).stream()
             .map(Pt::toSendDto)
             .toList();
     }
 
-    public List<ReceivePtSuggestResponse> getAllReceiveSuggestion(Long userId,
-        Pageable pageable) {
+    public List<ReceivePtSuggestResponse> getAllReceiveSuggestion(Long userId, Pageable pageable) {
         User user = getUser(userId);
         return ptRepository.findAllByUserAndStatus(user, PtStatus.WAITING, pageable).stream()
             .map(Pt::toReceiveDto)
@@ -149,7 +135,6 @@ public class PtService {
         return new ProgressPtDetailResponse(user.getId(), user.getName(), user.getProfileImageUrl(),
             schedules);
     }
-
 
     private Trainer getTrainer(Long trainerId) {
         return trainerRepository.findById(trainerId)

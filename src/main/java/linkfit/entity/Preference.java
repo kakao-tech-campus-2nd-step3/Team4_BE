@@ -64,9 +64,7 @@ public class Preference {
     }
 
     public boolean isInvalidTrainerGender(TrainerGender gender) {
-        if(this.gender == null)
-            return true;
-        return this.gender.equals(gender);
+        return this.gender != null && !this.gender.equals(gender);
     }
 
     public PreferenceResponse toDto() {

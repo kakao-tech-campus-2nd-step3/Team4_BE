@@ -1,8 +1,7 @@
 package linkfit.controller;
 
 import jakarta.validation.Valid;
-import linkfit.annotation.LoginTrainer;
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.controller.Swagger.ScheduleControllerDocs;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
@@ -34,21 +33,21 @@ public class ScheduleController implements ScheduleControllerDocs {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerSchedule(@LoginTrainer Long trainerId,
+    public ResponseEntity<Void> registerSchedule(Long trainerId,
         @PathVariable Long ptId, @Valid @RequestBody ScheduleRequest scheduleRequest) {
         scheduleService.registerSchedule(trainerId, ptId, scheduleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<Void> completeSchedule(@LoginUser Long userId, @PathVariable Long ptId,
+    public ResponseEntity<Void> completeSchedule(@Login Long userId, @PathVariable Long ptId,
         @PathVariable Long scheduleId) {
         scheduleService.completeSchedule(userId, ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@LoginTrainer Long trainerId,
+    public ResponseEntity<Void> deleteSchedule(Long trainerId,
         @PathVariable Long ptId, @PathVariable Long scheduleId) {
         scheduleService.deleteSchedule(trainerId, ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

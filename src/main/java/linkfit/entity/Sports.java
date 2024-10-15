@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import linkfit.dto.SportsRequest;
 import linkfit.dto.SportsResponse;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -21,7 +22,6 @@ public class Sports {
 
     private String name;
 
-    // 논리 삭제를 위한 필드
     private final boolean deleted = Boolean.FALSE;
 
     protected Sports() {
@@ -31,17 +31,12 @@ public class Sports {
         this.name = name;
     }
 
-    public Sports(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void rename(SportsRequest request) {
+        this.name = request.name();
     }
 
     public SportsResponse toDto() {

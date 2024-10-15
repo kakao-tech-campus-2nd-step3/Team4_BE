@@ -1,8 +1,7 @@
 package linkfit.controller;
 
 import java.util.List;
-import linkfit.annotation.LoginTrainer;
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.controller.Swagger.ReviewControllerDocs;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
@@ -35,21 +34,21 @@ public class ReviewController implements ReviewControllerDocs {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(@LoginUser Long userId) {
+    public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(@Login Long userId) {
         List<ReviewResponse> list = reviewService.getMyReviewsByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @GetMapping("/trainer")
-    public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(@LoginTrainer Long trainerId) {
+    public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(Long trainerId) {
         List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @PostMapping("/{trainerId}")
-    public ResponseEntity<Void> addReview(@LoginUser Long userId,
+    public ResponseEntity<Void> addReview(@Login Long userId,
         @RequestBody ReviewRequest request, @PathVariable Long trainerId) {
         reviewService.addReview(userId, request, trainerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -57,7 +56,7 @@ public class ReviewController implements ReviewControllerDocs {
 
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReviewById(@LoginTrainer Long userId,
+    public ResponseEntity<Void> deleteReviewById(Long userId,
         @PathVariable Long reviewId) {
         reviewService.deleteReview(userId, reviewId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
