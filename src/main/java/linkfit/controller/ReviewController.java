@@ -42,7 +42,7 @@ public class ReviewController implements ReviewControllerDocs {
     }
 
     @GetMapping("/trainer")
-    public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(Long trainerId) {
+    public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(@Login Long trainerId) {
         List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
@@ -57,7 +57,7 @@ public class ReviewController implements ReviewControllerDocs {
 
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReviewById(Long userId,
+    public ResponseEntity<Void> deleteReviewById(@Login Long userId,
         @PathVariable Long reviewId) {
         reviewService.deleteReview(userId, reviewId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
