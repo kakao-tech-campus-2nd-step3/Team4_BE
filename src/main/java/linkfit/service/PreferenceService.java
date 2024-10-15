@@ -56,15 +56,18 @@ public class PreferenceService {
     public List<PreferenceResponse> getAllMatchingPossible(Long trainerId) {
         Trainer trainer = trainerService.getTrainer(trainerId);
         List<Preference> preferences = preferenceRepository.findAll();
+        System.out.println(preferences.toString());
         validGender(preferences, trainer.getGender());
+        System.out.println(preferences.toString());
         validDistance(preferences, trainer.getGym());
+        System.out.println(preferences.toString());
         return preferences.stream()
             .map(Preference::toDto)
             .toList();
     }
 
     private void validGender(List<Preference> preferences, TrainerGender gender) {
-        preferences.removeIf(preference -> !preference.isInvalidTrainerGender(gender));
+        preferences.removeIf(preference -> !preference.isValidTrainerGender(gender));
     }
 
     private void validDistance(List<Preference> preferences, Gym gym) {
