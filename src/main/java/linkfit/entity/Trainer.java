@@ -24,7 +24,7 @@ public class Trainer {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String profileImageUrl;
 
     @ManyToOne
@@ -86,14 +86,12 @@ public class Trainer {
         return gym;
     }
 
-    public void validatePassword(String inputPassword) {
-        if (!inputPassword.equals(this.password)) {
-            throw new PasswordMismatchException("not.match.password");
-        }
+    public String getPassword() {
+        return password;
     }
 
     public TrainerProfileResponse toDto() {
-        if(gym == null) {
+        if (gym == null) {
             return new TrainerProfileResponse(name, gender, profileImageUrl, null);
         }
         return new TrainerProfileResponse(name, gender, profileImageUrl, gym.getName());
