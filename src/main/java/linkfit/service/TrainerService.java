@@ -3,11 +3,8 @@ package linkfit.service;
 import java.util.List;
 
 import java.util.Objects;
-import linkfit.dto.CareerRequest;
-import linkfit.dto.CareerResponse;
-import linkfit.dto.LoginRequest;
-import linkfit.dto.TrainerProfileResponse;
-import linkfit.dto.TrainerRegisterRequest;
+
+import linkfit.dto.*;
 import linkfit.entity.Career;
 import linkfit.entity.Trainer;
 import linkfit.exception.DuplicateException;
@@ -37,17 +34,16 @@ public class TrainerService {
     }
 
     @Transactional
-    public void register(TrainerRegisterRequest request, MultipartFile profileImage) {
+    public void register(TrainerRegisterRequest request) {
         validateEmailAlreadyExist(request.email());
         Trainer trainer = request.toEntity();
-        handleProfileImage(profileImage, trainer);
         trainerRepository.save(trainer);
     }
 
-    public String login(LoginRequest request) {
+    public TokenResponse login(LoginRequest request) {
         Trainer trainer = getTrainerByEmail(request.email());
         trainer.validatePassword(request.password());
-        return jwtUtil.generateToken(trainer.getId(), trainer.getEmail());
+        return new TokenResponse(jwtUtil.generateToken(trainer.getId(), trainer.getEmail()));
     }
 
     public List<CareerResponse> getCareers(Long trainerId) {

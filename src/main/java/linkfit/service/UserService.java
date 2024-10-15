@@ -1,9 +1,6 @@
 package linkfit.service;
 
-import linkfit.dto.LoginRequest;
-import linkfit.dto.UserProfileRequest;
-import linkfit.dto.UserProfileResponse;
-import linkfit.dto.UserRegisterRequest;
+import linkfit.dto.*;
 import linkfit.entity.User;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
@@ -29,17 +26,16 @@ public class UserService {
     }
 
     @Transactional
-    public void register(UserRegisterRequest request, MultipartFile profileImage) {
+    public void register(UserRegisterRequest request) {
         validateEmailAlreadyExist(request.email());
         User user = request.toEntity();
-        handleProfileImage(profileImage, user);
         userRepository.save(user);
     }
 
-    public String login(LoginRequest request) {
+    public TokenResponse login(LoginRequest request) {
         User user = getUserByEmail(request.email());
         user.validatePassword(request.password());
-        return jwtUtil.generateToken(user.getId(), user.getEmail());
+        return new TokenResponse(jwtUtil.generateToken(user.getId(), user.getEmail()));
     }
 
     public UserProfileResponse getProfile(Long userId) {
