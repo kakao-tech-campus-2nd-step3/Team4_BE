@@ -43,7 +43,7 @@ public class TrainerService {
     public TokenResponse login(LoginRequest request) {
         Trainer trainer = getTrainerByEmail(request.email());
         trainer.validatePassword(request.password());
-        return new TokenResponse(jwtUtil.generateToken("Trainer", trainer.getId(), trainer.getEmail()));
+        return new TokenResponse(jwtUtil.generateToken("trainer", trainer.getId(), trainer.getEmail()));
     }
 
     public List<CareerResponse> getCareers(Long trainerId) {
