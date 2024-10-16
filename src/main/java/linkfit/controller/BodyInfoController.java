@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/users/bodyInfos")
+@RequestMapping("/api/bodyInfos")
 public class BodyInfoController implements BodyInfoControllerDocs {
 
     private final BodyInfoService bodyInfoService;
@@ -29,7 +29,7 @@ public class BodyInfoController implements BodyInfoControllerDocs {
         this.bodyInfoService = bodyInfoService;
     }
 
-    @PostMapping(value = "/bodyInfo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> registerBodyInfo(
         @Login Token token,
         @RequestPart(value = "inbodyImage") MultipartFile inbodyImage) {
@@ -37,7 +37,7 @@ public class BodyInfoController implements BodyInfoControllerDocs {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/bodyInfo")
+    @GetMapping
     public ResponseEntity<List<BodyInfoResponse>> getAllBodyInfo(@Login Token token,
         Pageable pageable) {
         List<BodyInfoResponse> responseBody = bodyInfoService.getAllBodyInfo(token.id(),
@@ -46,7 +46,7 @@ public class BodyInfoController implements BodyInfoControllerDocs {
             .body(responseBody);
     }
 
-    @DeleteMapping("/bodyInfo/{bodyInfoId}")
+    @DeleteMapping("/{bodyInfoId}")
     public ResponseEntity<Void> deleteBodyInfo(@Login Token token,
         @PathVariable Long bodyInfoId) {
         bodyInfoService.deleteBodyInfo(token.id(), bodyInfoId);

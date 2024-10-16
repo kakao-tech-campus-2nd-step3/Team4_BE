@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/trainers/careers")
+@RequestMapping("/api/careers")
 public class CareerController implements TrainerControllerDocs {
 
     private final CareerService careerService;
