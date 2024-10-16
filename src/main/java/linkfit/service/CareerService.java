@@ -9,9 +9,7 @@ import linkfit.entity.Trainer;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.CareerRepository;
-
 import linkfit.repository.TrainerRepository;
-import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,7 +40,7 @@ public class CareerService {
     }
 
     public void deleteCareer(Long trainerId, Long careerId) {
-        validateCareerOwnership(careerId,trainerId);
+        validateCareerOwnership(careerId, trainerId);
         careerRepository.deleteById(careerId);
     }
 

@@ -1,13 +1,11 @@
 package linkfit.controller;
 
 import java.util.List;
-
 import linkfit.annotation.Login;
 import linkfit.controller.Swagger.BodyInfoControllerDocs;
 import linkfit.dto.BodyInfoResponse;
 import linkfit.dto.Token;
 import linkfit.service.BodyInfoService;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

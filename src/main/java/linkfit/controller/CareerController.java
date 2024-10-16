@@ -42,8 +42,7 @@ public class CareerController implements TrainerControllerDocs {
     }
 
     @DeleteMapping("/{careerId}")
-    public ResponseEntity<Void> deleteCareer(@Login Token token,
-        @PathVariable Long careerId) {
+    public ResponseEntity<Void> deleteCareer(@Login Token token, @PathVariable Long careerId) {
         careerService.deleteCareer(token.id(), careerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -55,6 +54,4 @@ public class CareerController implements TrainerControllerDocs {
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
-
-
 }

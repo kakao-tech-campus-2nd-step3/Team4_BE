@@ -1,7 +1,6 @@
 package linkfit.service;
 
 import java.util.List;
-
 import linkfit.dto.Coordinate;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
@@ -16,7 +15,6 @@ import linkfit.exception.PermissionException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.PreferenceRepository;
 import linkfit.status.TrainerGender;
-
 import org.springframework.stereotype.Service;
 
 @Service

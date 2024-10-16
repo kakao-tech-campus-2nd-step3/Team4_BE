@@ -1,14 +1,12 @@
 package linkfit.service;
 
 import java.util.List;
-
 import linkfit.dto.SportsRequest;
 import linkfit.dto.SportsResponse;
 import linkfit.entity.Sports;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
 import linkfit.repository.SportsRepository;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

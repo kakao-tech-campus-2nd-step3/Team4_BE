@@ -91,7 +91,8 @@ public class Pt {
     }
 
     public ProgressPtListResponse toProgressDto() {
-        return new ProgressPtListResponse(id, user.getId(), user.getName(), user.getProfileImageUrl());
+        return new ProgressPtListResponse(id, user.getId(), user.getName(),
+            user.getProfileImageUrl());
     }
 
     public void refuse() {

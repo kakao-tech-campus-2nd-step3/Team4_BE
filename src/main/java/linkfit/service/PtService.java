@@ -1,12 +1,11 @@
 package linkfit.service;
 
 import java.util.List;
-
+import linkfit.dto.ProgressPtDetailResponse;
+import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
-import linkfit.dto.ProgressPtDetailResponse;
-import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
@@ -20,7 +19,6 @@ import linkfit.repository.ScheduleRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.status.PtStatus;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
