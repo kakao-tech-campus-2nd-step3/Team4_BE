@@ -4,7 +4,6 @@ import static linkfit.status.GymStatus.APPROVAL;
 import static linkfit.status.GymStatus.WAITING;
 
 import java.util.List;
-
 import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
@@ -22,7 +21,6 @@ import linkfit.repository.GymAdminRelationRepository;
 import linkfit.repository.GymImageRepository;
 import linkfit.repository.GymRepository;
 import linkfit.repository.TrainerRepository;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

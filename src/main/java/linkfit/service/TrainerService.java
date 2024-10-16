@@ -10,7 +10,6 @@ import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.TrainerRepository;
 import linkfit.util.JwtUtil;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

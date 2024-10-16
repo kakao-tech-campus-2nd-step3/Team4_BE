@@ -1,7 +1,6 @@
 package linkfit.service;
 
 import java.util.List;
-
 import java.util.Objects;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
@@ -11,7 +10,6 @@ import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.PtRepository;
 import linkfit.repository.ScheduleRepository;
-
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,15 +1,17 @@
 package linkfit.service;
 
-import linkfit.dto.*;
+import linkfit.dto.LoginRequest;
+import linkfit.dto.TokenResponse;
+import linkfit.dto.UserProfileRequest;
+import linkfit.dto.UserProfileResponse;
+import linkfit.dto.UserRegisterRequest;
 import linkfit.entity.User;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
-
 import linkfit.exception.PermissionException;
 import linkfit.repository.UserRepository;
 import linkfit.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

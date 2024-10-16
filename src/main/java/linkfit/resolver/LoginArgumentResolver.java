@@ -8,7 +8,6 @@ import linkfit.annotation.Login;
 import linkfit.dto.Token;
 import linkfit.exception.PermissionException;
 import linkfit.util.JwtUtil;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;

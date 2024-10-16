@@ -6,7 +6,6 @@ import linkfit.dto.Token;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
 import linkfit.service.UserService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

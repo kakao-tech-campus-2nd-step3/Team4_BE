@@ -1,6 +1,5 @@
 package linkfit.controller;
 
-import linkfit.controller.Swagger.AuthControllerDocs;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TokenResponse;
 import linkfit.dto.TrainerRegisterRequest;
@@ -30,7 +29,7 @@ public class AuthController {
 
     @PostMapping("/user/register")
     public ResponseEntity<Void> registerUser(
-        @RequestPart(value ="user") UserRegisterRequest request,
+        @RequestPart(value = "user") UserRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();

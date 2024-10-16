@@ -20,7 +20,8 @@ public class BodyInfoService {
     private final UserService userService;
     private final ImageUploadService imageUploadService;
 
-    public BodyInfoService(BodyInfoRepository bodyInfoRepository, UserService userService, ImageUploadService imageUploadService) {
+    public BodyInfoService(BodyInfoRepository bodyInfoRepository, UserService userService,
+        ImageUploadService imageUploadService) {
         this.bodyInfoRepository = bodyInfoRepository;
         this.userService = userService;
         this.imageUploadService = imageUploadService;
@@ -54,7 +55,7 @@ public class BodyInfoService {
 
     private void validateBodyInfoOwnership(BodyInfo bodyInfo, Long userId) {
         Long ownerId = bodyInfo.getUser().getId();
-        if(!Objects.equals(ownerId, userId)) {
+        if (!Objects.equals(ownerId, userId)) {
             throw new PermissionException("bodyinfo.permission.denied");
         }
     }

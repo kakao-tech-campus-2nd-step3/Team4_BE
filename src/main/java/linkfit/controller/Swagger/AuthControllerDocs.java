@@ -11,7 +11,6 @@ import linkfit.dto.UserRegisterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Auth(인증) API", description = "Auth 관련 API입니다.")
 public interface AuthControllerDocs {

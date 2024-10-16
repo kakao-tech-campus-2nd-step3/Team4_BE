@@ -3,13 +3,10 @@ package linkfit.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-
 import java.io.IOException;
 import java.util.UUID;
-
 import linkfit.config.properties.AwsProperties;
 import linkfit.exception.ImageUploadException;
-
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

@@ -2,7 +2,6 @@ package linkfit.service;
 
 import java.util.List;
 import java.util.Objects;
-
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
 import linkfit.entity.Review;
@@ -15,7 +14,6 @@ import linkfit.repository.ReviewRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.status.PtStatus;
-
 import org.springframework.stereotype.Service;
 
 @Service

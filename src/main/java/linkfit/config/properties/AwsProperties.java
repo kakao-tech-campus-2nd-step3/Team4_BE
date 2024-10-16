@@ -17,7 +17,7 @@ public record AwsProperties(Credentials credentials, String region, S3 s3) {
         }
         return region;
     }
-	
+
     public record Credentials(String accessKey, String secretKey) {
 
     }
