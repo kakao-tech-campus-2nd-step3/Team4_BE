@@ -48,7 +48,7 @@ public class CareerController implements TrainerControllerDocs {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/careers/{trainerId}")
+    @GetMapping("/{trainerId}")
     public ResponseEntity<List<CareerResponse>> getAllCareerByTrainer(
         @PathVariable Long trainerId) {
         List<CareerResponse> list = careerService.getAllCareers(trainerId);
