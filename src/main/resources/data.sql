@@ -23,3 +23,10 @@ VALUES (1, 'https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_prof
 
 INSERT INTO SPORTS_TB(name, deleted)
 VALUES ('PT', 'FALSE');
+
+
+INSERT INTO SPORTS_TB(name, deleted)
+VALUES ('PT', 'FALSE');
+
+INSERT INTO CHATTING_ROOM_TB(user_id,trainer_id)
+VALUES (1,1);
