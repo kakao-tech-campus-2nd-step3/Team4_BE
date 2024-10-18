@@ -1,30 +1,40 @@
 package linkfit.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import linkfit.dto.ChattingRoomRegisterRequest;
+import linkfit.dto.ChattingRoomResponse;
+import linkfit.dto.MessageRequest;
+import linkfit.dto.MessageResponse;
 import linkfit.entity.ChattingRoom;
+import linkfit.entity.Message;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.ChattingRoomRepository;
+import linkfit.repository.MessageRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
+import linkfit.status.Role;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ChattingRoomService {
+public class ChattingService {
 
     private final ChattingRoomRepository chattingRoomRepository;
     private final UserRepository userRepository;
     private final TrainerRepository trainerRepository;
+    MessageRepository messageRepository;
 
-    public ChattingRoomService(ChattingRoomRepository chattingRoomRepository,
-        UserRepository userRepository, TrainerRepository trainerRepository) {
+    public ChattingService(ChattingRoomRepository chattingRoomRepository,
+        UserRepository userRepository, TrainerRepository trainerRepository,
+        MessageRepository messageRepository) {
         this.chattingRoomRepository = chattingRoomRepository;
         this.userRepository = userRepository;
         this.trainerRepository = trainerRepository;
+        this.messageRepository = messageRepository;
     }
 
     //ID로 채팅방 찾기
@@ -45,17 +55,34 @@ public class ChattingRoomService {
     }
 
     //Token의 ID값으로 자신이 속해있는 채팅방 찾기
-    //현재는 상대방의 ID만 반환, 추후에 추가정보 필요시 DTO형태로 추가하면 될것같음.
-    public List<Long> findJoinedRooms(Long id, String role) {
-        if (role.equals("user")) {
+    public List<ChattingRoomResponse> findJoinedRooms(Long id, Role role) {
+        if (role == Role.USER) {
             return findUserJoinedRooms(id);
         }
 
-        if (role.equals("trainer")) {
+        if (role == Role.TRAINER) {
             return findTrainerJoinedRooms(id);
         }
 
         return null;
+    }
+
+    //채팅방의 모든 메세지 가져오기
+    public List<MessageResponse> findAllMessages(Long ChattingRoomId) {
+        ChattingRoom chattingRoom = findChattingRoom(ChattingRoomId);
+        List<Message> messages = messageRepository.findAllByChattingRoomOrderBySendTime(
+            chattingRoom);
+        return messages.stream().map(Message::toDto).toList();
+    }
+
+    public Message addMessage(MessageRequest request) {
+        // 요청에서 roomId 및 메시지 데이터 처리
+        ChattingRoom chattingRoom = findChattingRoom(request.roomId());
+        Message message = new Message(chattingRoom, request.content(), request.sender(),
+            LocalDateTime.now());
+        messageRepository.save(message);
+        return message;
+
     }
 
     private Trainer getTrainer(Long trainerId) {
@@ -68,17 +95,20 @@ public class ChattingRoomService {
             .orElseThrow(() -> new NotFoundException("not.found.user"));
     }
 
-    private List<Long> findUserJoinedRooms(Long userId) {
+    private List<ChattingRoomResponse> findUserJoinedRooms(Long userId) {
         return chattingRoomRepository.findAllByUserId(userId).stream()
-            .map(ChattingRoom::getUser)
-            .map(User::getId)
-            .collect(Collectors.toList());
+            .map(ChattingRoom::toDto)
+            .toList();
     }
 
-    private List<Long> findTrainerJoinedRooms(Long trainerId) {
-        return chattingRoomRepository.findAllByTrainerId(trainerId).stream()
-            .map(ChattingRoom::getUser)
-            .map(User::getId)
-            .collect(Collectors.toList());
+    private List<ChattingRoomResponse> findTrainerJoinedRooms(Long userId) {
+        return chattingRoomRepository.findAllByUserId(userId).stream()
+            .map(ChattingRoom::toDto)
+            .toList();
+    }
+
+    private ChattingRoom findChattingRoom(Long chattingRoomId) {
+        return chattingRoomRepository.findById(chattingRoomId)
+            .orElseThrow(() -> new NotFoundException("not.found.chattingRoom"));
     }
 }

@@ -10,6 +10,7 @@ import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.UserRepository;
+import linkfit.status.Role;
 import linkfit.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class UserService {
         if (!userAuthenticate(user, request.password())) {
             throw new PermissionException("not.match.password");
         }
-        return new TokenResponse(jwtUtil.generateToken("user", user.getId(), user.getEmail()));
+        return new TokenResponse(jwtUtil.generateToken(Role.USER, user.getId(), user.getEmail()));
     }
 
 

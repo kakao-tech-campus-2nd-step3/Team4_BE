@@ -9,6 +9,7 @@ import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.TrainerRepository;
+import linkfit.status.Role;
 import linkfit.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class TrainerService {
             throw new PermissionException("not.match.password");
         }
         return new TokenResponse(
-            jwtUtil.generateToken("trainer", trainer.getId(), trainer.getEmail()));
+            jwtUtil.generateToken(Role.TRAINER, trainer.getId(), trainer.getEmail()));
     }
 
     public Trainer getTrainer(Long trainerId) {

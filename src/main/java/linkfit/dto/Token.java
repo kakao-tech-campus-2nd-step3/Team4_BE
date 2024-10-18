@@ -1,5 +1,7 @@
 package linkfit.dto;
 
-public record Token(String role, Long id) {
+import linkfit.status.Role;
+
+public record Token(Role role, Long id) {
 
 }

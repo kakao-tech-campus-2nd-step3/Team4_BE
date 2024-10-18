@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import linkfit.dto.Token;
 import linkfit.exception.InvalidTokenException;
+import linkfit.status.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class JwtUtil {
         this.masterId = masterId;
     }
 
-    public String generateToken(String role, Long id, String email) {
+    public String generateToken(Role role, Long id, String email) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationTime);
 
@@ -48,7 +49,7 @@ public class JwtUtil {
 
     public Token parseToken(String token) {
         if (isMasterToken(token)) {
-            String role = getTokenRole(token);
+            Role role = getTokenRole(token);
             return new Token(role, masterId);
         }
         try {
@@ -56,7 +57,7 @@ public class JwtUtil {
             if (isTokenExpired(claims.getExpiration())) {
                 throw new InvalidTokenException("token.expired");
             }
-            return new Token(claims.get(ROLE, String.class), claims.get(ID, Long.class));
+            return new Token(claims.get(ROLE, Role.class), claims.get(ID, Long.class));
         } catch (ExpiredJwtException e) {
             throw new InvalidTokenException("token.expired");
         } catch (SignatureException e) {
@@ -82,8 +83,13 @@ public class JwtUtil {
         return token.startsWith("mastertoken-");
     }
 
-    private String getTokenRole(String token) {
+    private Role getTokenRole(String token) {
         String role = token.substring(12);
-        return role;
+        if (role.equals("user")) {
+            return Role.USER;
+        } else {
+            return Role.TRAINER;
+        }
+
     }
 }
