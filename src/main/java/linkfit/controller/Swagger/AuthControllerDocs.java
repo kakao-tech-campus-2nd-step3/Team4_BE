@@ -11,6 +11,7 @@ import linkfit.dto.UserRegisterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Auth(인증) API", description = "Auth 관련 API입니다.")
 public interface AuthControllerDocs {
@@ -21,7 +22,8 @@ public interface AuthControllerDocs {
         @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일"),
     })
     ResponseEntity<Void> registerUser(
-        @RequestPart("user") UserRegisterRequest request);
+        @RequestPart(value = "user") UserRegisterRequest request,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage);
 
     @Operation(summary = "일반회원 로그인", description = "이메일, 비밀번호로 인증 후 토큰 발급.")
     @ApiResponses({
@@ -36,7 +38,8 @@ public interface AuthControllerDocs {
         @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일")
     })
     ResponseEntity<Void> registerTrainer(
-        @RequestPart("trainer") TrainerRegisterRequest request);
+        @RequestPart(value = "trainer") TrainerRegisterRequest request,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage);
 
     @Operation(summary = "트레이너 로그인", description = "이메일, 비밀번호로 인증 후 토큰 발급.")
     @ApiResponses({

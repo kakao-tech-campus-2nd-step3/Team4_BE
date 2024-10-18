@@ -1,5 +1,6 @@
 package linkfit.controller;
 
+import linkfit.controller.Swagger.AuthControllerDocs;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TokenResponse;
 import linkfit.dto.TrainerRegisterRequest;
@@ -17,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
     private final UserService userService;
     private final TrainerService trainerService;

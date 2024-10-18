@@ -2,6 +2,7 @@ package linkfit.controller;
 
 import java.util.List;
 import linkfit.annotation.Login;
+import linkfit.controller.Swagger.CareerControllerDocs;
 import linkfit.controller.Swagger.TrainerControllerDocs;
 import linkfit.dto.CareerRequest;
 import linkfit.dto.CareerResponse;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/careers")
-public class CareerController implements TrainerControllerDocs {
+public class CareerController implements CareerControllerDocs {
 
     private final CareerService careerService;
 

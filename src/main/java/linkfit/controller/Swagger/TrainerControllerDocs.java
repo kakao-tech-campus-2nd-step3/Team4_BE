@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Trainer & Career", description = "Trainer 및 Career 관련 API입니다.")
+@Tag(name = "Trainer API", description = "Trainer관련 API입니다.")
 public interface TrainerControllerDocs {
 
     // Trainer 관련 메서드들
@@ -24,61 +24,14 @@ public interface TrainerControllerDocs {
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "트레이너 프로필 조회 성공"),
         @ApiResponse(responseCode = "404", description = "존재하지 않는 트레이너")})
-    default ResponseEntity<TrainerProfileResponse> getTrainerProfile(
-        @Parameter @PathVariable Long trainerId) {
-        return null;
-    }
+    ResponseEntity<TrainerProfileResponse> getTrainerProfile(
+        @Parameter @PathVariable Long trainerId);
 
     @Operation(summary = "트레이너 본인 프로필 조회", description = "트레이너 본인의 프로필 조회.", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "트레이너 경력 삭제 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
-    default ResponseEntity<TrainerProfileResponse> getMyProfile(
-        @Parameter(hidden = true) Token token) {
-        return null;
-    }
-
-    // Career 관련 메서드들
-
-    @Operation(summary = "트레이너 경력 조회", description = "로그인한 트레이너의 자신의 경력 조회.", parameters = {
-        @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "트레이너 경력 조회 성공"),
-        @ApiResponse(responseCode = "401", description = "인증 필요")})
-    default ResponseEntity<List<CareerResponse>> getCareer(
-        @Parameter(hidden = true) Token token) {
-        return null;
-    }
-
-    @Operation(summary = "트레이너 경력 등록", description = "로그인한 트레이너의 자신의 경력 등록.", parameters = {
-        @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
-    @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "트레이너 경력 등록 성공"),
-        @ApiResponse(responseCode = "401", description = "인증 필요")})
-    default ResponseEntity<Void> addCareer(
-        @Parameter(hidden = true) Token token,
-        @RequestBody List<CareerRequest> request) {
-        return null;
-    }
-
-    @Operation(summary = "트레이너 경력 삭제", description = "로그인한 트레이너의 자신의 경력 삭제.", parameters = {
-        @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
-    @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "트레이너 경력 삭제 성공"),
-        @ApiResponse(responseCode = "401", description = "인증 필요")})
-    default ResponseEntity<Void> deleteCareer(
-        @Parameter(hidden = true) Token token,
-        @PathVariable Long careerId) {
-        return null;
-    }
-
-    @Operation(summary = "트레이너 경력 조회(일반회원)", description = "일반회원이 다른 트레이너의 경력 조회")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "트레이너 경력 조회 성공"),
-        @ApiResponse(responseCode = "404", description = "존재하지 않는 트레이너")})
-    default ResponseEntity<List<CareerResponse>> getAllCareerByTrainer(
-        @Parameter @PathVariable Long trainerId) {
-        return null;
-    }
+    ResponseEntity<TrainerProfileResponse> getMyProfile(
+        @Parameter(hidden = true) Token token);
 }
