@@ -1,5 +1,6 @@
 package linkfit.controller;
 
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import linkfit.dto.MessageRequest;
 import linkfit.entity.ChattingRoom;
@@ -7,7 +8,6 @@ import linkfit.entity.Message;
 import linkfit.service.ChattingRoomService;
 import linkfit.service.MessageService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
@@ -26,7 +26,7 @@ public class MessageController {
     }
 
     @MessageMapping("/chat.sendMessage")
-    public void sendMessage(MessageRequest request) throws Exception {
+    public void sendMessage(@Valid MessageRequest request) throws Exception {
         // 요청에서 roomId 및 메시지 데이터 처리
         ChattingRoom chattingRoom = chattingRoomService.findRoomById(request.roomId());
         Message msg = new Message(chattingRoom, request.content(), request.sender(), LocalDateTime.now());
@@ -35,6 +35,6 @@ public class MessageController {
         messageService.addMessage(msg);
 
         // 동적으로 /topic/room/{roomId} 경로로 메시지 전송
-        messagingTemplate.convertAndSend("/topic/room/" + request.roomId(), msg);
+        messagingTemplate.convertAndSend("/sub/topic/room/" + request.roomId(), msg);
     }
 }

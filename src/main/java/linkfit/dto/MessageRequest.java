@@ -1,5 +1,9 @@
 package linkfit.dto;
 
-public record MessageRequest(Long roomId, String content, String sender, String role) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import linkfit.status.Role;
+
+public record MessageRequest(@NotNull Long roomId, @NotBlank String content, @NotNull Role sender) {
 
 }

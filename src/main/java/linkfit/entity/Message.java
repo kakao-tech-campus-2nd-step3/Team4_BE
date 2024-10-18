@@ -1,12 +1,17 @@
 package linkfit.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import linkfit.status.Role;
 
 @Entity
 @Table(name = "MESSAGE_TB")
@@ -17,19 +22,23 @@ public class Message {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private ChattingRoom chattingRoom;
 
+    @Column(nullable = false)
     private String content;
 
-    //Enum값으로 변경 필요
-    private String sender;
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private Role sender;
 
+    @Column(nullable = false)
     private LocalDateTime sendTime;
 
     protected Message() {
     }
 
-    public Message(ChattingRoom chattingRoom, String content, String sender,
+    public Message(ChattingRoom chattingRoom, String content, Role sender,
         LocalDateTime sendTime) {
         this.chattingRoom = chattingRoom;
         this.content = content;
@@ -45,7 +54,7 @@ public class Message {
         return content;
     }
 
-    public String getSender() {
+    public Role getSender() {
         return sender;
     }
 
