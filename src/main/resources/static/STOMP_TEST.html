@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Room</title>
+</head>
+<body>
+
+<h2>Chat Room</h2>
+
+<!-- Chat Room Interface -->
+<div>
+  <div>
+    <label>Room ID:</label>
+    <input type="text" id="roomId" placeholder="Enter Room ID">
+  </div>
+  <div>
+    <label>Your Name:</label>
+    <input type="text" id="sender" placeholder="Enter Your Name">
+  </div>
+  <div>
+    <label>Message:</label>
+    <input type="text" id="message" placeholder="Enter Message">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<h3>Messages</h3>
+<div id="messages"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+<script>
+  let stompClient = null;
+
+  function connect() {
+      // Get Room ID from the input
+      const roomId = document.getElementById("roomId").value;
+
+      // Use absolute URL to connect to the WebSocket server
+      const socket = new SockJS('http://localhost:8080/ws-stomp');
+      stompClient = Stomp.over(socket);
+
+      stompClient.connect({}, function (frame) {
+          console.log('Connected: ' + frame);
+
+          // Subscribe to the chat room's topic ("/sub/chat/room/{roomId}")
+          stompClient.subscribe(`/sub/chat/room/${roomId}`, function (message) {
+              showMessage(JSON.parse(message.body));
+          });
+      });
+  }
+
+  function sendMessage() {
+      // Get message details
+      const roomId = document.getElementById("roomId").value;
+      const sender = document.getElementById("sender").value;
+      const message = document.getElementById("message").value;
+
+      if (stompClient && roomId && sender && message) {
+          // Send message to the server using "/pub/chat/message"
+          stompClient.send("/pub/chat/message", {}, JSON.stringify({
+              'roomId': roomId,
+              'sender': sender,
+              'message': message,
+              'type': 'TALK' // Message type is set to TALK
+          }));
+      }
+  }
+
+  function showMessage(message) {
+      const messagesDiv = document.getElementById("messages");
+      const messageElement = document.createElement('div');
+      messageElement.appendChild(document.createTextNode(`${message.sender}: ${message.message}`));
+      messagesDiv.appendChild(messageElement);
+  }
+
+  // Connect to the chat room when the page is loaded
+  window.onload = function () {
+      connect();
+  };
+</script>
+
+</body>
+</html>
