@@ -2,6 +2,7 @@ package linkfit.controller;
 
 import java.util.List;
 import linkfit.annotation.Login;
+import linkfit.controller.Swagger.ChattingControllerDocs;
 import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageResponse;
 import linkfit.dto.Token;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/chats")
-public class ChattingRoomController {
+public class ChattingController implements ChattingControllerDocs {
 
     ChattingService chattingService;
 
-    public ChattingRoomController(ChattingService chattingService) {
+    public ChattingController(ChattingService chattingService) {
         this.chattingService = chattingService;
     }
 
