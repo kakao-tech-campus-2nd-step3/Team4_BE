@@ -1,12 +1,14 @@
 package linkfit.controller;
 
+import java.time.LocalDateTime;
+import linkfit.dto.MessageRequest;
 import linkfit.entity.ChattingRoom;
 import linkfit.entity.Message;
 import linkfit.service.ChattingRoomService;
 import linkfit.service.MessageService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -14,21 +16,25 @@ public class MessageController {
 
     private final ChattingRoomService chattingRoomService;
     private final MessageService messageService;
+    private final SimpMessageSendingOperations messagingTemplate;  // SimpMessageSendingOperations 주입
 
     public MessageController(ChattingRoomService chattingRoomService,
-        MessageService messageService) {
+        MessageService messageService, SimpMessageSendingOperations messagingTemplate) {
         this.chattingRoomService = chattingRoomService;
         this.messageService = messageService;
+        this.messagingTemplate = messagingTemplate;  // 생성자에 SimpMessageSendingOperations 추가
     }
 
     @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/room/{roomId}")
-    public Message sendMessage(Message message, SimpMessageHeaderAccessor headerAccessor) throws Exception {
-        Long roomId = message.getChattingRoom().getId();
-        String role = headerAccessor.getSessionAttributes().get("role").toString();
+    public void sendMessage(MessageRequest request) throws Exception {
+        // 요청에서 roomId 및 메시지 데이터 처리
+        ChattingRoom chattingRoom = chattingRoomService.findRoomById(request.roomId());
+        Message msg = new Message(chattingRoom, request.content(), request.sender(), LocalDateTime.now());
 
-        ChattingRoom chattingRoom = chattingRoomService.findRoomById(roomId);
-        messageService.addMessage(message);  // 메시지 DB에 저장
-        return message;  // 이 메시지는 /topic/room/{roomId}에 구독한 클라이언트에게 전송됨
+        // 메시지 DB에 저장
+        messageService.addMessage(msg);
+
+        // 동적으로 /topic/room/{roomId} 경로로 메시지 전송
+        messagingTemplate.convertAndSend("/topic/room/" + request.roomId(), msg);
     }
 }

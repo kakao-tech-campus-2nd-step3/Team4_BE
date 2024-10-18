@@ -52,10 +52,10 @@ function disconnect() {
 function sendName() {
   messageContent = $("#message").val();  // 메시지 입력 필드에서 콘텐츠 가져오기
   if (stompClient.connected) {  // 연결이 되어 있는지 확인
+    console.log("연결됨");
     stompClient.publish({
-      destination: "/app/chat.sendMessage",
+      destination: "/pub/chat.sendMessage",
       body: JSON.stringify({
-        'name': $("#name").val(),
         'room': {'id': roomId},
         'content': messageContent,
         'sender': userId,
