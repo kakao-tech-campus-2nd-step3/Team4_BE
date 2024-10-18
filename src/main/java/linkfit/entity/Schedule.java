@@ -43,20 +43,8 @@ public class Schedule {
         this.content = content;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Pt getPt() {
         return pt;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public LocalDateTime getAtTime() {
-        return atTime;
     }
 
     public boolean getIsCompleted() {

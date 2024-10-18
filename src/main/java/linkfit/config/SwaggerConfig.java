@@ -1,7 +1,5 @@
 package linkfit.config;
 
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -18,7 +16,8 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(SECURITY_SCHEME_NAME);
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(
+            SECURITY_SCHEME_NAME);
         Components components = new Components()
             .addSecuritySchemes(SECURITY_SCHEME_NAME, new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP)

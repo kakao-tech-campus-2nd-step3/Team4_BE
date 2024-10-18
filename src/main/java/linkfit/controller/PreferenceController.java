@@ -1,11 +1,11 @@
 package linkfit.controller;
 
 import java.util.List;
-import linkfit.annotation.LoginTrainer;
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.controller.Swagger.PreferenceControllerDocs;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
+import linkfit.dto.Token;
 import linkfit.service.PreferenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,24 +28,24 @@ public class PreferenceController implements PreferenceControllerDocs {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerPreference(@LoginUser Long userId,
+    public ResponseEntity<Void> registerPreference(@Login Token token,
         @RequestBody PreferenceRequest request) {
-        preferenceService.registerPreference(userId, request);
+        preferenceService.registerPreference(token.id(), request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
     public ResponseEntity<List<PreferenceResponse>> getAllMatchingPossible(
-        @LoginTrainer Long trainerId) {
-        List<PreferenceResponse> preferences = preferenceService.getAllMatchingPossible(trainerId);
+        @Login Token token) {
+        List<PreferenceResponse> preferences = preferenceService.getAllMatchingPossible(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(preferences);
     }
 
     @DeleteMapping("/{preferenceId}")
     public ResponseEntity<Void> deletePreference(@PathVariable Long preferenceId,
-        @LoginUser Long userId) {
-        preferenceService.deletePreference(preferenceId, userId);
+        @Login Token token) {
+        preferenceService.deletePreference(preferenceId, token.id());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

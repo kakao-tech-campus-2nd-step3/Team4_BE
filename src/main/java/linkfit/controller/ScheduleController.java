@@ -1,11 +1,11 @@
 package linkfit.controller;
 
 import jakarta.validation.Valid;
-import linkfit.annotation.LoginTrainer;
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.controller.Swagger.ScheduleControllerDocs;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
+import linkfit.dto.Token;
 import linkfit.service.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,23 +34,23 @@ public class ScheduleController implements ScheduleControllerDocs {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerSchedule(@LoginTrainer Long trainerId,
+    public ResponseEntity<Void> registerSchedule(@Login Token token,
         @PathVariable Long ptId, @Valid @RequestBody ScheduleRequest scheduleRequest) {
-        scheduleService.registerSchedule(trainerId, ptId, scheduleRequest);
+        scheduleService.registerSchedule(token.id(), ptId, scheduleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<Void> completeSchedule(@LoginUser Long userId, @PathVariable Long ptId,
+    public ResponseEntity<Void> completeSchedule(@Login Token token, @PathVariable Long ptId,
         @PathVariable Long scheduleId) {
-        scheduleService.completeSchedule(userId, ptId, scheduleId);
+        scheduleService.completeSchedule(token.id(), ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@LoginTrainer Long trainerId,
+    public ResponseEntity<Void> deleteSchedule(@Login Token token,
         @PathVariable Long ptId, @PathVariable Long scheduleId) {
-        scheduleService.deleteSchedule(trainerId, ptId, scheduleId);
+        scheduleService.deleteSchedule(token.id(), ptId, scheduleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
