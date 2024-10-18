@@ -1,11 +1,11 @@
 package linkfit.controller;
 
 import java.util.List;
-import linkfit.annotation.LoginTrainer;
-import linkfit.annotation.LoginUser;
+import linkfit.annotation.Login;
 import linkfit.controller.Swagger.ReviewControllerDocs;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
+import linkfit.dto.Token;
 import linkfit.service.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,31 +35,31 @@ public class ReviewController implements ReviewControllerDocs {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(@LoginUser Long userId) {
-        List<ReviewResponse> list = reviewService.getMyReviewsByUserId(userId);
+    public ResponseEntity<List<ReviewResponse>> getMyReviewByUser(@Login Token token) {
+        List<ReviewResponse> list = reviewService.getMyReviewsByUserId(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @GetMapping("/trainer")
-    public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(@LoginTrainer Long trainerId) {
-        List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(trainerId);
+    public ResponseEntity<List<ReviewResponse>> getMyReviewByTrainer(@Login Token token) {
+        List<ReviewResponse> list = reviewService.getAllReviewsByTrainerId(token.id());
         return ResponseEntity.status(HttpStatus.OK)
             .body(list);
     }
 
     @PostMapping("/{trainerId}")
-    public ResponseEntity<Void> addReview(@LoginUser Long userId,
+    public ResponseEntity<Void> addReview(@Login Token token,
         @RequestBody ReviewRequest request, @PathVariable Long trainerId) {
-        reviewService.addReview(userId, request, trainerId);
+        reviewService.addReview(token.id(), request, trainerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReviewById(@LoginTrainer Long userId,
+    public ResponseEntity<Void> deleteReviewById(@Login Token token,
         @PathVariable Long reviewId) {
-        reviewService.deleteReview(userId, reviewId);
+        reviewService.deleteReview(token.id(), reviewId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
