@@ -10,7 +10,7 @@ public record TrainerRegisterRequest(
     @NotBlank String password, @NotBlank String name,
     @Pattern(regexp = "MALE|FEMALE") TrainerGender gender) {
 
-    public Trainer toEntity() {
-        return new Trainer(email, password(), name(), gender);
+    public Trainer toEntity(String encodedPassword) {
+        return new Trainer(email, encodedPassword, name(), gender);
     }
 }

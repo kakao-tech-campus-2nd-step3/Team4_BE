@@ -1,8 +1,6 @@
 package linkfit.exception;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +8,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.View;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final View error;
     private MessageSource messageSource;
 
-    public GlobalExceptionHandler(MessageSource messageSource, View error) {
+    public GlobalExceptionHandler(MessageSource messageSource) {
         this.messageSource = messageSource;
-        this.error = error;
     }
 
     @ExceptionHandler(ImageUploadException.class)

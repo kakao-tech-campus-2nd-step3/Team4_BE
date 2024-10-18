@@ -32,14 +32,6 @@ public class GymImage {
         this.imageUrl = imageUrl;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Gym getGym() {
-        return gym;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }

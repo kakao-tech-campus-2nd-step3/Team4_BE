@@ -32,14 +32,6 @@ public class GymAdminRelation {
         this.trainer = trainer;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Gym getGym() {
-        return gym;
-    }
-
     public Trainer getTrainer() {
         return trainer;
     }

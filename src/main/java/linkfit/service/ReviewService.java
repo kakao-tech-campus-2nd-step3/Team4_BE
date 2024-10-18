@@ -2,7 +2,6 @@ package linkfit.service;
 
 import java.util.List;
 import java.util.Objects;
-
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
 import linkfit.entity.Review;
@@ -15,7 +14,6 @@ import linkfit.repository.ReviewRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.status.PtStatus;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,21 +49,30 @@ public class ReviewService {
     public void addReview(Long userId, ReviewRequest request, Long trainerId) {
         User user = userRepository.getReferenceById(userId);
         Trainer trainer = trainerRepository.getReferenceById(trainerId);
-        permissionReview(user);
-        Review review = new Review(user, trainer, request.content(), request.score());
+        checkPTCompletion(user);
+        Review review = new Review(user, trainer, request);
         reviewRepository.save(review);
     }
 
     public void deleteReview(Long userId, Long reviewId) {
-        Review review = reviewRepository.findById(reviewId)
-            .orElseThrow(() -> new NotFoundException("not.found.review"));
-        if (!Objects.equals(review.getUser().getId(), userId)) {
-            throw new PermissionException("not.owner");
-        }
+        Review review = getReviewById(reviewId);
+        validateReviewAuthor(review, userId);
         reviewRepository.delete(review);
     }
 
-    private void permissionReview(User user) {
+    private Review getReviewById(Long reviewId) {
+        return reviewRepository.findById(reviewId)
+            .orElseThrow(() -> new NotFoundException("not.found.review"));
+    }
+
+    private void validateReviewAuthor(Review review, Long userId) {
+        Long authorId = review.getUser().getId();
+        if (!Objects.equals(authorId, userId)) {
+            throw new PermissionException("not.owner");
+        }
+    }
+
+    private void checkPTCompletion(User user) {
         ptRepository.findByUserAndStatus(user, PtStatus.COMPLETE)
             .orElseThrow(() -> new PermissionException("review.permission.denied"));
     }

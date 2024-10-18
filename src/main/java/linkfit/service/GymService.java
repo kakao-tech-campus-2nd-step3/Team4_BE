@@ -4,7 +4,6 @@ import static linkfit.status.GymStatus.APPROVAL;
 import static linkfit.status.GymStatus.WAITING;
 
 import java.util.List;
-
 import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
@@ -22,7 +21,6 @@ import linkfit.repository.GymAdminRelationRepository;
 import linkfit.repository.GymImageRepository;
 import linkfit.repository.GymRepository;
 import linkfit.repository.TrainerRepository;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -64,8 +62,8 @@ public class GymService {
     public void deleteGym(Long gymId) {
         Gym gym = getGymById(gymId);
         gym.refuse();
-        gymRepository.save(gym);
         gymAdminRelationRepository.deleteByGym(gym);
+        gymRepository.save(gym);
     }
 
     public GymSearchResponse findAllByKeyword(String keyword, Pageable pageable) {
@@ -94,13 +92,11 @@ public class GymService {
     public List<GymLocationResponse> getGymLocations() {
         List<Gym> gymList = gymRepository.findAll();
         return gymList.stream()
-            .map(gym -> new GymLocationResponse(
-                gym.getId(), gym.getLocation()))
+            .map(gym -> new GymLocationResponse(gym.getId(), gym.getLocation()))
             .toList();
     }
 
-    public void sendGymRegistrationRequest(Long trainerId,
-        GymRegisterRequest gymRegisterRequest) {
+    public void sendGymRegistrationRequest(Long trainerId, GymRegisterRequest gymRegisterRequest) {
         Trainer trainer = getTrainer(trainerId);
         Gym gym = gymRegisterRequest.toEntity();
         gymRepository.save(gym);
@@ -120,8 +116,8 @@ public class GymService {
             .orElseThrow(() -> new NotFoundException("not.found.trainer"));
     }
 
-    public void updateGym(Long gymId, Long trainerId,
-        GymDescriptionRequest gymDescriptionRequest, List<MultipartFile> gymImages) {
+    public void updateGym(Long gymId, Long trainerId, GymDescriptionRequest gymDescriptionRequest,
+        List<MultipartFile> gymImages) {
         Trainer trainer = getTrainer(trainerId);
         Gym gym = getGymById(gymId);
         validPermission(gym, trainer);

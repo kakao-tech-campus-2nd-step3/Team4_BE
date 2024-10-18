@@ -39,19 +39,11 @@ public class Career {
         this.career = career;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Trainer getTrainer() {
         return trainer;
     }
 
-    public String getCareer() {
-        return career;
-    }
-
     public CareerResponse toDto() {
-        return new CareerResponse(getId(), getCareer());
+        return new CareerResponse(id, career);
     }
 }

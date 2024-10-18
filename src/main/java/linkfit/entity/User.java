@@ -1,11 +1,17 @@
 package linkfit.entity;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import linkfit.component.DefaultImageProvider;
 import linkfit.dto.UserProfileRequest;
 import linkfit.dto.UserProfileResponse;
-import linkfit.exception.PasswordMismatchException;
-import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "USER_TB", indexes = @Index(name = "IDX_USER_EMAIL", columnList = "EMAIL"))
@@ -24,17 +30,18 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String profileImageUrl;
 
     @Column(nullable = false)
     private String location;
 
-    @Value("${defaultImageUrl}")
-    private String defaultImageUrl;
+    @Transient
+    private static DefaultImageProvider defaultImageProvider;
 
-    @Value("${defaultImageUrl}")
-    private String defaultProfileImageUrl;
+    public static void setDefaultImageProvider(DefaultImageProvider provider) {
+        defaultImageProvider = provider;
+    }
 
     protected User() {
     }
@@ -47,9 +54,9 @@ public class User {
     }
 
     @PrePersist
-    public void prePersist() {
+    private void setDefaultProfileImageUrl() {
         if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
-            this.profileImageUrl = defaultProfileImageUrl;
+            this.profileImageUrl = defaultImageProvider.getDefaultImageUrl();
         }
     }
 
@@ -65,12 +72,12 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getProfileImageUrl() {
         return profileImageUrl;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setProfileImageUrl(String profileImageUrl) {
@@ -81,19 +88,9 @@ public class User {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void update(UserProfileRequest request) {
-        this.setName(request.name());
-        this.setLocation(request.location());
-    }
-
-    public void validatePassword(String inputPassword) {
-        if (!inputPassword.equals(this.password)) {
-            throw new PasswordMismatchException("not.match.password");
-        }
+    public void updateInfo(UserProfileRequest request) {
+        name = request.name();
+        location = request.location();
     }
 
     public UserProfileResponse toDto() {

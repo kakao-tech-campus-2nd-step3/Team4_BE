@@ -2,7 +2,6 @@ package linkfit.service;
 
 import linkfit.config.properties.KakaoProperties;
 import linkfit.dto.Coordinate;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

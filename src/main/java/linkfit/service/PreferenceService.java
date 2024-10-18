@@ -1,7 +1,6 @@
 package linkfit.service;
 
 import java.util.List;
-
 import linkfit.dto.Coordinate;
 import linkfit.dto.PreferenceRequest;
 import linkfit.dto.PreferenceResponse;
@@ -16,7 +15,6 @@ import linkfit.exception.PermissionException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.PreferenceRepository;
 import linkfit.status.TrainerGender;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,17 +41,19 @@ public class PreferenceService {
     public void registerPreference(Long userId, PreferenceRequest request) {
         User user = userService.getUser(userId);
         Sports sports = sportsService.getSportsById(request.sportsId());
-        BodyInfo bodyInfo = bodyInfoRepository.findTopByUserOrderByCreateDate(user)
-            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
+        BodyInfo bodyInfo = getLastBodyInfo(user);
         Preference preference = request.toEntity(user, bodyInfo, sports);
         preferenceRepository.save(preference);
     }
 
+    private BodyInfo getLastBodyInfo(User user) {
+        return bodyInfoRepository.findTopByUserOrderByCreateDate(user)
+            .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
+    }
+
     public List<PreferenceResponse> getAllMatchingPossible(Long trainerId) {
-        trainerService.identifyTrainer(trainerId);
         Trainer trainer = trainerService.getTrainer(trainerId);
         List<Preference> preferences = preferenceRepository.findAll();
-
         validGender(preferences, trainer.getGender());
         validDistance(preferences, trainer.getGym());
         return preferences.stream()
@@ -62,7 +62,7 @@ public class PreferenceService {
     }
 
     private void validGender(List<Preference> preferences, TrainerGender gender) {
-        preferences.removeIf(preference -> !preference.isInvalidTrainerGender(gender));
+        preferences.removeIf(preference -> !preference.isValidTrainerGender(gender));
     }
 
     private void validDistance(List<Preference> preferences, Gym gym) {

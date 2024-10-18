@@ -1,8 +1,7 @@
 package linkfit.config;
 
 import java.util.List;
-import linkfit.resolver.LoginTrainerArgumentResolver;
-import linkfit.resolver.LoginUserArgumentResolver;
+import linkfit.resolver.LoginArgumentResolver;
 import linkfit.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginTrainerArgumentResolver(jwtUtil));
-        resolvers.add(new LoginUserArgumentResolver(jwtUtil));
+        resolvers.add(new LoginArgumentResolver(jwtUtil));
     }
 }

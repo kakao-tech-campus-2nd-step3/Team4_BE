@@ -73,7 +73,7 @@ public class AdminSportsController {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "sports-update";
         }
-        sportsService.updateSports(sportsId, sportsRequest);
+        sportsService.renameSports(sportsId, sportsRequest);
         return "redirect:/admin/sports";
     }
 
