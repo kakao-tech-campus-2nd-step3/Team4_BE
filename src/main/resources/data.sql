@@ -6,12 +6,12 @@ VALUES ('강원특별자치도 춘천시 강원대학길 1', '백령스포츠센
 
 
 INSERT INTO USER_TB(email, password, name, profile_image_url, location)
-VALUES ('a@naver.com', '123', '일반회원1',
+VALUES ('a@naver.com', '$2a$10$/kIrh1IIxo60.jHaISACEOpyrb6/2KpgQYcfHlOJBDuFdl9KrOrBm', '일반회원1',
         'https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg',
         '강원특별자치도 춘천시 백령로 1');
 
 INSERT INTO TRAINER_TB(email, password, name, profile_image_url, gym_id, gender)
-VALUES ('t@naver.com', '123', '트레이너1',
+VALUES ('t@naver.com', '$2a$10$/kIrh1IIxo60.jHaISACEOpyrb6/2KpgQYcfHlOJBDuFdl9KrOrBm', '트레이너1',
         'https://nurspace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpg', 1, 'MALE');
 
 INSERT INTO GYM_ADMIN_RELATION_TB(gym_id, trainer_id)
