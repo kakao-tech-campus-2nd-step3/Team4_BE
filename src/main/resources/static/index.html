@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Hello WebSocket</title>
   <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -12,10 +13,8 @@
   <script src="/app.js"></script>
 </head>
 <body>
-<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies
-  on Javascript being
-  enabled. Please enable
-  Javascript and reload this page!</h2></noscript>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! WebSocket relies
+  on Javascript being enabled. Please enable Javascript and reload this page!</h2></noscript>
 <div id="main-content" class="container">
   <div class="row">
     <div class="col-md-6">
@@ -35,6 +34,10 @@
           <label for="name">What is your name?</label>
           <input type="text" id="name" class="form-control" placeholder="Your name here...">
         </div>
+        <div class="form-group">
+          <label for="message">Your message:</label>
+          <input type="text" id="message" class="form-control" placeholder="Enter your message...">
+        </div>
         <button id="send" class="btn btn-default" type="submit">Send</button>
       </form>
     </div>
@@ -44,7 +47,7 @@
       <table id="conversation" class="table table-striped">
         <thead>
         <tr>
-          <th>Greetings</th>
+          <th>Messages</th>
         </tr>
         </thead>
         <tbody id="greetings">

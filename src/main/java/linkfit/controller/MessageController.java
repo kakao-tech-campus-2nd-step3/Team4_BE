@@ -1,6 +1,5 @@
 package linkfit.controller;
 
-import java.time.LocalDateTime;
 import linkfit.entity.ChattingRoom;
 import linkfit.entity.Message;
 import linkfit.service.ChattingRoomService;
@@ -8,7 +7,6 @@ import linkfit.service.MessageService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
 @Controller
