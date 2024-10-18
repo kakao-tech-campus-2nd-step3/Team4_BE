@@ -8,6 +8,7 @@ import linkfit.entity.Message;
 import linkfit.service.ChattingRoomService;
 import linkfit.service.MessageService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
@@ -29,12 +30,14 @@ public class MessageController {
     public void sendMessage(@Valid MessageRequest request) throws Exception {
         // 요청에서 roomId 및 메시지 데이터 처리
         ChattingRoom chattingRoom = chattingRoomService.findRoomById(request.roomId());
-        Message msg = new Message(chattingRoom, request.content(), request.sender(), LocalDateTime.now());
+        Message message = new Message(chattingRoom, request.content(), request.sender(), LocalDateTime.now());
+
 
         // 메시지 DB에 저장
-        messageService.addMessage(msg);
+        messageService.addMessage(message);
 
         // 동적으로 /topic/room/{roomId} 경로로 메시지 전송
-        messagingTemplate.convertAndSend("/sub/topic/room/" + request.roomId(), msg);
+        System.out.println(request.roomId());
+        messagingTemplate.convertAndSend("/sub/topic/room/" + request.roomId(), message);
     }
 }
