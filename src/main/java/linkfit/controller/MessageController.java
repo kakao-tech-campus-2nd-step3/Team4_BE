@@ -3,6 +3,7 @@ package linkfit.controller;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import linkfit.dto.MessageRequest;
+import linkfit.dto.MessageResponse;
 import linkfit.entity.ChattingRoom;
 import linkfit.entity.Message;
 import linkfit.service.ChattingRoomService;
@@ -35,9 +36,6 @@ public class MessageController {
 
         // 메시지 DB에 저장
         messageService.addMessage(message);
-
-        // 동적으로 /topic/room/{roomId} 경로로 메시지 전송
-        System.out.println(request.roomId());
-        messagingTemplate.convertAndSend("/sub/topic/room/" + request.roomId(), message);
+        messagingTemplate.convertAndSend("/sub/topic/room/" + request.roomId(), message.toDto());
     }
 }

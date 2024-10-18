@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import linkfit.dto.MessageResponse;
 import linkfit.status.Role;
 
 @Entity
@@ -60,5 +61,9 @@ public class Message {
 
     public LocalDateTime getSendTime() {
         return sendTime;
+    }
+
+    public MessageResponse toDto() {
+        return new MessageResponse(this.id, this.content, this.sender, this.sendTime);
     }
 }
