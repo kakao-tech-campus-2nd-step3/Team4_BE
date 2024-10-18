@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "Chat(채팅) API", description = "채팅 관련 API입니다.")
-
 public interface ChattingControllerDocs {
 
     @Operation(summary = "자신이 속한 채팅방 조회", description = "유저/트레이너의 토큰을 통해 자신이 속해있는 채팅방의 목록을 가져옵니다.", parameters = {
