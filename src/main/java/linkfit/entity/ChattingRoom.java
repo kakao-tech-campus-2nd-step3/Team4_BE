@@ -29,6 +29,10 @@ public class ChattingRoom {
         this.trainer = trainer;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public User getUser() {
         return user;
     }
