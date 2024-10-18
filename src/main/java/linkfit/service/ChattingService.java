@@ -37,17 +37,8 @@ public class ChattingService {
         this.messageRepository = messageRepository;
     }
 
-    //ID로 채팅방 찾기
-    public ChattingRoom findRoomById(Long id) {
-        return chattingRoomRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("ChattingRoom not found"));
-    }
 
-    //채팅방 생성
     public void addRoom(Long userId, String role, ChattingRoomRegisterRequest request) {
-        if (!role.equals("user")) {
-            throw new PermissionException("Only users can add rooms");
-        }
         //이미 userId, TrainerId 에 해당하는 사용자가 속해있는 대화방이 있는지 확인하는 로직 필요
         User user = getUser(userId);
         Trainer trainer = getTrainer(userId);
@@ -109,6 +100,6 @@ public class ChattingService {
 
     private ChattingRoom findChattingRoom(Long chattingRoomId) {
         return chattingRoomRepository.findById(chattingRoomId)
-            .orElseThrow(() -> new NotFoundException("not.found.chattingRoom"));
+            .orElseThrow(() -> new NotFoundException("not.found.chattingroom"));
     }
 }
