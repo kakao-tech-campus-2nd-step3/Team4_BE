@@ -43,7 +43,8 @@ public class Preference {
     @Column(nullable = false)
     private String goal;
 
-    public Preference(User user, BodyInfo bodyInfo, Sports sports, TrainerGender gender, int range, String goal) {
+    public Preference(User user, BodyInfo bodyInfo, Sports sports, TrainerGender gender, int range,
+        String goal) {
         this.user = user;
         this.bodyInfo = bodyInfo;
         this.sports = sports;
@@ -63,9 +64,10 @@ public class Preference {
         return user;
     }
 
-    public boolean isInvalidTrainerGender(TrainerGender gender) {
-        if(this.gender == null)
+    public boolean isValidTrainerGender(TrainerGender gender) {
+        if (this.gender == null) {
             return true;
+        }
         return this.gender.equals(gender);
     }
 

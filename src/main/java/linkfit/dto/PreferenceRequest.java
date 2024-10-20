@@ -8,7 +8,7 @@ import linkfit.entity.Sports;
 import linkfit.entity.User;
 import linkfit.status.TrainerGender;
 
-public record PreferenceRequest(@NotNull Long sportsId, @NotNull Long bodyInfoId,
+public record PreferenceRequest(@NotNull Long sportsId,
                                 TrainerGender gender, @NotNull @Positive int range, String goal) {
 
     public Preference toEntity(User user, BodyInfo bodyInfo, Sports sports) {
