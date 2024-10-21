@@ -1,5 +1,6 @@
 package linkfit.service;
 
+import linkfit.component.DefaultImageProvider;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TokenResponse;
 import linkfit.dto.UserProfileRequest;
@@ -24,13 +25,16 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
     private final PasswordEncoder passwordEncoder;
+    private final DefaultImageProvider defaultImageProvider;
 
     public UserService(UserRepository userRepository, JwtUtil jwtUtil,
-        ImageUploadService imageUploadService, PasswordEncoder passwordEncoder) {
+        ImageUploadService imageUploadService, PasswordEncoder passwordEncoder,
+        DefaultImageProvider defaultImageProvider) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.imageUploadService = imageUploadService;
         this.passwordEncoder = passwordEncoder;
+        this.defaultImageProvider = defaultImageProvider;
     }
 
     @Transactional
@@ -38,6 +42,7 @@ public class UserService {
         validateEmailAlreadyExist(request.email());
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = request.toEntity(encodedPassword);
+        user.setProfileImageUrl(defaultImageProvider.getDefaultImageUrl());
         userRepository.save(user);
     }
 

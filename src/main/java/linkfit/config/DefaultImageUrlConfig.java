@@ -14,10 +14,4 @@ public class DefaultImageUrlConfig {
     public DefaultImageUrlConfig(DefaultImageProvider defaultImageProvider) {
         this.defaultImageProvider = defaultImageProvider;
     }
-
-    @PostConstruct
-    public void init() {
-        Trainer.setDefaultImageProvider(defaultImageProvider);
-        User.setDefaultImageProvider(defaultImageProvider);
-    }
 }

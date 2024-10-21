@@ -39,11 +39,16 @@ public class User {
     @Transient
     private static DefaultImageProvider defaultImageProvider;
 
-    public static void setDefaultImageProvider(DefaultImageProvider provider) {
-        defaultImageProvider = provider;
+    protected User() {
     }
 
-    protected User() {
+    public User(String email, String password, String name, String profileImageUrl,
+        String location) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+        this.location = location;
     }
 
     public User(String email, String password, String name, String location) {
