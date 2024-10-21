@@ -43,7 +43,7 @@ public class UserService {
 
     public TokenResponse login(LoginRequest request) {
         User user = getUserByEmail(request.email());
-        if (!userAuthenticate(user, request.password())) {
+        if (!authenticateUser(user, request.password())) {
             throw new PermissionException("not.match.password");
         }
         return new TokenResponse(jwtUtil.generateToken(Role.USER, user.getId(), user.getEmail()));
@@ -78,7 +78,7 @@ public class UserService {
         }
     }
 
-    private boolean userAuthenticate(User user, String rawPassword) {
+    private boolean authenticateUser(User user, String rawPassword) {
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 

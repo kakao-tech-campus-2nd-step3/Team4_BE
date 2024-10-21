@@ -39,7 +39,7 @@ public class TrainerService {
 
     public TokenResponse login(LoginRequest request) {
         Trainer trainer = getTrainerByEmail(request.email());
-        if (!trainerAuthenticate(trainer, request.password())) {
+        if (!authenticateTrainer(trainer, request.password())) {
             throw new PermissionException("not.match.password");
         }
         return new TokenResponse(
@@ -60,7 +60,7 @@ public class TrainerService {
             .orElseThrow(() -> new NotFoundException("not.found.user"));
     }
 
-    private boolean trainerAuthenticate(Trainer trainer, String rawPassword) {
+    private boolean authenticateTrainer(Trainer trainer, String rawPassword) {
         return passwordEncoder.matches(rawPassword, trainer.getPassword());
     }
 
