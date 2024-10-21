@@ -57,7 +57,9 @@ public class JwtUtil {
             if (isTokenExpired(claims.getExpiration())) {
                 throw new InvalidTokenException("token.expired");
             }
-            return new Token(claims.get(ROLE, Role.class), claims.get(ID, Long.class));
+            Role role = Role.valueOf((String) claims.get(ROLE));
+            Long id = Long.valueOf(claims.get(ID).toString());
+            return new Token(role, id);
         } catch (ExpiredJwtException e) {
             throw new InvalidTokenException("token.expired");
         } catch (SignatureException e) {
@@ -71,7 +73,7 @@ public class JwtUtil {
         return Jwts.parser()
             .setSigningKey(secretKey)
             .build()
-            .parseSignedClaims(token)
+            .parseClaimsJws(token)
             .getBody();
     }
 
