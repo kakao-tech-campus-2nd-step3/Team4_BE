@@ -2,24 +2,19 @@ package linkfit.repository;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import linkfit.component.DefaultImageProvider;
 import linkfit.entity.Gym;
 import linkfit.entity.Trainer;
 import linkfit.status.TrainerGender;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
