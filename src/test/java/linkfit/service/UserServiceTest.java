@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +37,6 @@ class UserServiceTest {
     @Mock
     private DefaultImageProvider defaultImageProvider;
 
-    @Spy
     @InjectMocks
     private UserService userService;
 
@@ -84,7 +82,7 @@ class UserServiceTest {
     void loginSucceed() {
         // given
         LoginRequest request = new LoginRequest("user@link.fit", "password");
-        User spyUser = spy(new User("user@link.fit", "encodedPassword", "name", "location"));
+        User spyUser = spy(user);
         doReturn(1L).when(spyUser).getId();
 
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(spyUser));
@@ -118,7 +116,7 @@ class UserServiceTest {
     @DisplayName("getProfile() 테스트")
     void getProfile() {
         // given
-        when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
         // when
         UserProfileResponse response = userService.getProfile(1L);
@@ -154,7 +152,7 @@ class UserServiceTest {
     @DisplayName("getUser() 테스트")
     void getUser() {
         // given
-        when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
         // when
         User foundUser = userService.getUser(1L);
