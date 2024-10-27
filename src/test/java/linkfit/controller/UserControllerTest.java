@@ -54,6 +54,7 @@ class UserControllerTest {
         UserProfileResponse response = new UserProfileResponse("이름","location","defaultImageUrl");
         when(userService.getProfile(testToken.id())).thenReturn(response);
 
+        //when & then
         mockMvc.perform(get(BASE_URL+"/profile")
             .header("Authorization","Bearer mastertoken-user"))
             .andExpect(status().isOk())
