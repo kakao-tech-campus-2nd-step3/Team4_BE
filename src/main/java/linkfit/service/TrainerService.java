@@ -1,5 +1,6 @@
 package linkfit.service;
 
+import linkfit.component.DefaultImageProvider;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TokenResponse;
 import linkfit.dto.TrainerProfileResponse;
@@ -21,12 +22,14 @@ public class TrainerService {
     private final TrainerRepository trainerRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final DefaultImageProvider defaultImageProvider;
 
-    public TrainerService(TrainerRepository trainerRepository, CareerService careerService,
-        JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
+    public TrainerService(TrainerRepository trainerRepository, JwtUtil jwtUtil,
+        PasswordEncoder passwordEncoder, DefaultImageProvider defaultImageProvider) {
         this.trainerRepository = trainerRepository;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
+        this.defaultImageProvider = defaultImageProvider;
     }
 
     @Transactional
@@ -34,6 +37,7 @@ public class TrainerService {
         validateEmailAlreadyExist(request.email());
         String encodedPassword = passwordEncoder.encode(request.password());
         Trainer trainer = request.toEntity(encodedPassword);
+        trainer.setProfileImageUrl(defaultImageProvider.getDefaultImageUrl());
         trainerRepository.save(trainer);
     }
 
