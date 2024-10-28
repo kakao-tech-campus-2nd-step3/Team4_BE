@@ -64,6 +64,8 @@ dependencies {
 	//Websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+	//Gson
+	implementation 'com.google.code.gson:gson:+'
 }
 
 tasks.named('test') {

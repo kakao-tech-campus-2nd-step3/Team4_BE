@@ -1,6 +1,8 @@
 package linkfit.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import linkfit.dto.ChattingRoomRegisterRequest;
@@ -55,7 +57,7 @@ public class ChattingService {
             return findTrainerJoinedRooms(id);
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     //채팅방의 모든 메세지 가져오기
@@ -92,8 +94,8 @@ public class ChattingService {
             .toList();
     }
 
-    private List<ChattingRoomResponse> findTrainerJoinedRooms(Long userId) {
-        return chattingRoomRepository.findAllByUserId(userId).stream()
+    private List<ChattingRoomResponse> findTrainerJoinedRooms(Long trainerId) {
+        return chattingRoomRepository.findAllByTrainerId(trainerId).stream()
             .map(ChattingRoom::toDto)
             .toList();
     }
