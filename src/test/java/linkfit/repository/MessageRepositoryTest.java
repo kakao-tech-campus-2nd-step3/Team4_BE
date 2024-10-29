@@ -16,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @DataJpaTest
 class MessageRepositoryTest {
@@ -24,24 +25,25 @@ class MessageRepositoryTest {
     private MessageRepository messageRepository;
 
     @Autowired
-    private EntityManager em;
+    private TestEntityManager testEntityManager;
 
     ChattingRoom chattingRoom;
+
     @BeforeEach
     void setUp() {
         Trainer trainer = new Trainer("trainer@link.fit", "password", "트레이너1", TrainerGender.MALE);
         User user = new User("user@link.fit", "password", "일반회원1", "강원도 춘천시");
         chattingRoom = new ChattingRoom(user, trainer);
-        em.persist(trainer);
-        em.persist(user);
-        em.persist(chattingRoom);
-        em.flush();
+        testEntityManager.persist(trainer);
+        testEntityManager.persist(user);
+        testEntityManager.persist(chattingRoom);
+        testEntityManager.flush();
 
         LocalDateTime now = LocalDateTime.now();
         for (int i = 0; i < 20; i++) {
             Message message = new Message(chattingRoom, "content" + i,
                 i % 2 == 0 ? Role.USER : Role.TRAINER, now);
-            em.persist(message);
+            testEntityManager.persist(message);
             now = now.plusMinutes(1);
         }
     }
@@ -50,7 +52,8 @@ class MessageRepositoryTest {
     @DisplayName("채팅방 별 메시지 조회 테스트")
     void findAllByChattingRoomOrderBySendTime() {
         //when
-        List<Message> messageList = messageRepository.findAllByChattingRoomOrderBySendTime(chattingRoom);
+        List<Message> messageList = messageRepository.findAllByChattingRoomOrderBySendTime(
+            chattingRoom);
 
         //then
         assertEquals(20, messageList.size());
