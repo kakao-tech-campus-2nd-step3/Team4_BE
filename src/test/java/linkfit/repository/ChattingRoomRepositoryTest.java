@@ -49,6 +49,7 @@ class ChattingRoomRepositoryTest {
 
         //then
         assertEquals(1,rooms.size());
+        rooms.forEach(room -> assertEquals(room.getUser(),user));
 
     }
 
@@ -60,5 +61,6 @@ class ChattingRoomRepositoryTest {
 
         //then
         assertEquals(1,rooms.size());
+        rooms.forEach(room -> assertEquals(room.getTrainer(),trainer));
     }
 }
