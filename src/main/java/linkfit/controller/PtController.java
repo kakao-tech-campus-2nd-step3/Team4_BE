@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.annotation.Login;
 import linkfit.controller.Swagger.PtControllerDocs;
-import linkfit.dto.ProgressPtDetailResponse;
+import linkfit.dto.PtUserProfile;
 import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
@@ -96,9 +96,9 @@ public class PtController implements PtControllerDocs {
     }
 
     @GetMapping("/{ptId}/trainer")
-    public ResponseEntity<ProgressPtDetailResponse> getProgressUserDetails(
+    public ResponseEntity<PtUserProfile> getProgressUserDetails(
         @Login Token token, @PathVariable Long ptId) {
-        ProgressPtDetailResponse responseBody = ptService.getProgressUserDetails(token.id(),
+        PtUserProfile responseBody = ptService.getProgressPtDetails(token.id(),
             ptId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
