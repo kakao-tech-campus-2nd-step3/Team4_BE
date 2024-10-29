@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @DataJpaTest
 class CareerRepositoryTest {
@@ -21,7 +22,7 @@ class CareerRepositoryTest {
     private CareerRepository careerRepository;
 
     @Autowired
-    private TrainerRepository trainerRepository;
+    private TestEntityManager testEntityManager;
 
 
     Trainer trainer1;
@@ -35,8 +36,9 @@ class CareerRepositoryTest {
 
         trainer2 = new Trainer("trainer2@link.fit","password","트레이너1", TrainerGender.MALE);
 
-        trainerRepository.saveAndFlush(trainer1);
-        trainerRepository.saveAndFlush(trainer2);
+        testEntityManager.persist(trainer1);
+        testEntityManager.persist(trainer2);
+
 
         careerRepository.save(career1);
         careerRepository.save(career2);

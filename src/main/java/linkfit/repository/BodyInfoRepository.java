@@ -13,5 +13,6 @@ public interface BodyInfoRepository extends JpaRepository<BodyInfo, Long> {
 
     Page<BodyInfo> findAllByUserId(Long userId, Pageable pageable);
 
-    Optional<BodyInfo> findTopByUserOrderByCreateDate(User user);
+    Optional<BodyInfo> findTopByUserOrderByCreateDateDesc(User user);
+
 }
