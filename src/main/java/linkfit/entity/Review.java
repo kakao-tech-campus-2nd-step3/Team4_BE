@@ -47,6 +47,13 @@ public class Review {
     protected Review() {
     }
 
+    public Review(User user, Trainer trainer, String content, int score) {
+        this.user = user;
+        this.trainer = trainer;
+        this.content = content;
+        this.score = score;
+    }
+
     public Review(User user, Trainer trainer, ReviewRequest reviewRequest) {
         this.user = user;
         this.trainer = trainer;
