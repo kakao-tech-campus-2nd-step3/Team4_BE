@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.annotation.Login;
-import linkfit.dto.ProgressPtDetailResponse;
+import linkfit.dto.PtUserProfileResponse;
 import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
@@ -89,11 +89,11 @@ public interface PtControllerDocs {
     ResponseEntity<Void> refuseSuggestion(
         @Parameter(hidden = true) @Login Token token, @PathVariable Long ptId);
 
-    @Operation(summary = "트레이너) PT 회원 상세정보 조회", description = "트레이너가 PT ID에 해당하는 PT의 정보와 회원의 상세정보를 조회", parameters = {
+    @Operation(summary = "트레이너) PT 회원 프로필 조회", description = "트레이너가 PT ID에 해당하는 PT의 정보와 회원의 프로필 조회", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "PT, 회원정보 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
-    ResponseEntity<ProgressPtDetailResponse> getProgressUserDetails(
+    ResponseEntity<PtUserProfileResponse> getProgressUserDetails(
         @Parameter(hidden = true) Token token, @PathVariable Long ptId);
 }

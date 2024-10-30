@@ -1,6 +1,7 @@
 package linkfit.controller;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import linkfit.annotation.Login;
 import linkfit.controller.Swagger.ScheduleControllerDocs;
 import linkfit.dto.ScheduleRequest;
@@ -29,7 +30,7 @@ public class ScheduleController implements ScheduleControllerDocs {
     }
 
     @GetMapping
-    public ResponseEntity<ScheduleResponse> getSchedules(@PathVariable Long ptId) {
+    public ResponseEntity<List<ScheduleResponse>> getSchedules(@PathVariable Long ptId) {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getSchedules(ptId));
     }
 
