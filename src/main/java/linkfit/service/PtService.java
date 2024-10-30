@@ -2,7 +2,7 @@ package linkfit.service;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
-import linkfit.dto.PtUserProfile;
+import linkfit.dto.PtUserProfileResponse;
 import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
@@ -122,14 +122,14 @@ public class PtService {
             .orElseThrow(() -> new NotFoundException("not.found.pt"));
     }
 
-    public PtUserProfile getProgressPtDetails(Long trainerId, Long ptId) {
+    public PtUserProfileResponse getProgressPtDetails(Long trainerId, Long ptId) {
         Trainer trainer = getTrainer(trainerId);
         Pt pt = findSuggestion(ptId);
         if (!pt.getTrainer().equals(trainer)) {
             throw new PermissionException("not.owner");
         }
         User user = pt.getUser();
-        return new PtUserProfile(user.getId(), user.getName(), user.getProfileImageUrl());
+        return new PtUserProfileResponse(user.getId(), user.getName(), user.getProfileImageUrl());
     }
 
     private Trainer getTrainer(Long trainerId) {

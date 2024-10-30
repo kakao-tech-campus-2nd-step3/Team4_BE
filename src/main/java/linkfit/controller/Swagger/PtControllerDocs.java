@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import linkfit.annotation.Login;
-import linkfit.dto.PtUserProfile;
+import linkfit.dto.PtUserProfileResponse;
 import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
@@ -94,6 +94,6 @@ public interface PtControllerDocs {
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "PT, 회원정보 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
-    ResponseEntity<PtUserProfile> getProgressUserDetails(
+    ResponseEntity<PtUserProfileResponse> getProgressUserDetails(
         @Parameter(hidden = true) Token token, @PathVariable Long ptId);
 }
