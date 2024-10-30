@@ -45,7 +45,7 @@ class ChattingRoomRepositoryTest {
     @DisplayName("User Id로 채팅방 찾기")
     void findAllByUserId() {
         //when
-        List<ChattingRoom> rooms = chattingRoomRepository.findAllByUserId(user.getId());
+        List<ChattingRoom> rooms = chattingRoomRepository.findAllByUser(user);
 
         //then
         assertEquals(1,rooms.size());
@@ -57,7 +57,7 @@ class ChattingRoomRepositoryTest {
     @DisplayName("Trainer Id로 채팅방 찾기")
     void findAllByTrainerId() {
         //when
-        List<ChattingRoom> rooms = chattingRoomRepository.findAllByUserId(trainer.getId());
+        List<ChattingRoom> rooms = chattingRoomRepository.findAllByTrainer(trainer);
 
         //then
         assertEquals(1,rooms.size());
