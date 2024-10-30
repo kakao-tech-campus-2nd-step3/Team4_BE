@@ -64,6 +64,16 @@ public class Pt {
         this.price = ptSuggestionRequest.price();
     }
 
+    public Pt(User user, Trainer trainer, int totalCount, int price, LocalDateTime startDate,
+        PtStatus status) {
+        this.user = user;
+        this.trainer = trainer;
+        this.totalCount = totalCount;
+        this.price = price;
+        this.startDate = startDate;
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
