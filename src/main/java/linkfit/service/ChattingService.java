@@ -2,9 +2,8 @@ package linkfit.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+
 import linkfit.dto.ChattingRoomRegisterRequest;
 import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageRequest;
@@ -14,7 +13,6 @@ import linkfit.entity.Message;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
-import linkfit.exception.PermissionException;
 import linkfit.repository.ChattingRoomRepository;
 import linkfit.repository.MessageRepository;
 import linkfit.repository.TrainerRepository;
@@ -91,14 +89,14 @@ public class ChattingService {
     private List<ChattingRoomResponse> findUserJoinedRooms(Long userId) {
         User user = getUser(userId);
         return chattingRoomRepository.findAllByUser(user).stream()
-            .map(ChattingRoom::toDto)
+            .map(ChattingRoom::toUserDto)
             .toList();
     }
 
     private List<ChattingRoomResponse> findTrainerJoinedRooms(Long trainerId) {
         Trainer trainer = getTrainer(trainerId);
         return chattingRoomRepository.findAllByTrainer(trainer).stream()
-            .map(ChattingRoom::toDto)
+            .map(ChattingRoom::toTrainerDto)
             .toList();
     }
 

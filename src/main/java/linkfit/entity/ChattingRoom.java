@@ -42,7 +42,11 @@ public class ChattingRoom {
         return trainer;
     }
 
-    public ChattingRoomResponse toDto() {
-        return new ChattingRoomResponse(this.id, this.user.getId(), this.trainer.getId());
+    public ChattingRoomResponse toUserDto() {
+        return new ChattingRoomResponse(id, trainer.getId(), trainer.getProfileImageUrl());
+    }
+
+    public ChattingRoomResponse toTrainerDto() {
+        return new ChattingRoomResponse(id, user.getId(), user.getProfileImageUrl());
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChattingRoomRepository extends JpaRepository<ChattingRoom, Long> {
 
-    public List<ChattingRoom> findAllByUser(User user);
-    public List<ChattingRoom> findAllByTrainer(Trainer trainer);
+    List<ChattingRoom> findAllByUser(User user);
+    List<ChattingRoom> findAllByTrainer(Trainer trainer);
 
 }
