@@ -1,5 +1,5 @@
 package linkfit.dto;
 
-public record ChattingRoomResponse (Long Id, Long memberId, String memberProfileImage){
+public record ChattingRoomResponse (Long id, Long memberId, String memberProfileImage){
 
 }
