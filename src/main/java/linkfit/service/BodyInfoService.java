@@ -36,7 +36,7 @@ public class BodyInfoService {
 
     public List<BodyInfoResponse> getAllBodyInfo(Long userId, Pageable pageable) {
         User user = userService.getUser(userId);
-        Page<BodyInfo> bodyInfos = bodyInfoRepository.findAllByUserId(user.getId(), pageable);
+        Page<BodyInfo> bodyInfos = bodyInfoRepository.findAllByUser(user, pageable);
         return bodyInfos.stream()
             .map(BodyInfo::toDto)
             .toList();

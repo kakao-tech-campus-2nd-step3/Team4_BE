@@ -45,9 +45,8 @@ class BodyInfoRepositoryTest {
 
     @Test
     void findAllByUserId() {
-        System.out.println("ID"+user.getId());
         //when
-        Page<BodyInfo> bodyInfos = bodyInfoRepository.findAllByUserId(user.getId(),
+        Page<BodyInfo> bodyInfos = bodyInfoRepository.findAllByUser(user,
             PageRequest.of(0, 10));
 
         //then
