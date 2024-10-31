@@ -1,14 +1,14 @@
 package linkfit.service;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
-import linkfit.dto.ProgressPtDetailResponse;
+import linkfit.dto.PtUserProfileResponse;
 import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
-import linkfit.entity.Schedule;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
@@ -53,8 +53,7 @@ public class PtService {
         User user = getUser(userId);
         Pt pt = ptRepository.findByUserAndStatus(user, PtStatus.APPROVAL)
             .orElseThrow(() -> new NotFoundException("not.found.pt"));
-        List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
-        return new UserPtResponse(pt, schedules);
+        return new UserPtResponse(pt);
     }
 
     public void sendSuggestion(Long trainerId, PtSuggestionRequest ptSuggestionRequest) {
@@ -78,6 +77,7 @@ public class PtService {
             .toList();
     }
 
+    @Transactional
     public void approvalSuggestion(Long userId, Long ptId) {
         User user = getUser(userId);
         List<Pt> ptList = ptRepository.findByUser(user);
@@ -122,16 +122,14 @@ public class PtService {
             .orElseThrow(() -> new NotFoundException("not.found.pt"));
     }
 
-    public ProgressPtDetailResponse getProgressUserDetails(Long trainerId, Long ptId) {
+    public PtUserProfileResponse getProgressPtDetails(Long trainerId, Long ptId) {
         Trainer trainer = getTrainer(trainerId);
         Pt pt = findSuggestion(ptId);
         if (!pt.getTrainer().equals(trainer)) {
             throw new PermissionException("not.owner");
         }
         User user = pt.getUser();
-        List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
-        return new ProgressPtDetailResponse(user.getId(), user.getName(), user.getProfileImageUrl(),
-            schedules);
+        return new PtUserProfileResponse(user.getId(), user.getName(), user.getProfileImageUrl());
     }
 
     private Trainer getTrainer(Long trainerId) {
