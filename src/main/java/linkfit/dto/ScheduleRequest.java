@@ -8,12 +8,9 @@ import linkfit.entity.Schedule;
 
 public record ScheduleRequest(@NotNull
                               @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-                              LocalDateTime startTime, String content) {
+                              LocalDateTime startTime) {
 
     public Schedule toEntity(Pt pt) {
-        if (content == null) {
-            return new Schedule(pt, startTime);
-        }
-        return new Schedule(pt, startTime, content);
+        return new Schedule(pt, startTime);
     }
 }

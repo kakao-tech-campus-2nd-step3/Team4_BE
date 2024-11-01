@@ -2,9 +2,8 @@ package linkfit.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+
 import linkfit.dto.ChattingRoomRegisterRequest;
 import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageRequest;
@@ -14,7 +13,6 @@ import linkfit.entity.Message;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
-import linkfit.exception.PermissionException;
 import linkfit.repository.ChattingRoomRepository;
 import linkfit.repository.MessageRepository;
 import linkfit.repository.TrainerRepository;
@@ -89,14 +87,26 @@ public class ChattingService {
     }
 
     private List<ChattingRoomResponse> findUserJoinedRooms(Long userId) {
-        return chattingRoomRepository.findAllByUserId(userId).stream()
-            .map(ChattingRoom::toDto)
+        User user = getUser(userId);
+        return chattingRoomRepository.findAllByUser(user).stream()
+            .map(chattingRoom -> {
+                Message lastMessage = messageRepository
+                        .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
+                        .orElse(null);
+                return chattingRoom.toUserDto(lastMessage);
+            })
             .toList();
     }
 
     private List<ChattingRoomResponse> findTrainerJoinedRooms(Long trainerId) {
-        return chattingRoomRepository.findAllByTrainerId(trainerId).stream()
-            .map(ChattingRoom::toDto)
+        Trainer trainer = getTrainer(trainerId);
+        return chattingRoomRepository.findAllByTrainer(trainer).stream()
+                .map(chattingRoom -> {
+                    Message lastMessage = messageRepository
+                            .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
+                            .orElse(null);
+                    return chattingRoom.toTrainerDto(lastMessage);
+                })
             .toList();
     }
 

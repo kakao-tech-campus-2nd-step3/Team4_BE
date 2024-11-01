@@ -55,6 +55,10 @@ public class Gym {
         return location;
     }
 
+    public GymStatus getStatus() {
+        return status;
+    }
+
     public GymRegisterWaitingResponse toDTO() {
         return new GymRegisterWaitingResponse(id, name, location);
     }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import linkfit.annotation.Login;
 import linkfit.dto.ScheduleRequest;
 import linkfit.dto.ScheduleResponse;
@@ -22,7 +23,7 @@ public interface ScheduleControllerDocs {
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "PT 일정 조회 성공"),
         @ApiResponse(responseCode = "404", description = "존재하지 않는 PT")})
-    ResponseEntity<ScheduleResponse> getSchedules(@PathVariable Long ptId);
+    ResponseEntity<List<ScheduleResponse>> getSchedules(@PathVariable Long ptId);
 
     @Operation(summary = "스케줄 추가", description = "트레이너가 진행중인 PT에 일정 추가", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
