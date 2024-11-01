@@ -42,7 +42,17 @@ public class ChattingRoom {
         return trainer;
     }
 
-    public ChattingRoomResponse toDto() {
-        return new ChattingRoomResponse(this.id, this.user.getId(), this.trainer.getId());
+    public ChattingRoomResponse toUserDto(Message message) {
+        if(message == null) {
+            return new ChattingRoomResponse(id, trainer.getName(), trainer.getProfileImageUrl(), null, null);
+        }
+        return new ChattingRoomResponse(id, trainer.getName(), trainer.getProfileImageUrl(), message.getContent(), message.getSender());
+    }
+
+    public ChattingRoomResponse toTrainerDto(Message message) {
+        if(message == null) {
+            return new ChattingRoomResponse(id, user.getName(), user.getProfileImageUrl(), null, null);
+        }
+        return new ChattingRoomResponse(id, user.getName(), user.getProfileImageUrl(), message.getContent(), message.getSender());
     }
 }

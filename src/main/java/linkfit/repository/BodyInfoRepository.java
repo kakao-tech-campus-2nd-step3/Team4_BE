@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BodyInfoRepository extends JpaRepository<BodyInfo, Long> {
 
-    Page<BodyInfo> findAllByUserId(Long userId, Pageable pageable);
+    Page<BodyInfo> findAllByUser(User user, Pageable pageable);
 
-    Optional<BodyInfo> findTopByUserOrderByCreateDate(User user);
+    Optional<BodyInfo> findTopByUserOrderByCreateDateDesc(User user);
+
 }

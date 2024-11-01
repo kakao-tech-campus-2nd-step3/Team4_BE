@@ -22,6 +22,5 @@ public interface PtRepository extends JpaRepository<Pt, Long> {
 
     Optional<Pt> findByUserAndStatus(User user, PtStatus status);
 
-
     Page<Pt> findAllByUserAndStatus(User user, PtStatus status, Pageable pageable);
 }

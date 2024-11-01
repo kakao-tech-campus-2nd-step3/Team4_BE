@@ -43,13 +43,6 @@ public class Trainer {
     @Column(nullable = false)
     private TrainerGender gender;
 
-    @Transient
-    private static DefaultImageProvider defaultImageProvider;
-
-    public static void setDefaultImageProvider(DefaultImageProvider provider) {
-        defaultImageProvider = provider;
-    }
-
     protected Trainer() {
     }
 
@@ -58,13 +51,6 @@ public class Trainer {
         this.password = password;
         this.name = name;
         this.gender = gender;
-    }
-
-    @PrePersist
-    private void setDefaultProfileImageUrl() {
-        if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
-            this.profileImageUrl = defaultImageProvider.getDefaultImageUrl();
-        }
     }
 
     public Long getId() {
@@ -89,6 +75,10 @@ public class Trainer {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public void setGym(Gym gym) {
+        this.gym = gym;
     }
 
     public Gym getGym() {

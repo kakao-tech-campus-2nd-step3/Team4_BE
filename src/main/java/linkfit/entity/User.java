@@ -36,14 +36,16 @@ public class User {
     @Column(nullable = false)
     private String location;
 
-    @Transient
-    private static DefaultImageProvider defaultImageProvider;
-
-    public static void setDefaultImageProvider(DefaultImageProvider provider) {
-        defaultImageProvider = provider;
+    protected User() {
     }
 
-    protected User() {
+    public User(String email, String password, String name, String profileImageUrl,
+        String location) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+        this.location = location;
     }
 
     public User(String email, String password, String name, String location) {
@@ -51,13 +53,6 @@ public class User {
         this.password = password;
         this.name = name;
         this.location = location;
-    }
-
-    @PrePersist
-    private void setDefaultProfileImageUrl() {
-        if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
-            this.profileImageUrl = defaultImageProvider.getDefaultImageUrl();
-        }
     }
 
     public Long getId() {
@@ -80,12 +75,12 @@ public class User {
         return password;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
     public String getLocation() {
         return location;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public void updateInfo(UserProfileRequest request) {
