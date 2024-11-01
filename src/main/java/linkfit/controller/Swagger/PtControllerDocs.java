@@ -49,7 +49,7 @@ public interface PtControllerDocs {
     ResponseEntity<List<ReceivePtSuggestResponse>> getAllReceiveSuggestion(
         @Parameter(hidden = true) @Login Token token, @ParameterObject Pageable pageable);
 
-    @Operation(summary = "일반유저) 진행중인 PT 상세 조회", description = "진행중인 PT의 상세정보 조회", parameters = {
+    @Operation(summary = "일반유저) 진행중인 PT 조회", description = "진행중인 PT의 목록 조회", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "진행중인 PT상세정보 조회 성공"),
