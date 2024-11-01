@@ -89,14 +89,24 @@ public class ChattingService {
     private List<ChattingRoomResponse> findUserJoinedRooms(Long userId) {
         User user = getUser(userId);
         return chattingRoomRepository.findAllByUser(user).stream()
-            .map(ChattingRoom::toUserDto)
+            .map(chattingRoom -> {
+                Message lastMessage = messageRepository
+                        .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
+                        .orElse(null);
+                return chattingRoom.toUserDto(lastMessage);
+            })
             .toList();
     }
 
     private List<ChattingRoomResponse> findTrainerJoinedRooms(Long trainerId) {
         Trainer trainer = getTrainer(trainerId);
         return chattingRoomRepository.findAllByTrainer(trainer).stream()
-            .map(ChattingRoom::toTrainerDto)
+                .map(chattingRoom -> {
+                    Message lastMessage = messageRepository
+                            .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
+                            .orElse(null);
+                    return chattingRoom.toTrainerDto(lastMessage);
+                })
             .toList();
     }
 

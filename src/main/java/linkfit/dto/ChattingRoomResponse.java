@@ -1,5 +1,8 @@
 package linkfit.dto;
 
-public record ChattingRoomResponse (Long id, Long memberId, String memberProfileImage){
+import linkfit.status.Role;
+
+public record ChattingRoomResponse(Long id, String memberName, String memberProfileImageUrl, String lastMessage,
+                                   Role lastSender) {
 
 }
