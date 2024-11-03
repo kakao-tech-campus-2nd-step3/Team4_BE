@@ -3,6 +3,7 @@ package linkfit.config;
 import java.util.List;
 import linkfit.resolver.LoginArgumentResolver;
 import linkfit.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
@@ -12,10 +13,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final JwtUtil jwtUtil;
+    @Value("${jwt.expiration-time}")
+    private long expirationTime;
 
-    public WebConfig(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
+    @Value("${jwt.master.id}")
+    private Long masterId;
+
+    @Bean
+    public JwtUtil jwtUtil() {
+        return new JwtUtil(expirationTime, masterId);
     }
 
     @Bean
@@ -25,6 +31,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginArgumentResolver(jwtUtil));
+        resolvers.add(new LoginArgumentResolver(jwtUtil()));
     }
 }

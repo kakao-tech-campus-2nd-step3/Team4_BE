@@ -1,5 +1,6 @@
 package linkfit.controller;
 
+import jakarta.validation.Valid;
 import linkfit.controller.Swagger.AuthControllerDocs;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TokenResponse;
@@ -30,14 +31,14 @@ public class AuthController implements AuthControllerDocs {
 
     @PostMapping("/user/register")
     public ResponseEntity<Void> registerUser(
-        @RequestPart(value = "user") UserRegisterRequest request,
+        @RequestPart(value = "user") @Valid UserRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         userService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<TokenResponse> loginUser(@RequestBody LoginRequest request) {
+    public ResponseEntity<TokenResponse> loginUser(@Valid @RequestBody LoginRequest request) {
         TokenResponse token = userService.login(request);
         return ResponseEntity.status(HttpStatus.OK)
             .body(token);
@@ -45,14 +46,14 @@ public class AuthController implements AuthControllerDocs {
 
     @PostMapping("/trainer/register")
     public ResponseEntity<Void> registerTrainer(
-        @RequestPart(value = "trainer") TrainerRegisterRequest request,
+        @RequestPart(value = "trainer") @Valid TrainerRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         trainerService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/trainer/login")
-    public ResponseEntity<TokenResponse> loginTrainer(@RequestBody LoginRequest request) {
+    public ResponseEntity<TokenResponse> loginTrainer(@Valid @RequestBody LoginRequest request) {
         TokenResponse token = trainerService.login(request);
         return ResponseEntity.status(HttpStatus.OK)
             .body(token);

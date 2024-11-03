@@ -47,7 +47,7 @@ public class PreferenceService {
     }
 
     private BodyInfo getLastBodyInfo(User user) {
-        return bodyInfoRepository.findTopByUserOrderByCreateDate(user)
+        return bodyInfoRepository.findTopByUserOrderByCreateDateDesc(user)
             .orElseThrow(() -> new NotFoundException("not.found.bodyinfo"));
     }
 
