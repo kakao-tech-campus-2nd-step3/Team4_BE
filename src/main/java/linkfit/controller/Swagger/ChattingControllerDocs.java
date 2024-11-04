@@ -31,8 +31,8 @@ public interface ChattingControllerDocs {
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "채팅방 목록 조회 성공"),
         @ApiResponse(responseCode = "404", description = "존재하지 않는 채팅방")})
-    ResponseEntity<ChatResponse> getAllMessages(@Parameter(hidden = true) @Login Token token,
-        @PathVariable("pathId") Long pathId);
+    ResponseEntity<ChatResponse> startChatting(@Parameter(hidden = true) @Login Token token,
+        @Parameter(description="User Or Trainer Id") Long pathId);
 
 
 }
