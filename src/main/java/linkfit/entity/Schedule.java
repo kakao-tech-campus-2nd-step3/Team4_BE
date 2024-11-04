@@ -40,6 +40,10 @@ public class Schedule {
         return pt;
     }
 
+    public LocalDateTime getAtTime() {
+        return atTime;
+    };
+
     public boolean getCompleted() {
         return isCompleted;
     }
