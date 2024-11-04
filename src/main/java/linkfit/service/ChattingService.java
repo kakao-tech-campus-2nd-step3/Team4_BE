@@ -72,15 +72,13 @@ public class ChattingService {
 
     //Token의 ID값으로 자신이 속해있는 채팅방 찾기
     public List<ChattingRoomResponse> findJoinedRooms(Long id, Role role) {
-        if (role == Role.USER) {
+        if (role.equals(Role.USER)) {
             return findUserJoinedRooms(id);
         }
 
-        if (role == Role.TRAINER) {
+        else {
             return findTrainerJoinedRooms(id);
         }
-
-        return new ArrayList<>();
     }
 
     //채팅방의 모든 메세지 가져오기
