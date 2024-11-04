@@ -24,27 +24,27 @@ public class Schedule {
     private Pt pt;
 
     @Column(nullable = false)
-    private LocalDateTime atTime;
+    private LocalDateTime date;
 
     private boolean isCompleted = Boolean.FALSE;
 
     protected Schedule() {
     }
 
-    public Schedule(Pt pt, LocalDateTime atTime) {
+    public Schedule(Pt pt, LocalDateTime date) {
         this.pt = pt;
-        this.atTime = atTime;
+        this.date = date;
     }
 
     public Pt getPt() {
         return pt;
     }
 
-    public LocalDateTime getAtTime() {
-        return atTime;
+    public LocalDateTime getDate() {
+        return date;
     };
 
-    public boolean getCompleted() {
+    public boolean getIsCompleted() {
         return isCompleted;
     }
 
@@ -53,6 +53,6 @@ public class Schedule {
     }
 
     public ScheduleResponse toDto(){
-        return new ScheduleResponse(isCompleted,atTime);
+        return new ScheduleResponse(isCompleted,date);
     }
 }
