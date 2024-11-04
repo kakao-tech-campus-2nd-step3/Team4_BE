@@ -33,8 +33,10 @@ public class ChattingController implements ChattingControllerDocs {
     }
 
     @GetMapping("/{pathId}")
-    public ResponseEntity<ChatResponse> getAllMessages(@Login Token token, @PathVariable("pathId") Long pathId) {
-        ChatResponse response = chattingService.findRoomAndMessage(token.id(), token.role(), pathId);
+    public ResponseEntity<ChatResponse> getAllMessages(@Login Token token,
+        @PathVariable("pathId") Long pathId) {
+        ChatResponse response = chattingService.findRoomAndMessage(token.id(), token.role(),
+            pathId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

@@ -26,11 +26,12 @@ public interface ChattingControllerDocs {
     ResponseEntity<List<ChattingRoomResponse>> getMyChatRooms(
         @Parameter(hidden = true) Token token);
 
-    @Operation(summary = "채팅방의 기존 메시지 목록 조회", description = "채팅방 Id에 해당하는 채팅방의 기존 채팅목록을 가져옵니다.")
+    @Operation(summary = "채팅방의 기존 메시지 목록 조회", description = "채팅방 Id에 해당하는 채팅방의 기존 채팅목록을 가져옵니다.", parameters = {
+        @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "채팅방 목록 조회 성공"),
         @ApiResponse(responseCode = "404", description = "존재하지 않는 채팅방")})
-    ResponseEntity<ChatResponse> getAllMessages(@Login Token token,
+    ResponseEntity<ChatResponse> getAllMessages(@Parameter(hidden = true) @Login Token token,
         @PathVariable("pathId") Long pathId);
 
 

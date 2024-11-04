@@ -74,9 +74,7 @@ public class ChattingService {
     public List<ChattingRoomResponse> findJoinedRooms(Long id, Role role) {
         if (role.equals(Role.USER)) {
             return findUserJoinedRooms(id);
-        }
-
-        else {
+        } else {
             return findTrainerJoinedRooms(id);
         }
     }
@@ -114,8 +112,8 @@ public class ChattingService {
         return chattingRoomRepository.findAllByUser(user).stream()
             .map(chattingRoom -> {
                 Message lastMessage = messageRepository
-                        .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
-                        .orElse(null);
+                    .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
+                    .orElse(null);
                 return chattingRoom.toUserDto(lastMessage);
             })
             .toList();
@@ -124,12 +122,12 @@ public class ChattingService {
     private List<ChattingRoomResponse> findTrainerJoinedRooms(Long trainerId) {
         Trainer trainer = getTrainer(trainerId);
         return chattingRoomRepository.findAllByTrainer(trainer).stream()
-                .map(chattingRoom -> {
-                    Message lastMessage = messageRepository
-                            .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
-                            .orElse(null);
-                    return chattingRoom.toTrainerDto(lastMessage);
-                })
+            .map(chattingRoom -> {
+                Message lastMessage = messageRepository
+                    .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
+                    .orElse(null);
+                return chattingRoom.toTrainerDto(lastMessage);
+            })
             .toList();
     }
 
