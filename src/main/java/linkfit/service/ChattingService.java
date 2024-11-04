@@ -28,7 +28,7 @@ public class ChattingService {
     private final ChattingRoomRepository chattingRoomRepository;
     private final UserRepository userRepository;
     private final TrainerRepository trainerRepository;
-    MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
     public ChattingService(ChattingRoomRepository chattingRoomRepository,
         UserRepository userRepository, TrainerRepository trainerRepository,
