@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import linkfit.dto.ChatResponse;
 import linkfit.dto.ChattingRoomRegisterRequest;
 import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageRequest;
@@ -19,6 +20,7 @@ import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.status.Role;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ChattingService {
@@ -37,12 +39,35 @@ public class ChattingService {
         this.messageRepository = messageRepository;
     }
 
+    @Transactional
+    public ChatResponse findRoomAndMessage(Long tokenId, Role role, Long pathId) {
+        User user;
+        Trainer trainer;
+        // 역할에 따른 User, Trainer 설정
+        if (role.equals(Role.USER)) {
+            user = getUser(tokenId);
+            trainer = getTrainer(tokenId);
+        } else {
+            user = getUser(pathId);
+            trainer = getTrainer(tokenId);
+        }
 
-    public void addRoom(Long userId, String role, ChattingRoomRegisterRequest request) {
-        //이미 userId, TrainerId 에 해당하는 사용자가 속해있는 대화방이 있는지 확인하는 로직 필요
-        User user = getUser(userId);
-        Trainer trainer = getTrainer(userId);
-        chattingRoomRepository.save(request.toEntity(user, trainer));
+        // 채팅방 조회 또는 생성
+        ChattingRoom room = findOrCreateChattingRoom(user, trainer);
+        // 채팅 메시지 조회
+        List<MessageResponse> messages = findAllMessages(room.getId());
+
+        return new ChatResponse(room.getId(), messages);
+    }
+
+    private ChattingRoom findOrCreateChattingRoom(User user, Trainer trainer) {
+        if (chattingRoomRepository.existsByUserAndTrainer(user, trainer)) {
+            return chattingRoomRepository.findByUserAndTrainer(user, trainer);
+        } else {
+            ChattingRoom room = new ChattingRoom(user, trainer);
+            chattingRoomRepository.save(room);
+            return room;
+        }
     }
 
     //Token의 ID값으로 자신이 속해있는 채팅방 찾기
@@ -114,4 +139,5 @@ public class ChattingService {
         return chattingRoomRepository.findById(chattingRoomId)
             .orElseThrow(() -> new NotFoundException("not.found.chattingroom"));
     }
+
 }
