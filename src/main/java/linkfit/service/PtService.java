@@ -9,6 +9,7 @@ import linkfit.dto.ReceivePtSuggestResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
+import linkfit.entity.Schedule;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
@@ -53,7 +54,8 @@ public class PtService {
         User user = getUser(userId);
         Pt pt = ptRepository.findByUserAndStatus(user, PtStatus.APPROVAL)
             .orElseThrow(() -> new NotFoundException("not.found.pt"));
-        return new UserPtResponse(pt);
+        List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
+        return new UserPtResponse(pt, schedules);
     }
 
     public void sendSuggestion(Long trainerId, PtSuggestionRequest ptSuggestionRequest) {
