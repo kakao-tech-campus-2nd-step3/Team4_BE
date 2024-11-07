@@ -3,6 +3,7 @@ package linkfit.controller;
 import java.util.List;
 import linkfit.annotation.Login;
 import linkfit.controller.Swagger.ChattingControllerDocs;
+import linkfit.dto.ChatResponse;
 import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageResponse;
 import linkfit.dto.Token;
@@ -24,16 +25,19 @@ public class ChattingController implements ChattingControllerDocs {
         this.chattingService = chattingService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<ChattingRoomResponse>> getMyChatRooms(@Login Token token){
-        List<ChattingRoomResponse> responses =  chattingService.findJoinedRooms(token.id(),token.role());
+    @GetMapping("/room")
+    public ResponseEntity<List<ChattingRoomResponse>> getMyChatRooms(@Login Token token) {
+        List<ChattingRoomResponse> responses = chattingService.findJoinedRooms(token.id(),
+            token.role());
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
-    @GetMapping("/{roomId}")
-    public ResponseEntity<List<MessageResponse>> getAllMessages(@PathVariable Long roomId){
-        List<MessageResponse> responses = chattingService.findAllMessages(roomId);
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
+    @GetMapping("/{pathId}")
+    public ResponseEntity<ChatResponse> startChatting(@Login Token token,
+        @PathVariable("pathId") Long pathId) {
+        ChatResponse response = chattingService.findRoomAndMessage(token.id(), token.role(),
+            pathId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 

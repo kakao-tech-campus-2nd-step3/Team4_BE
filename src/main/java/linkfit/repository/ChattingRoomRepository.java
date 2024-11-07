@@ -12,5 +12,7 @@ public interface ChattingRoomRepository extends JpaRepository<ChattingRoom, Long
 
     List<ChattingRoom> findAllByUser(User user);
     List<ChattingRoom> findAllByTrainer(Trainer trainer);
+    boolean existsByUserAndTrainer(User user, Trainer trainer);
+    ChattingRoom findByUserAndTrainer(User user, Trainer trainer);
 
 }
