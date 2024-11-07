@@ -1,14 +1,13 @@
 package linkfit.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import linkfit.dto.ChatResponse;
-import linkfit.dto.ChattingRoomRegisterRequest;
 import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageRequest;
 import linkfit.dto.MessageResponse;
+import linkfit.dto.Token;
 import linkfit.entity.ChattingRoom;
 import linkfit.entity.Message;
 import linkfit.entity.Trainer;
@@ -40,43 +39,24 @@ public class ChattingService {
     }
 
     @Transactional
-    public ChatResponse findRoomAndMessage(Long tokenId, Role role, Long pathId) {
-        User user;
-        Trainer trainer;
-        // 역할에 따른 User, Trainer 설정
-        if (role.equals(Role.USER)) {
-            user = getUser(tokenId);
-            trainer = getTrainer(tokenId);
-        } else {
-            user = getUser(pathId);
-            trainer = getTrainer(tokenId);
-        }
-
-        // 채팅방 조회 또는 생성
-        ChattingRoom room = findOrCreateChattingRoom(user, trainer);
-        // 채팅 메시지 조회
-        List<MessageResponse> messages = findAllMessages(room.getId());
-
-        return new ChatResponse(room.getId(), messages);
+    public ChatResponse findChatRoom(Long userId, Long trainerId) {
+        User user = getUser(userId);
+        Trainer trainer = getTrainer(trainerId);
+        ChattingRoom room = getChattingRoom(user, trainer);
+        return new ChatResponse(room.getId());
     }
 
-    private ChattingRoom findOrCreateChattingRoom(User user, Trainer trainer) {
-        if (chattingRoomRepository.existsByUserAndTrainer(user, trainer)) {
-            return chattingRoomRepository.findByUserAndTrainer(user, trainer);
-        } else {
-            ChattingRoom room = new ChattingRoom(user, trainer);
-            chattingRoomRepository.save(room);
-            return room;
-        }
+    private ChattingRoom getChattingRoom(User user, Trainer trainer) {
+        return chattingRoomRepository.findByUserAndTrainer(user, trainer)
+            .orElseGet(() -> chattingRoomRepository.save(new ChattingRoom(user, trainer)));
     }
 
     //Token의 ID값으로 자신이 속해있는 채팅방 찾기
     public List<ChattingRoomResponse> findJoinedRooms(Long id, Role role) {
         if (role.equals(Role.USER)) {
             return findUserJoinedRooms(id);
-        } else {
-            return findTrainerJoinedRooms(id);
         }
+        return findTrainerJoinedRooms(id);
     }
 
     //채팅방의 모든 메세지 가져오기
