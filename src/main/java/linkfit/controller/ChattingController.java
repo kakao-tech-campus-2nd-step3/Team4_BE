@@ -8,6 +8,7 @@ import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageResponse;
 import linkfit.dto.Token;
 import linkfit.service.ChattingService;
+import linkfit.status.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,20 +26,27 @@ public class ChattingController implements ChattingControllerDocs {
         this.chattingService = chattingService;
     }
 
-    @GetMapping("/room")
+    @GetMapping
     public ResponseEntity<List<ChattingRoomResponse>> getMyChatRooms(@Login Token token) {
         List<ChattingRoomResponse> responses = chattingService.findJoinedRooms(token.id(),
             token.role());
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
-    @GetMapping("/{pathId}")
+    @GetMapping("/searchRoom/{opponentId}")
     public ResponseEntity<ChatResponse> startChatting(@Login Token token,
-        @PathVariable("pathId") Long pathId) {
-        ChatResponse response = chattingService.findRoomAndMessage(token.id(), token.role(),
-            pathId);
+        @PathVariable("opponentId") Long opponentId) {
+        if(token.role() == Role.USER) {
+            ChatResponse response = chattingService.findChatRoom(token.id(), opponentId);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        ChatResponse response = chattingService.findChatRoom(opponentId, token.id());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-
+    @GetMapping("/{roomId}")
+    public ResponseEntity<List<MessageResponse>> getAllMessages(@PathVariable Long roomId){
+        List<MessageResponse> responses = chattingService.findAllMessages(roomId);
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
+    }
 }
