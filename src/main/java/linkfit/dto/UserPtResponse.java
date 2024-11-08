@@ -5,11 +5,11 @@ import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
 
 public record UserPtResponse(Long trainerId, String trainerName, String profileImageUrl,
-                             String gymName, int count) {
+                             String gymName, int count, List<ScheduleResponse> schedules) {
 
-    public UserPtResponse(Pt pt) {
+    public UserPtResponse(Pt pt, List<Schedule> schedules) {
         this(pt.getTrainer().getId(), pt.getTrainer().getName(),
             pt.getTrainer().getProfileImageUrl(), pt.getTrainer().getGym().getName(),
-            pt.getTotalCount());
+            pt.getTotalCount(), schedules.stream().map(Schedule::toDto).toList());
     }
 }

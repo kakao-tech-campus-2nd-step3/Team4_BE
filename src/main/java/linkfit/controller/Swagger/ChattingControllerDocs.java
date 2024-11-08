@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import linkfit.annotation.Login;
+import linkfit.dto.ChatResponse;
 import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageResponse;
 import linkfit.dto.Token;
@@ -22,13 +23,16 @@ public interface ChattingControllerDocs {
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "채팅방 목록 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 필요")})
-    ResponseEntity<List<ChattingRoomResponse>> getMyChatRooms(@Parameter(hidden = true) Token token);
+    ResponseEntity<List<ChattingRoomResponse>> getMyChatRooms(
+        @Parameter(hidden = true) Token token);
 
-    @Operation(summary = "채팅방의 기존 메시지 목록 조회", description = "채팅방 Id에 해당하는 채팅방의 기존 채팅목록을 가져옵니다.")
+    @Operation(summary = "채팅방의 기존 메시지 목록 조회", description = "채팅방 Id에 해당하는 채팅방의 기존 채팅목록을 가져옵니다.", parameters = {
+        @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "채팅방 목록 조회 성공"),
         @ApiResponse(responseCode = "404", description = "존재하지 않는 채팅방")})
-    ResponseEntity<List<MessageResponse>> getAllMessages(@PathVariable Long roomId);
+    ResponseEntity<ChatResponse> startChatting(@Parameter(hidden = true) @Login Token token,
+        @Parameter(description="User Or Trainer Id") Long pathId);
 
 
 }

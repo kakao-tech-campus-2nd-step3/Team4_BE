@@ -1,6 +1,7 @@
 package linkfit.repository;
 
 import java.util.List;
+import java.util.Optional;
 import linkfit.entity.ChattingRoom;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
@@ -12,5 +13,6 @@ public interface ChattingRoomRepository extends JpaRepository<ChattingRoom, Long
 
     List<ChattingRoom> findAllByUser(User user);
     List<ChattingRoom> findAllByTrainer(Trainer trainer);
+    Optional<ChattingRoom> findByUserAndTrainer(User user, Trainer trainer);
 
 }
