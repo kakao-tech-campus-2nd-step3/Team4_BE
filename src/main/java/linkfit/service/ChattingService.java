@@ -1,13 +1,13 @@
 package linkfit.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import linkfit.dto.ChattingRoomRegisterRequest;
+import linkfit.dto.ChatResponse;
 import linkfit.dto.ChattingRoomResponse;
 import linkfit.dto.MessageRequest;
 import linkfit.dto.MessageResponse;
+import linkfit.dto.Token;
 import linkfit.entity.ChattingRoom;
 import linkfit.entity.Message;
 import linkfit.entity.Trainer;
@@ -19,6 +19,7 @@ import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.status.Role;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ChattingService {
@@ -26,7 +27,7 @@ public class ChattingService {
     private final ChattingRoomRepository chattingRoomRepository;
     private final UserRepository userRepository;
     private final TrainerRepository trainerRepository;
-    MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
     public ChattingService(ChattingRoomRepository chattingRoomRepository,
         UserRepository userRepository, TrainerRepository trainerRepository,
@@ -37,25 +38,25 @@ public class ChattingService {
         this.messageRepository = messageRepository;
     }
 
-
-    public void addRoom(Long userId, String role, ChattingRoomRegisterRequest request) {
-        //이미 userId, TrainerId 에 해당하는 사용자가 속해있는 대화방이 있는지 확인하는 로직 필요
+    @Transactional
+    public ChatResponse findChatRoom(Long userId, Long trainerId) {
         User user = getUser(userId);
-        Trainer trainer = getTrainer(userId);
-        chattingRoomRepository.save(request.toEntity(user, trainer));
+        Trainer trainer = getTrainer(trainerId);
+        ChattingRoom room = getChattingRoom(user, trainer);
+        return new ChatResponse(room.getId());
+    }
+
+    private ChattingRoom getChattingRoom(User user, Trainer trainer) {
+        return chattingRoomRepository.findByUserAndTrainer(user, trainer)
+            .orElseGet(() -> chattingRoomRepository.save(new ChattingRoom(user, trainer)));
     }
 
     //Token의 ID값으로 자신이 속해있는 채팅방 찾기
     public List<ChattingRoomResponse> findJoinedRooms(Long id, Role role) {
-        if (role == Role.USER) {
+        if (role.equals(Role.USER)) {
             return findUserJoinedRooms(id);
         }
-
-        if (role == Role.TRAINER) {
-            return findTrainerJoinedRooms(id);
-        }
-
-        return new ArrayList<>();
+        return findTrainerJoinedRooms(id);
     }
 
     //채팅방의 모든 메세지 가져오기
@@ -91,8 +92,8 @@ public class ChattingService {
         return chattingRoomRepository.findAllByUser(user).stream()
             .map(chattingRoom -> {
                 Message lastMessage = messageRepository
-                        .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
-                        .orElse(null);
+                    .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
+                    .orElse(null);
                 return chattingRoom.toUserDto(lastMessage);
             })
             .toList();
@@ -101,12 +102,12 @@ public class ChattingService {
     private List<ChattingRoomResponse> findTrainerJoinedRooms(Long trainerId) {
         Trainer trainer = getTrainer(trainerId);
         return chattingRoomRepository.findAllByTrainer(trainer).stream()
-                .map(chattingRoom -> {
-                    Message lastMessage = messageRepository
-                            .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
-                            .orElse(null);
-                    return chattingRoom.toTrainerDto(lastMessage);
-                })
+            .map(chattingRoom -> {
+                Message lastMessage = messageRepository
+                    .findFirstByChattingRoomOrderBySendTimeDesc(chattingRoom)
+                    .orElse(null);
+                return chattingRoom.toTrainerDto(lastMessage);
+            })
             .toList();
     }
 
@@ -114,4 +115,5 @@ public class ChattingService {
         return chattingRoomRepository.findById(chattingRoomId)
             .orElseThrow(() -> new NotFoundException("not.found.chattingroom"));
     }
+
 }
