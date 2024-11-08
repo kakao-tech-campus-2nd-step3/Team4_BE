@@ -32,8 +32,7 @@ public class SportsService {
     }
 
     public Sports findSportsById(Long id) {
-        return sportsRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("not.found.sports"));
+        return getSportsById(id);
     }
 
     public void renameSports(Long id, SportsRequest sportsRequest) {
