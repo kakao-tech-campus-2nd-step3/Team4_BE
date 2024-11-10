@@ -40,8 +40,6 @@ public class ScheduleService {
 
     public void completeSchedule(Long userId, Long scheduleId) {
         Schedule schedule = getScheduleById(scheduleId);
-        Pt pt = getPtById(userId);
-        validatePTSchedule(schedule, pt.getId());
         validateScheduleOwnership(schedule, userId);
         schedule.complete();
         scheduleRepository.save(schedule);
