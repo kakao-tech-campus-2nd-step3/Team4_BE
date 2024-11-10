@@ -38,9 +38,10 @@ public class ScheduleService {
         scheduleRepository.save(schedule);
     }
 
-    public void completeSchedule(Long userId, Long ptId, Long scheduleId) {
+    public void completeSchedule(Long userId, Long scheduleId) {
         Schedule schedule = getScheduleById(scheduleId);
-        validatePTSchedule(schedule, ptId);
+        Pt pt = getPtById(userId);
+        validatePTSchedule(schedule, pt.getId());
         validateScheduleOwnership(schedule, userId);
         schedule.complete();
         scheduleRepository.save(schedule);

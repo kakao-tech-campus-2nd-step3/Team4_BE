@@ -12,6 +12,7 @@ import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.Token;
 import linkfit.dto.UserPtResponse;
 import linkfit.service.PtService;
+import linkfit.service.ScheduleService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PtController implements PtControllerDocs {
 
     private final PtService ptService;
+    private final ScheduleService scheduleService;
 
-    public PtController(PtService ptService) {
+    public PtController(PtService ptService, ScheduleService scheduleService) {
         this.ptService = ptService;
+        this.scheduleService = scheduleService;
     }
 
     @GetMapping("/trainer")
@@ -102,5 +105,11 @@ public class PtController implements PtControllerDocs {
             ptId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
+    }
+
+    @PutMapping("/schedule/{scheduleId}")
+    public ResponseEntity<Void> completeSchedule(@Login Token token, @PathVariable Long scheduleId) {
+        scheduleService.completeSchedule(token.id(), scheduleId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
