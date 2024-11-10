@@ -25,13 +25,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(PasswordMismatchException.class)
-    public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException e) {
-        String responseMessage = messageSource.getMessage(e.getMessage(), null,
-            Locale.getDefault());
-        return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
-    }
-
     //잘못된 파라미터 handling
     @ExceptionHandler
     public ResponseEntity<String> handleMethodArgumentTypeMismatchException(

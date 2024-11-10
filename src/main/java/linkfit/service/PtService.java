@@ -6,9 +6,11 @@ import linkfit.dto.PtUserProfileResponse;
 import linkfit.dto.ProgressPtListResponse;
 import linkfit.dto.PtSuggestionRequest;
 import linkfit.dto.ReceivePtSuggestResponse;
+import linkfit.dto.ScheduleResponse;
 import linkfit.dto.SendPtSuggestResponse;
 import linkfit.dto.UserPtResponse;
 import linkfit.entity.Pt;
+import linkfit.entity.Schedule;
 import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
@@ -30,15 +32,17 @@ public class PtService {
     private final UserRepository userRepository;
     private final TrainerRepository trainerRepository;
     private final PreferenceRepository preferenceRepository;
+    private final ScheduleService scheduleService;
 
     public PtService(PtRepository ptRepository, ScheduleRepository scheduleRepository,
         UserRepository userRepository, TrainerRepository trainerRepository,
-        PreferenceRepository preferenceRepository) {
+        PreferenceRepository preferenceRepository, ScheduleService scheduleService) {
         this.ptRepository = ptRepository;
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
         this.trainerRepository = trainerRepository;
         this.preferenceRepository = preferenceRepository;
+        this.scheduleService = scheduleService;
     }
 
     public List<ProgressPtListResponse> getTrainerProgressPt(Long trainerId, Pageable pageable) {
@@ -53,7 +57,8 @@ public class PtService {
         User user = getUser(userId);
         Pt pt = ptRepository.findByUserAndStatus(user, PtStatus.APPROVAL)
             .orElseThrow(() -> new NotFoundException("not.found.pt"));
-        return new UserPtResponse(pt);
+        List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
+        return new UserPtResponse(pt, schedules);
     }
 
     public void sendSuggestion(Long trainerId, PtSuggestionRequest ptSuggestionRequest) {
@@ -129,7 +134,8 @@ public class PtService {
             throw new PermissionException("not.owner");
         }
         User user = pt.getUser();
-        return new PtUserProfileResponse(user.getId(), user.getName(), user.getProfileImageUrl());
+        List<ScheduleResponse> schedules = scheduleService.getSchedules(ptId);
+        return new PtUserProfileResponse(user.getId(), user.getName(), user.getProfileImageUrl(), schedules);
     }
 
     private Trainer getTrainer(Long trainerId) {

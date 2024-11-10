@@ -26,7 +26,9 @@ public class ScheduleService {
     public List<ScheduleResponse> getSchedules(Long ptId) {
         Pt pt = getPtById(ptId);
         List<Schedule> schedules = scheduleRepository.findAllByPt(pt);
-        return schedules.stream().map(Schedule::toDto).toList();
+        return schedules.stream()
+            .map(Schedule::toDto)
+            .toList();
     }
 
     public void registerSchedule(Long trainerId, Long ptId, ScheduleRequest scheduleRequest) {
@@ -63,7 +65,7 @@ public class ScheduleService {
     }
 
     private void validateScheduleIsComplete(Schedule schedule) {
-        if (schedule.getCompleted()) {
+        if (schedule.getIsCompleted()) {
             throw new PermissionException("already.completed.schedule");
         }
     }
