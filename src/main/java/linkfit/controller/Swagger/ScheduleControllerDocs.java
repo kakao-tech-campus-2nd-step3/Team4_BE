@@ -34,15 +34,6 @@ public interface ScheduleControllerDocs {
         @Parameter(hidden = true) Token Token,
         @PathVariable Long ptId, @Valid @RequestBody ScheduleRequest scheduleRequest);
 
-    @Operation(summary = "스케줄 완료", description = "유저가 운동을 진행한 후 Schedule 완료처리", parameters = {
-        @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "스케줄 완료 처리 성공"),
-        @ApiResponse(responseCode = "401", description = "인증 필요")})
-    ResponseEntity<Void> completeSchedule(
-        @Parameter(hidden = true) @Login Token token,
-        @PathVariable Long ptId, @PathVariable Long scheduleId);
-
     @Operation(summary = "스케줄 삭제", description = "트레이너가 PT 스케줄 삭제", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
     @ApiResponses({

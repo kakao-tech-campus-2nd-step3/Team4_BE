@@ -53,6 +53,6 @@ public class Schedule {
     }
 
     public ScheduleResponse toDto(){
-        return new ScheduleResponse(isCompleted,date);
+        return new ScheduleResponse(id, isCompleted,date);
     }
 }

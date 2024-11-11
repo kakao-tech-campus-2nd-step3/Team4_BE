@@ -41,13 +41,6 @@ public class ScheduleController implements ScheduleControllerDocs {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{scheduleId}")
-    public ResponseEntity<Void> completeSchedule(@Login Token token, @PathVariable Long ptId,
-        @PathVariable Long scheduleId) {
-        scheduleService.completeSchedule(token.id(), ptId, scheduleId);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> deleteSchedule(@Login Token token,
         @PathVariable Long ptId, @PathVariable Long scheduleId) {

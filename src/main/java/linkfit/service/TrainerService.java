@@ -5,6 +5,7 @@ import linkfit.dto.LoginRequest;
 import linkfit.dto.TokenResponse;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.dto.TrainerRegisterRequest;
+import linkfit.entity.Gym;
 import linkfit.entity.Trainer;
 import linkfit.exception.DuplicateException;
 import linkfit.exception.NotFoundException;
@@ -23,13 +24,16 @@ public class TrainerService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final DefaultImageProvider defaultImageProvider;
+    private final GymService gymService;
 
     public TrainerService(TrainerRepository trainerRepository, JwtUtil jwtUtil,
-        PasswordEncoder passwordEncoder, DefaultImageProvider defaultImageProvider) {
+        PasswordEncoder passwordEncoder, DefaultImageProvider defaultImageProvider,
+        GymService gymService) {
         this.trainerRepository = trainerRepository;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
         this.defaultImageProvider = defaultImageProvider;
+        this.gymService = gymService;
     }
 
     @Transactional
@@ -74,5 +78,11 @@ public class TrainerService {
         }
     }
 
+    public void setTrainerGym(Long trainerId, Long gymId) {
+        Trainer trainer = getTrainer(trainerId);
+        Gym gym = gymService.getGymById(gymId);
+        trainer.setGym(gym);
+        trainerRepository.save(trainer);
+    }
 
 }

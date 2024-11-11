@@ -8,8 +8,7 @@ import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
 import linkfit.dto.GymRegisterRequest;
-import linkfit.dto.GymRegisterWaitingResponse;
-import linkfit.dto.GymSearchResponse;
+import linkfit.dto.GymResponse;
 import linkfit.dto.GymTrainersResponse;
 import linkfit.entity.Gym;
 import linkfit.entity.GymAdminRelation;
@@ -21,7 +20,6 @@ import linkfit.repository.GymAdminRelationRepository;
 import linkfit.repository.GymImageRepository;
 import linkfit.repository.GymRepository;
 import linkfit.repository.TrainerRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,10 +64,10 @@ public class GymService {
         gymRepository.save(gym);
     }
 
-    public GymSearchResponse findAllByKeyword(String keyword, Pageable pageable) {
-        Page<Gym> gymList = gymRepository.findAllByNameContainingAndStatus(keyword, APPROVAL,
-            pageable);
-        return new GymSearchResponse(gymList.getContent());
+    public List<GymResponse> findAllByKeyword(String keyword, Pageable pageable) {
+        return gymRepository.findAllByNameContainingAndStatus(keyword, APPROVAL, pageable).stream()
+            .map(Gym::toDTO)
+            .toList();
     }
 
     public GymDetailResponse getGymDetails(Long gymId) {
@@ -104,7 +102,7 @@ public class GymService {
         gymAdminRelationRepository.save(gymAdminRelation);
     }
 
-    public List<GymRegisterWaitingResponse> getGymRegisterWaitingList() {
+    public List<GymResponse> getGymRegisterWaitingList() {
         return gymRepository.findAllByStatus(WAITING)
             .stream()
             .map(Gym::toDTO)

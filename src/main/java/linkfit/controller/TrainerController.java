@@ -2,6 +2,7 @@ package linkfit.controller;
 
 import linkfit.annotation.Login;
 import linkfit.controller.Swagger.TrainerControllerDocs;
+import linkfit.dto.SetTrainerGymRequest;
 import linkfit.dto.Token;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.dto.UserProfileRequest;
@@ -11,7 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +35,12 @@ public class TrainerController implements TrainerControllerDocs {
         TrainerProfileResponse responseBody = trainerService.getProfile(trainerId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
+    }
+
+    @PostMapping("/gym")
+    public ResponseEntity<Void> setTrainerGym(@Login Token token, @RequestBody SetTrainerGymRequest request) {
+        trainerService.setTrainerGym(token.id(), request.id());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/profile")

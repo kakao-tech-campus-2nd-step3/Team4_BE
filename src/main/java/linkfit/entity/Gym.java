@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.List;
 import linkfit.dto.GymDetailResponse;
-import linkfit.dto.GymRegisterWaitingResponse;
+import linkfit.dto.GymResponse;
 import linkfit.status.GymStatus;
 
 @Entity
@@ -59,8 +59,8 @@ public class Gym {
         return status;
     }
 
-    public GymRegisterWaitingResponse toDTO() {
-        return new GymRegisterWaitingResponse(id, name, location);
+    public GymResponse toDTO() {
+        return new GymResponse(id, name, location);
     }
 
     public GymDetailResponse toDetailDTO(List<GymImage> images) {

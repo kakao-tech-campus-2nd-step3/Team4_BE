@@ -8,8 +8,8 @@ import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
 import linkfit.dto.GymRegisterRequest;
+import linkfit.dto.GymResponse;
 import linkfit.dto.GymSearchRequest;
-import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
 import linkfit.dto.Token;
 import linkfit.service.GymService;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,9 +45,9 @@ public class GymController implements GymControllerDocs {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<GymSearchResponse> searchGymByKeyword(
-        @RequestBody GymSearchRequest request, Pageable pageable) {
-        GymSearchResponse responseBody = gymService.findAllByKeyword(request.keyword(), pageable);
+    public ResponseEntity<List<GymResponse>> searchGymByKeyword(
+        @RequestParam("keyword") GymSearchRequest request, Pageable pageable) {
+        List<GymResponse> responseBody = gymService.findAllByKeyword(request.keyword(), pageable);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
