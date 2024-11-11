@@ -12,8 +12,8 @@ import linkfit.dto.GymDescriptionRequest;
 import linkfit.dto.GymDetailResponse;
 import linkfit.dto.GymLocationResponse;
 import linkfit.dto.GymRegisterRequest;
+import linkfit.dto.GymResponse;
 import linkfit.dto.GymSearchRequest;
-import linkfit.dto.GymSearchResponse;
 import linkfit.dto.GymTrainersResponse;
 import linkfit.dto.Token;
 import org.springdoc.core.annotations.ParameterObject;
@@ -36,7 +36,7 @@ public interface GymControllerDocs {
     @Operation(summary = "키워드로 헬스장 조회", description = "키워드가 포함되는 헬스장 조회(트레이너 회원 가입시 소속 입력란에서 사용)")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "헬스장 조회 성공")})
-    ResponseEntity<GymSearchResponse> searchGymByKeyword(
+    ResponseEntity<List<GymResponse>> searchGymByKeyword(
         @RequestBody GymSearchRequest request, @ParameterObject Pageable pageable);
 
     @Operation(summary = "헬스장 소속 트레이너 조회", description = "Gym Id에 해당하는 헬스장의 소속 트레이너 조회")

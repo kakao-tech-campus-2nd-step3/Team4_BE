@@ -1,8 +1,7 @@
 package linkfit.adminController;
 
 import java.util.List;
-import linkfit.dto.GymRegisterWaitingResponse;
-import linkfit.dto.GymSearchResponse;
+import linkfit.dto.GymResponse;
 import linkfit.dto.GymTrainersResponse;
 import linkfit.entity.Gym;
 import linkfit.service.GymService;
@@ -35,7 +34,7 @@ public class AdminGymController {
 
     @GetMapping("/register-waiting")
     public String getGymRegisterForm(Model model) {
-        List<GymRegisterWaitingResponse> gymRegisterWaitingList = gymService.getGymRegisterWaitingList();
+        List<GymResponse> gymRegisterWaitingList = gymService.getGymRegisterWaitingList();
         model.addAttribute("gymList", gymRegisterWaitingList);
         return "gym-register-request-list";
     }
@@ -63,7 +62,7 @@ public class AdminGymController {
 
     @GetMapping("/search")
     public String searchGymByName(@RequestParam String keyword, Model model, Pageable pageable) {
-        GymSearchResponse gymList = gymService.findAllByKeyword(keyword, pageable);
+        List<GymResponse> gymList = gymService.findAllByKeyword(keyword, pageable);
         model.addAttribute("keyword", keyword);
         model.addAttribute("gymList", gymList);
         return "gym-search-list";
