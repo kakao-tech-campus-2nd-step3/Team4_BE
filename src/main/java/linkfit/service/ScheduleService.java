@@ -34,6 +34,7 @@ public class ScheduleService {
     public void registerSchedule(Long trainerId, Long ptId, ScheduleRequest scheduleRequest) {
         Pt pt = getPtById(ptId);
         validateTrainerPTOwnership(pt, trainerId);
+        validateScheduleExceedsTotalCount(pt);
         Schedule schedule = scheduleRequest.toEntity(pt);
         scheduleRepository.save(schedule);
     }
@@ -90,5 +91,10 @@ public class ScheduleService {
             && !Objects.equals(memberId, scheduleUserId)) {
             throw new PermissionException("not.owner");
         }
+    }
+
+    private void validateScheduleExceedsTotalCount(Pt pt) {
+        if(scheduleRepository.countByPt(pt) >= pt.getTotalCount())
+            throw new PermissionException("exceed.schedule.limit");
     }
 }

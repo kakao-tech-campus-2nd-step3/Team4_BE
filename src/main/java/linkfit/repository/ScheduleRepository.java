@@ -10,4 +10,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findAllByPt(Pt pt);
 
     int countByPtAndCompleted(Pt pt, Boolean completed);
+
+    int countByPt(Pt pt);
 }
