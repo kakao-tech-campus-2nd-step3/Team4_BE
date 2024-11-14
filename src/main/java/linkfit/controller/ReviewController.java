@@ -48,10 +48,9 @@ public class ReviewController implements ReviewControllerDocs {
             .body(list);
     }
 
-    @PostMapping("/{trainerId}")
-    public ResponseEntity<Void> addReview(@Login Token token,
-        @RequestBody ReviewRequest request, @PathVariable Long trainerId) {
-        reviewService.addReview(token.id(), request, trainerId);
+    @PostMapping
+    public ResponseEntity<Void> addReview(@Login Token token, @RequestBody ReviewRequest request) {
+        reviewService.addReview(token.id(), request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

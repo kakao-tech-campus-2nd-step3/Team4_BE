@@ -64,7 +64,7 @@ public class ScheduleService {
     }
 
     private void validateScheduleIsComplete(Schedule schedule) {
-        if (schedule.getIsCompleted()) {
+        if (schedule.isCompleted()) {
             throw new PermissionException("already.completed.schedule");
         }
     }

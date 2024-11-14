@@ -26,7 +26,7 @@ public class Schedule {
     @Column(nullable = false)
     private LocalDateTime date;
 
-    private boolean isCompleted = Boolean.FALSE;
+    private boolean completed = Boolean.FALSE;
 
     protected Schedule() {
     }
@@ -44,15 +44,15 @@ public class Schedule {
         return date;
     };
 
-    public boolean getIsCompleted() {
-        return isCompleted;
+    public boolean isCompleted() {
+        return completed;
     }
 
     public void complete() {
-        this.isCompleted = Boolean.TRUE;
+        this.completed = Boolean.TRUE;
     }
 
     public ScheduleResponse toDto(){
-        return new ScheduleResponse(id, isCompleted,date);
+        return new ScheduleResponse(id, completed,date);
     }
 }

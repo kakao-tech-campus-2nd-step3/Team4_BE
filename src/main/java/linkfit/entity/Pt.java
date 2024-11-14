@@ -1,6 +1,7 @@
 package linkfit.entity;
 
 import static linkfit.status.PtStatus.APPROVAL;
+import static linkfit.status.PtStatus.COMPLETE;
 import static linkfit.status.PtStatus.RECALL;
 import static linkfit.status.PtStatus.REFUSE;
 import static linkfit.status.PtStatus.WAITING;
@@ -116,5 +117,9 @@ public class Pt {
 
     public void recall() {
         this.status = RECALL;
+    }
+
+    public void complete() {
+        this.status = COMPLETE;
     }
 }

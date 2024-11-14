@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Objects;
 import linkfit.dto.ReviewRequest;
 import linkfit.dto.ReviewResponse;
+import linkfit.entity.Pt;
 import linkfit.entity.Review;
-import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
 import linkfit.repository.PtRepository;
 import linkfit.repository.ReviewRepository;
+import linkfit.repository.ScheduleRepository;
 import linkfit.repository.TrainerRepository;
 import linkfit.repository.UserRepository;
 import linkfit.status.PtStatus;
@@ -23,13 +24,18 @@ public class ReviewService {
     private final TrainerRepository trainerRepository;
     private final UserRepository userRepository;
     private final PtRepository ptRepository;
+    private final PtService ptService;
+    private final ScheduleRepository scheduleRepository;
 
     public ReviewService(ReviewRepository reviewRepository, TrainerRepository trainerRepository,
-        UserRepository userRepository, PtRepository ptRepository) {
+        UserRepository userRepository, PtRepository ptRepository, PtService ptService,
+        ScheduleRepository scheduleRepository) {
         this.reviewRepository = reviewRepository;
         this.trainerRepository = trainerRepository;
         this.userRepository = userRepository;
         this.ptRepository = ptRepository;
+        this.ptService = ptService;
+        this.scheduleRepository = scheduleRepository;
     }
 
     public List<ReviewResponse> getAllReviewsByTrainerId(Long trainerId) {
@@ -46,12 +52,13 @@ public class ReviewService {
             .toList();
     }
 
-    public void addReview(Long userId, ReviewRequest request, Long trainerId) {
+    public void addReview(Long userId, ReviewRequest request) {
         User user = userRepository.getReferenceById(userId);
-        Trainer trainer = trainerRepository.getReferenceById(trainerId);
-        checkPTCompletion(user);
-        Review review = new Review(user, trainer, request);
+        Pt pt = findPtByUser(user);
+        checkReviewWritable(pt);
+        Review review = new Review(user, pt.getTrainer(), request);
         reviewRepository.save(review);
+        setPtComplete(pt);
     }
 
     public void deleteReview(Long userId, Long reviewId) {
@@ -72,8 +79,18 @@ public class ReviewService {
         }
     }
 
-    private void checkPTCompletion(User user) {
-        ptRepository.findByUserAndStatus(user, PtStatus.COMPLETE)
-            .orElseThrow(() -> new PermissionException("review.permission.denied"));
+    private Pt findPtByUser(User user) {
+        return ptRepository.findByUserAndStatus(user, PtStatus.APPROVAL)
+            .orElseThrow(() -> new NotFoundException("not.found.pt"));
+    }
+
+    private void checkReviewWritable(Pt pt) {
+        if(pt.getTotalCount() != scheduleRepository.countByPtAndCompleted(pt, Boolean.TRUE))
+            throw new PermissionException("review.permission.denied.not.complete.pt");
+    }
+
+    private void setPtComplete(Pt pt) {
+        pt.complete();
+        ptRepository.save(pt);
     }
 }

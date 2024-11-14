@@ -47,8 +47,7 @@ public interface ReviewControllerDocs {
         @ApiResponse(responseCode = "201", description = "리뷰 작성 성공"),
         @ApiResponse(responseCode = "401", description = "권한 확인 필요")})
     ResponseEntity<Void> addReview(@Parameter(hidden = true) @Login Token token,
-        @RequestBody
-        ReviewRequest request, @PathVariable("trainerId") Long trainerId);
+        @RequestBody ReviewRequest request);
 
     @Operation(summary = "리뷰 삭제", description = "회원이 Review Id에 해당하는 리뷰(본인이 작성한 리뷰) 삭제", parameters = {
         @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Bearer 토큰 형식의 인증 토큰", required = true)})
