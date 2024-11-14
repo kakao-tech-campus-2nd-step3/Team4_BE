@@ -64,6 +64,7 @@ public class PtService {
     public void sendSuggestion(Long trainerId, PtSuggestionRequest ptSuggestionRequest) {
         Trainer trainer = getTrainer(trainerId);
         User user = getUser(ptSuggestionRequest.userId());
+        ptRepository.deleteByUserAndTrainerAndStatus(user, trainer, PtStatus.WAITING);
         Pt suggestion = new Pt(user, trainer, ptSuggestionRequest);
         ptRepository.save(suggestion);
     }
