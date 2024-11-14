@@ -73,4 +73,11 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errors.toString(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(PolicyViolationException.class)
+    public ResponseEntity<String> handlePolicyViolationException(PolicyViolationException e) {
+        String responseMessage = messageSource.getMessage(e.getMessage(), null,
+            Locale.getDefault());
+        return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+    }
 }

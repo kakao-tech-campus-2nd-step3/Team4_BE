@@ -12,8 +12,11 @@ import linkfit.entity.Trainer;
 import linkfit.entity.User;
 import linkfit.exception.NotFoundException;
 import linkfit.exception.PermissionException;
+import linkfit.exception.PolicyViolationException;
 import linkfit.repository.BodyInfoRepository;
 import linkfit.repository.PreferenceRepository;
+import linkfit.repository.PtRepository;
+import linkfit.status.PtStatus;
 import linkfit.status.TrainerGender;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +29,24 @@ public class PreferenceService {
     private final DistanceCalculatorService distanceCalculatorService;
     private final SportsService sportsService;
     private final BodyInfoRepository bodyInfoRepository;
+    private final PtRepository ptRepository;
 
     public PreferenceService(PreferenceRepository preferenceRepository, UserService userService,
         TrainerService trainerService, DistanceCalculatorService distanceCalculatorService,
-        SportsService sportsService, BodyInfoRepository bodyInfoRepository) {
+        SportsService sportsService, BodyInfoRepository bodyInfoRepository,
+        PtRepository ptRepository) {
         this.preferenceRepository = preferenceRepository;
         this.userService = userService;
         this.trainerService = trainerService;
         this.distanceCalculatorService = distanceCalculatorService;
         this.sportsService = sportsService;
         this.bodyInfoRepository = bodyInfoRepository;
+        this.ptRepository = ptRepository;
     }
 
     public void registerPreference(Long userId, PreferenceRequest request) {
         User user = userService.getUser(userId);
+        validatePreferenceRegistration(user);
         Sports sports = sportsService.getSportsById(request.sportsId());
         BodyInfo bodyInfo = getLastBodyInfo(user);
         Preference preference = request.toEntity(user, bodyInfo, sports);
@@ -88,5 +95,14 @@ public class PreferenceService {
             throw new PermissionException("not.owner");
         }
         preferenceRepository.delete(preference);
+    }
+
+    private void validatePreferenceRegistration(User user) {
+        if(preferenceRepository.existsByUser(user)) {
+            throw new PolicyViolationException("preference.already.registered");
+        }
+        if(ptRepository.existsByUserAndStatus(user, PtStatus.APPROVAL)) {
+            throw new PolicyViolationException("pt.already.in.progress");
+        }
     }
 }

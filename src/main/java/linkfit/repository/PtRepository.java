@@ -25,4 +25,6 @@ public interface PtRepository extends JpaRepository<Pt, Long> {
     Page<Pt> findAllByUserAndStatus(User user, PtStatus status, Pageable pageable);
 
     void deleteByUserAndTrainerAndStatus(User user, Trainer trainer, PtStatus status);
+
+    boolean existsByUserAndStatus(User user, PtStatus status);
 }
