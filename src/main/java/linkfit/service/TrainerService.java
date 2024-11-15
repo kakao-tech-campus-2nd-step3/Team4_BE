@@ -1,6 +1,5 @@
 package linkfit.service;
 
-import linkfit.component.DefaultImageProvider;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TokenResponse;
 import linkfit.dto.TrainerProfileResponse;
@@ -16,6 +15,7 @@ import linkfit.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class TrainerService {
@@ -23,25 +23,25 @@ public class TrainerService {
     private final TrainerRepository trainerRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
-    private final DefaultImageProvider defaultImageProvider;
     private final GymService gymService;
+    private final ImageUploadService imageUploadService;
 
     public TrainerService(TrainerRepository trainerRepository, JwtUtil jwtUtil,
-        PasswordEncoder passwordEncoder, DefaultImageProvider defaultImageProvider,
-        GymService gymService) {
+        PasswordEncoder passwordEncoder, GymService gymService,
+        ImageUploadService imageUploadService) {
         this.trainerRepository = trainerRepository;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
-        this.defaultImageProvider = defaultImageProvider;
         this.gymService = gymService;
+        this.imageUploadService = imageUploadService;
     }
 
     @Transactional
-    public void register(TrainerRegisterRequest request) {
+    public void register(TrainerRegisterRequest request, MultipartFile profileImage) {
         validateEmailAlreadyExist(request.email());
         String encodedPassword = passwordEncoder.encode(request.password());
         Trainer trainer = request.toEntity(encodedPassword);
-        trainer.setProfileImageUrl(defaultImageProvider.getDefaultImageUrl());
+        trainer.setProfileImageUrl(imageUploadService.uploadProfileImage(profileImage));
         trainerRepository.save(trainer);
     }
 
@@ -84,5 +84,4 @@ public class TrainerService {
         trainer.setGym(gym);
         trainerRepository.save(trainer);
     }
-
 }
