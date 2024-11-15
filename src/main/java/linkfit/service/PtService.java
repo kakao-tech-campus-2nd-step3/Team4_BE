@@ -136,7 +136,8 @@ public class PtService {
         }
         User user = pt.getUser();
         List<ScheduleResponse> schedules = scheduleService.getSchedules(ptId);
-        return new PtUserProfileResponse(user.getId(), user.getName(), user.getProfileImageUrl(), schedules);
+        return new PtUserProfileResponse(user.getId(), user.getName(), user.getProfileImageUrl(),
+            pt.getTotalCount(), schedules);
     }
 
     private Trainer getTrainer(Long trainerId) {
