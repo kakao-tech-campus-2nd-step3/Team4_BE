@@ -12,11 +12,11 @@ public class ChattingRoom {
     private Long id;
 
     @ManyToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @Column(name = "trainer_id")
+    @JoinColumn(name = "trainer_id")
     private Trainer trainer;
 
     protected ChattingRoom() {

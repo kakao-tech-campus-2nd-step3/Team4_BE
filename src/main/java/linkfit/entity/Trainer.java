@@ -1,17 +1,6 @@
 package linkfit.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import linkfit.component.DefaultImageProvider;
 import linkfit.dto.TrainerProfileResponse;
 import linkfit.status.TrainerGender;
@@ -37,7 +26,7 @@ public class Trainer {
     private String profileImageUrl;
 
     @ManyToOne
-    @Column(name = "gym_id")
+    @JoinColumn(name = "gym_id")
     private Gym gym;
 
     @Enumerated(value = EnumType.STRING)
