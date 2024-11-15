@@ -1,11 +1,6 @@
 package linkfit.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import linkfit.dto.ChattingRoomResponse;
 
 @Entity
@@ -17,9 +12,11 @@ public class ChattingRoom {
     private Long id;
 
     @ManyToOne
+    @Column(name = "user_id")
     private User user;
 
     @ManyToOne
+    @Column(name = "trainer_id")
     private Trainer trainer;
 
     protected ChattingRoom() {

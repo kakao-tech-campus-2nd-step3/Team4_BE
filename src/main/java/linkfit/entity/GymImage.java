@@ -19,6 +19,7 @@ public class GymImage {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @Column(name = "gym_id")
     private Gym gym;
 
     @Column(nullable = false)

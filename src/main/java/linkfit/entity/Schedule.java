@@ -21,6 +21,7 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @Column(name = "pt_id")
     private Pt pt;
 
     @Column(nullable = false)
