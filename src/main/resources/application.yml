@@ -10,7 +10,7 @@ spring:
     #driver-class-name: org.h2.Driver
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: linkfituser
-    password: {LINKFIT_DB_PASSWORD}
+    password: ${LINKFIT_DB_PASSWORD}
 
   h2:
     console:
