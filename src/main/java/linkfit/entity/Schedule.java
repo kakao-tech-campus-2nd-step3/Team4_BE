@@ -20,8 +20,7 @@ public class Schedule {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "pt_id")
+    @JoinColumn(name = "pt_id", nullable = false)
     private Pt pt;
 
     @Column(nullable = false)

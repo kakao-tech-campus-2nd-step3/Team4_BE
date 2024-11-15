@@ -23,8 +23,7 @@ public class Message {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "chattingRoom_id")
+    @JoinColumn(name = "chattingRoom_id", nullable = false)
     private ChattingRoom chattingRoom;
 
     @Column(nullable = false)

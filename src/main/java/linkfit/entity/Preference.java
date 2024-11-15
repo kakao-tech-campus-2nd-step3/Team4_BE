@@ -23,18 +23,15 @@ public class Preference {
     private Long id;
 
     @OneToOne
-    @JoinColumn(nullable = false)
-    @Column(name ="user_id")
+    @JoinColumn(name ="user_id", nullable = false)
     private User user;
 
     @OneToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "bodyInfo_id")
+    @JoinColumn(name = "bodyInfo_id", nullable = false)
     private BodyInfo bodyInfo;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "sports_id")
+    @JoinColumn(name = "sports_id", nullable = false)
     private Sports sports;
 
     @Enumerated(EnumType.STRING)
