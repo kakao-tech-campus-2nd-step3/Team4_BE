@@ -65,7 +65,7 @@ class TrainerServiceTest {
         when(defaultImageProvider.getDefaultImageUrl()).thenReturn("defaultImageUrl");
 
         //when
-        trainerService.register(request);
+        trainerService.register(request, null);
 
         //then
         verify(trainerRepository,times(1)).save(any(Trainer.class));
@@ -81,7 +81,7 @@ class TrainerServiceTest {
         when(trainerRepository.existsByEmail(any())).thenReturn(true);
 
         //when & then
-       assertThrows(DuplicateException.class, () -> trainerService.register(request));
+       assertThrows(DuplicateException.class, () -> trainerService.register(request, null));
 
     }
 

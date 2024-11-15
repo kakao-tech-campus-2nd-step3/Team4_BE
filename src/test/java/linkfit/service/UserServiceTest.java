@@ -59,7 +59,7 @@ class UserServiceTest {
         when(defaultImageProvider.getDefaultImageUrl()).thenReturn("defaultImageUrl");
 
         // when
-        userService.register(request);
+        userService.register(request, null);
 
         // then
         verify(userRepository, times(1)).save(any(User.class));
@@ -74,7 +74,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
         // when & then
-        assertThrows(DuplicateException.class, () -> userService.register(request));
+        assertThrows(DuplicateException.class, () -> userService.register(request, null));
     }
 
     @Test

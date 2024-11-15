@@ -5,7 +5,7 @@ import linkfit.entity.Pt;
 import linkfit.entity.Schedule;
 
 public record UserPtResponse(Long trainerId, String trainerName, String profileImageUrl,
-                             String gymName, int count, List<ScheduleResponse> schedules) {
+                             String gymName, int totalCount, List<ScheduleResponse> schedules) {
 
     public UserPtResponse(Pt pt, List<Schedule> schedules) {
         this(pt.getTrainer().getId(), pt.getTrainer().getName(),

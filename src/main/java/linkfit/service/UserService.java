@@ -1,6 +1,5 @@
 package linkfit.service;
 
-import linkfit.component.DefaultImageProvider;
 import linkfit.dto.LoginRequest;
 import linkfit.dto.TokenResponse;
 import linkfit.dto.UserProfileRequest;
@@ -25,24 +24,21 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final ImageUploadService imageUploadService;
     private final PasswordEncoder passwordEncoder;
-    private final DefaultImageProvider defaultImageProvider;
 
     public UserService(UserRepository userRepository, JwtUtil jwtUtil,
-        ImageUploadService imageUploadService, PasswordEncoder passwordEncoder,
-        DefaultImageProvider defaultImageProvider) {
+        ImageUploadService imageUploadService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.imageUploadService = imageUploadService;
         this.passwordEncoder = passwordEncoder;
-        this.defaultImageProvider = defaultImageProvider;
     }
 
     @Transactional
-    public void register(UserRegisterRequest request) {
+    public void register(UserRegisterRequest request, MultipartFile profileImage) {
         validateEmailAlreadyExist(request.email());
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = request.toEntity(encodedPassword);
-        user.setProfileImageUrl(defaultImageProvider.getDefaultImageUrl());
+        user.setProfileImageUrl(imageUploadService.uploadProfileImage(profileImage));
         userRepository.save(user);
     }
 
@@ -59,11 +55,10 @@ public class UserService {
         return getUser(userId).toDto();
     }
 
-    public void updateProfile(Long userId, UserProfileRequest request,
-        MultipartFile profileImage) {
+    public void updateProfile(Long userId, UserProfileRequest request, MultipartFile profileImage) {
         User user = getUser(userId);
         user.updateInfo(request);
-        handleProfileImage(profileImage, user);
+        user.setProfileImageUrl(imageUploadService.uploadProfileImage(profileImage));
         userRepository.save(user);
     }
 
@@ -86,13 +81,4 @@ public class UserService {
     private boolean authenticateUser(User user, String rawPassword) {
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
-
-    private void handleProfileImage(MultipartFile profileImage, User user) {
-        String imageUrl = imageUploadService.uploadProfileImage(profileImage);
-        if (imageUrl != null) {
-            user.setProfileImageUrl(imageUrl);
-        }
-    }
-
 }
-

@@ -34,7 +34,7 @@ spring:
       mode: never
 
 jwt:
-  expiration-time: 1800000
+  expiration-time: 1800000 # 1000 * 60 * 30
   master:
     token:
       user: mastertoken-user

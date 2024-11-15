@@ -33,7 +33,7 @@ public class AuthController implements AuthControllerDocs {
     public ResponseEntity<Void> registerUser(
         @RequestPart(value = "user") @Valid UserRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
-        userService.register(request);
+        userService.register(request, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -48,7 +48,7 @@ public class AuthController implements AuthControllerDocs {
     public ResponseEntity<Void> registerTrainer(
         @RequestPart(value = "trainer") @Valid TrainerRegisterRequest request,
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
-        trainerService.register(request);
+        trainerService.register(request, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

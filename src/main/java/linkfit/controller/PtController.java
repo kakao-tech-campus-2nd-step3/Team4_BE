@@ -99,16 +99,16 @@ public class PtController implements PtControllerDocs {
     }
 
     @GetMapping("/{ptId}/trainer")
-    public ResponseEntity<PtUserProfileResponse> getProgressUserDetails(
-        @Login Token token, @PathVariable Long ptId) {
-        PtUserProfileResponse responseBody = ptService.getProgressPtDetails(token.id(),
-            ptId);
+    public ResponseEntity<PtUserProfileResponse> getProgressUserDetails(@Login Token token,
+        @PathVariable Long ptId) {
+        PtUserProfileResponse responseBody = ptService.getProgressPtDetails(token.id(), ptId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(responseBody);
     }
 
     @PutMapping("/schedule/{scheduleId}")
-    public ResponseEntity<Void> completeSchedule(@Login Token token, @PathVariable Long scheduleId) {
+    public ResponseEntity<Void> completeSchedule(@Login Token token,
+        @PathVariable Long scheduleId) {
         scheduleService.completeSchedule(token.id(), scheduleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
