@@ -11,13 +11,11 @@ public class GymAdminRelation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "gym_id")
+    @JoinColumn(name = "gym_id", nullable = false)
     private Gym gym;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "trainer_id")
+    @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
     protected GymAdminRelation() {

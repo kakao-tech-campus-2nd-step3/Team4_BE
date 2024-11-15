@@ -18,8 +18,7 @@ public class GymImage {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "gym_id")
+    @JoinColumn(name = "gym_id", nullable = false)
     private Gym gym;
 
     @Column(nullable = false)

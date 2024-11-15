@@ -26,13 +26,11 @@ public class Review {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @Column(name = "trainer_id")
+    @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
     @Column(nullable = false)
