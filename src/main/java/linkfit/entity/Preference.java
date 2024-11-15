@@ -24,14 +24,17 @@ public class Preference {
 
     @OneToOne
     @JoinColumn(nullable = false)
+    @Column(name ="user_id")
     private User user;
 
     @OneToOne
     @JoinColumn(nullable = false)
+    @Column(name = "bodyInfo_id")
     private BodyInfo bodyInfo;
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @Column(name = "sports_id")
     private Sports sports;
 
     @Enumerated(EnumType.STRING)

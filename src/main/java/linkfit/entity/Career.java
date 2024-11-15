@@ -23,7 +23,7 @@ public class Career {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
     @Column(nullable = false)

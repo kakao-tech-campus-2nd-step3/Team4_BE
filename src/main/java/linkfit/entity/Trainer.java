@@ -37,6 +37,7 @@ public class Trainer {
     private String profileImageUrl;
 
     @ManyToOne
+    @Column(name = "gym_id")
     private Gym gym;
 
     @Enumerated(value = EnumType.STRING)

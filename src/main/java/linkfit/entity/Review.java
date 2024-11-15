@@ -27,10 +27,12 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @Column(name = "user_id")
     private User user;
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @Column(name = "trainer_id")
     private Trainer trainer;
 
     @Column(nullable = false)

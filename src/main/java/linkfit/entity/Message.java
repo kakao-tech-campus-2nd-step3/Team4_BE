@@ -24,6 +24,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @Column(name = "chattingRoom_id")
     private ChattingRoom chattingRoom;
 
     @Column(nullable = false)
