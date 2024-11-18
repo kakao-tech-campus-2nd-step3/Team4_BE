@@ -2,18 +2,27 @@
 
 <!-- 목차 -->
 <div style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
-  <h2 style="font-size: 1.8rem; text-align: center;">📋 목차</h2>
+  <h2 style="font-size: 1.8rem; text-align: center;">📌 목차</h2>
   <ul style="list-style: none; text-align: center; padding: 0; font-size: 1.2rem;">
+    <li><a href="#최종 기획안">📋 최종 기획안</a></li>
     <li><a href="#서비스-개요">🚀 서비스 개요</a></li>
     <li><a href="#주요-기능">✨ 주요 기능</a></li>
     <li><a href="#시연-영상">🎥 시연 영상</a></li>
     <li><a href="#멤버-소개">👩‍💻 멤버 소개</a></li>
     <li><a href="#기술스택">🛠️ 기술스택</a></li>
     <li><a href="#프로젝트-아키텍쳐">🏗️ 프로젝트 아키텍쳐</a></li>
+    <li><a href="#피그마">🎨 피그마</a></li>
     <li><a href="#erd">🗂️ ERD</a></li>
-    <li><a href="#api-명세서">📄 API 명세서</a></li>
+    <li><a href="#테스트 시나리오, 결과">📄 API 명세서</a></li>
+    <li><a href="#api-명세서">✅ 테스트 시나리오, 결과</a></li>
     <li><a href="#배포">🌐 배포</a></li>
   </ul>
+</div>
+
+<!-- 최종 기획안 -->
+<div id="최종 기획안" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
+  <h2>📋 최종 기획안</h2>
+  <p>API 최종 기획안에 대한 자세한 내용은 <a href="https://quickest-asterisk-75d.notion.site/0bcacf4d419544ba8e382fbf541db230?p=21eac5aa0815490b80835a52a5844046&pm=s">여기</a>에서 확인할 수 있습니다.</p>
 </div>
 
 <!-- 서비스 개요 -->
@@ -123,6 +132,12 @@
   <img src="https://via.placeholder.com/800x400" alt="프로젝트 아키텍쳐" />
 </div>
 
+<!-- 피그마 -->
+<div id="피그마" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
+  <h2>🎨 피그마</h2>
+  <p>피그마에 대한 자세한 내용은 <a href="https://www.figma.com/design/9UmXiIncZxlrd0IgcrzWIv/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%85%8C%ED%81%AC%EC%BA%A0%ED%8D%BC%EC%8A%A4-4%EC%A1%B0-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=0-1&node-type=canvas&t=NGJ7tc5wWYFTn7LL-0">여기</a>에서 확인할 수 있습니다.</p>
+</div>
+
 <!-- ERD -->
 <div id="erd" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>🗂️ ERD</h2>
@@ -134,6 +149,13 @@
 <div id="api-명세서" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>📄 API 명세서</h2>
   <p>API 명세서에 대한 자세한 내용은 <a href="http://121.187.37.43:8080/swagger-ui/index.html">여기</a>에서 확인할 수 있습니다.</p>
+</div>
+
+<!-- 테스트 시나리오, 결과 -->
+<div id="테스트 시나리오, 결과" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
+  <h2>📋 기획안</h2>
+  <p>테스트 시나리오에 대한 자세한 내용은 <a href="https://quickest-asterisk-75d.notion.site/0bcacf4d419544ba8e382fbf541db230?p=ec960d996a2e40bcafbe12f9d77079d6&pm=s">여기</a>에서 확인할 수 있습니다.</p>
+  <p>테스트 결과에 대한 자세한 내용은 <a href="https://quickest-asterisk-75d.notion.site/0bcacf4d419544ba8e382fbf541db230?p=b884f1b0d67e4681bf9ad5cc699e3082&pm=s">여기</a>에서 확인할 수 있습니다.</p>
 </div>
 
 <!-- 배포 -->
