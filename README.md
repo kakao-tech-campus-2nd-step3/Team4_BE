@@ -98,6 +98,7 @@
     <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white"/>
     <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"/>
     <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white"/>
+    <img src="https://img.shields.io/badge/Spring Data JPA-5DB33F?style=for-the-badge&logo=Spring Data JPA&logoColor=white"/>
     <img src="https://img.shields.io/badge/JWT-97979A?style=for-the-badge&logo=JWT&logoColor=white"/>
     <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white"/>
     <img src="https://img.shields.io/badge/Websocket-F56640?style=for-the-badge&logo=Websocket&logoColor=white"/>
@@ -126,7 +127,7 @@
 <div id="erd" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>🗂️ ERD</h2>
   <p>아래는 프로젝트의 ERD(Entity Relationship Diagram)입니다:</p>
-  <img src="https://private-user-images.githubusercontent.com/103554906/373635648-061e8595-cc14-45d7-b351-00778ccf47d4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzE4NzQyNDcsIm5iZiI6MTczMTg3Mzk0NywicGF0aCI6Ii8xMDM1NTQ5MDYvMzczNjM1NjQ4LTA2MWU4NTk1LWNjMTQtNDVkNy1iMzUxLTAwNzc4Y2NmNDdkNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQxMTE3JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MTExN1QyMDA1NDdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zYjQxMjhkMTZhMWUyZGI1N2JlYjVhYWNiNWE4MzkwN2Y3YzEyMGI3NDY3YjgzODhhZmZjMTNjYTIxZDJjNGVkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.R-quKZOCiCK0CXxd-0Ku-bJ3gbD6pgtf6fs0Ji2jugc" alt="ERD" />
+  <img src="https://private-user-images.githubusercontent.com/103554906/373635648-061e8595-cc14-45d7-b351-00778ccf47d4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzE5NTgxMjEsIm5iZiI6MTczMTk1NzgyMSwicGF0aCI6Ii8xMDM1NTQ5MDYvMzczNjM1NjQ4LTA2MWU4NTk1LWNjMTQtNDVkNy1iMzUxLTAwNzc4Y2NmNDdkNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQxMTE4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MTExOFQxOTIzNDFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jMDdlNjZhZGE2MGNmM2JlY2NkNzgxNTg2MjBiMjljNmY1NDBiNDNjMGE3MTIwNTZhMTVjMjgwMTZlM2U0MDIzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.DQK1GRMTC7UjE5Z5xV8VwAA_2yYNgY2CcZc-ZL_upsY" alt="ERD" />
 </div>
 
 <!-- API 명세서 -->
