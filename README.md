@@ -22,7 +22,7 @@
 <!-- 최종 기획안 -->
 <div id="최종 기획안" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>📋 최종 기획안</h2>
-  <p>API 최종 기획안에 대한 자세한 내용은 <a href="https://quickest-asterisk-75d.notion.site/0bcacf4d419544ba8e382fbf541db230?p=21eac5aa0815490b80835a52a5844046&pm=s">여기</a>에서 확인할 수 있습니다.</p>
+  <p>서비스 최종 기획안에 대한 자세한 내용은 <a href="https://quickest-asterisk-75d.notion.site/0bcacf4d419544ba8e382fbf541db230?p=21eac5aa0815490b80835a52a5844046&pm=s">여기</a>에서 확인할 수 있습니다.</p>
 </div>
 
 <!-- 서비스 개요 -->
