@@ -77,10 +77,10 @@
       <td style="text-align: center; vertical-align: middle;">Backend</td>
     </tr>
     <tr>
-      <td style="text-align: center; vertical-align: middle;"></td>
-      <td style="text-align: center; vertical-align: middle;"></td>
-      <td style="text-align: center; vertical-align: middle;"></td>
-      <td style="text-align: center; vertical-align: middle;">Team leader</td>
+      <td style="text-align: center; vertical-align: middle;">Tech leader</td>
+      <td style="text-align: center; vertical-align: middle;">planning leader, Reminder</td>
+      <td style="text-align: center; vertical-align: middle;">Reminder, Tech leader</td>
+      <td style="text-align: center; vertical-align: middle;">Tech leader, Team leader</td>
     </tr>
     <tr>
       <td style="text-align: center; vertical-align: middle;">
@@ -113,6 +113,15 @@
     <img src="https://img.shields.io/badge/Websocket-F56640?style=for-the-badge&logo=Websocket&logoColor=white"/>
     <img src="https://img.shields.io/badge/GSON-004027?style=for-the-badge&logo=GSON&logoColor=white"/>
   <h3> Frontend</h3>
+    <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+    <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+    <img src="https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white">
+    <img src="https://img.shields.io/badge/chakra--ui-319795?style=for-the-badge&logo=chakraui&logoColor=white">
+    <img src="https://img.shields.io/badge/emotion-DB7093?style=for-the-badge&logo=emotion&logoColor=white">
+    <img src="https://img.shields.io/badge/react--router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
+    <img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white">
+    <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black">
+
   <h3> Database</h3>
     <img src="https://img.shields.io/badge/H2-1B6AC6?style=for-the-badge&logo=H2&logoColor=white"/>
     <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white"/>
