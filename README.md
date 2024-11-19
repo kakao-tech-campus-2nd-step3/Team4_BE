@@ -113,14 +113,14 @@
     <img src="https://img.shields.io/badge/Websocket-F56640?style=for-the-badge&logo=Websocket&logoColor=white"/>
     <img src="https://img.shields.io/badge/GSON-004027?style=for-the-badge&logo=GSON&logoColor=white"/>
   <h3> Frontend</h3>
-    <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+    <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
     <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
     <img src="https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white">
     <img src="https://img.shields.io/badge/chakra--ui-319795?style=for-the-badge&logo=chakraui&logoColor=white">
     <img src="https://img.shields.io/badge/emotion-DB7093?style=for-the-badge&logo=emotion&logoColor=white">
     <img src="https://img.shields.io/badge/react--router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
     <img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white">
-    <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black">
+    <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white">
   <h3> Test</h3>
     <img src="https://img.shields.io/badge/junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white">
     <img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">
