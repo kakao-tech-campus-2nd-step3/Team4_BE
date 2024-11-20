@@ -112,6 +112,7 @@
     <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white"/>
     <img src="https://img.shields.io/badge/Websocket-F56640?style=for-the-badge&logo=Websocket&logoColor=white"/>
     <img src="https://img.shields.io/badge/GSON-004027?style=for-the-badge&logo=GSON&logoColor=white"/>
+    <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white"/>
   <h3> Frontend</h3>
     <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
     <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
