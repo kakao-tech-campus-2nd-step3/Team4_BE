@@ -147,7 +147,7 @@
 <div id="프로젝트-아키텍쳐" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>🏗️ 프로젝트 아키텍쳐</h2>
   <p>아래는 프로젝트 아키텍쳐 다이어그램입니다:</p>
-  ![LINKFIT_Architecture](https://github.com/user-attachments/assets/f9fb56ba-ef09-4fcd-802e-8908dcd4ef82)
+  <img src="https://github.com/user-attachments/assets/f9fb56ba-ef09-4fcd-802e-8908dcd4ef82">
 </div>
 
 <!-- 피그마 -->
@@ -160,7 +160,7 @@
 <div id="erd" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>🗂️ ERD</h2>
   <p>아래는 프로젝트의 ERD(Entity Relationship Diagram)입니다:</p>
-  <img src="" alt="ERD" />
+  <img src="https://github.com/user-attachments/assets/b23a341d-6343-479d-ac95-cc8244d09f1f" alt="ERD" />
 </div>
 
 <!-- API 명세서 -->
