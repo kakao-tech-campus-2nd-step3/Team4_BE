@@ -147,7 +147,7 @@
 <div id="프로젝트-아키텍쳐" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>🏗️ 프로젝트 아키텍쳐</h2>
   <p>아래는 프로젝트 아키텍쳐 다이어그램입니다:</p>
-  <img src="https://github.com/user-attachments/assets/51817f60-56b0-4760-a305-f772b6c49771">
+  <img src="https://github.com/user-attachments/assets/48f11e51-27c0-4d42-9e65-e57919b4fc11">
 </div>
 
 <!-- 피그마 -->
