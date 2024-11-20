@@ -2,7 +2,7 @@
 
 <!-- 목차 -->
 <div style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
-  <h2 style="font-size: 1.8rem; text-align: center;">📌 목차</h2>
+  <h2 style="font-size: 1.8rem; text-align: center;">목차</h2>
   <ul style="list-style: none; text-align: center; padding: 0; font-size: 1.2rem;">
     <li><a href="#최종 기획안">📋 최종 기획안</a></li>
     <li><a href="#서비스-개요">🚀 서비스 개요</a></li>
@@ -113,6 +113,7 @@
     <img src="https://img.shields.io/badge/Websocket-F56640?style=for-the-badge&logo=Websocket&logoColor=white"/>
     <img src="https://img.shields.io/badge/GSON-004027?style=for-the-badge&logo=GSON&logoColor=white"/>
     <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white"/>
+    <img src="https://img.shields.io/badge/stomp-03234B?style=for-the-badge&logo=stomp&logoColor=white"/>
   <h3> Frontend</h3>
     <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
     <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
@@ -122,6 +123,7 @@
     <img src="https://img.shields.io/badge/react--router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
     <img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white">
     <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white">
+    <img src="https://img.shields.io/badge/stomp-03234B?style=for-the-badge&logo=stomp&logoColor=white"/>
   <h3> Test</h3>
     <img src="https://img.shields.io/badge/junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white">
     <img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">
@@ -145,7 +147,7 @@
 <div id="프로젝트-아키텍쳐" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>🏗️ 프로젝트 아키텍쳐</h2>
   <p>아래는 프로젝트 아키텍쳐 다이어그램입니다:</p>
-  <img src="https://via.placeholder.com/800x400" alt="프로젝트 아키텍쳐" />
+  ![LINKFIT_Architecture](https://github.com/user-attachments/assets/f9fb56ba-ef09-4fcd-802e-8908dcd4ef82)
 </div>
 
 <!-- 피그마 -->
