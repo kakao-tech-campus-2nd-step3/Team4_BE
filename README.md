@@ -49,10 +49,10 @@
 <div id="시연-영상" style="border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin: 20px 0;">
   <h2>🎥 시연 영상</h2>
   <p>
-    아래 링크를 통해 시연 영상을 확인할 수 있습니다:
-    <!-- <a href="https://github.com/user-attachments/assets/489c6fee-bea7-46b8-a96b-e832103ab938">[시연 영상 보러가기]</a> -->
-    <img src="">
-    
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="https://github.com/user-attachments/assets/f0a2c902-c00f-45e1-b4a0-0005d6fa6e50">
   </p>
 </div>
 
